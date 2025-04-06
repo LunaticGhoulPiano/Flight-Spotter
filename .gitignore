@@ -2,5 +2,6 @@ __pycache__
 .vscode
 .env
 
-PPT
+data/*
+!data/Taiwan/Taiwan_ADIZ.json
 temp.py
