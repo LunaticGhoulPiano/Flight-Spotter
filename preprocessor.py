@@ -61,7 +61,7 @@ def preprocess():
                             filtered = []
                             
                             # filter
-                            for i, aircraft in tqdm(enumerate(unzipped_dicts["aircraft"]), total = size, desc = f"Filtering {file_path} ..."):
+                            for i, aircraft in tqdm(enumerate(unzipped_dicts["aircraft"]), total = size, desc = f"Filtering {file_path}"):
                                 if "lat" in aircraft and "lon" in aircraft and filter.in_region(aircraft["lon"], aircraft["lat"], polygon):
                                     filtered.append(aircraft)
                             

@@ -48,7 +48,7 @@ def update_basic_aircraft_database(path:str):
     if os.path.exists(f"{path}./basic-ac-db.json"):
         os.remove(f"{path}./basic-ac-db.json")
     # download
-    download_json_gz(path = path, url = "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz", filename = "basic-ac-db.json.gz", description = "Updating aircraft database ...")
+    download_json_gz(path = path, url = "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz", filename = "basic-ac-db.json.gz", description = "Updating aircraft database")
 
 # “readsb-hist” – Snapshots of all global airborne traffic are archived every 5 seconds starting April 2020, (prior data is available every 60 secs from starting in July 2016).
 def get_readsb_hist(path:str):
@@ -81,7 +81,7 @@ def get_readsb_hist(path:str):
                                     cur_time += timedelta(seconds = rate)
                                     continue
                                 # download
-                                download_json_gz(path = f"{path}./{year}./{month}./{day}", url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/{filename}", filename = filename, description = f"Downloading {year}/{month}/{day}-{filename} ...")
+                                download_json_gz(path = f"{path}./{year}./{month}./{day}", url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/{filename}", filename = filename, description = f"Downloading {year}/{month}/{day}-{filename}")
                                 # update time
                                 cur_time += timedelta(seconds = rate)
 
