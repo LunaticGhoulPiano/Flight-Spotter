@@ -2,6 +2,7 @@ import os
 import gzip
 import shutil
 import requests
+from tqdm import tqdm
 from datetime import datetime, timedelta
 
 # data description at: https://www.adsbexchange.com/products/historical-data/
@@ -9,8 +10,8 @@ ADSB_EX_HISTORICAL_DATA_URL = "https://samples.adsbexchange.com"
 # set data you want to download here
 ENABLES_DATA = ["readsb-hist"] # , "traces", "hires-traces", "acas", "operations"
 # set time you want to download here
-ENABLES_YEAR = ["2020"]
-ENABLES_MONTH = ["03"]
+ENABLES_YEAR = ["2025"]
+ENABLES_MONTH = ["01"]#, "02", "03", "04"]
 ENABLES_DAY = ["01"] # free data only january available, so don't change this one
 
 # get response buy url, download file, unzip is optional
@@ -58,9 +59,9 @@ def get_readsb_hist(path:str):
                         if requests.get(f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/").ok:
                             os.makedirs(f"{path}/{year}/{month}/{day}", exist_ok = True)
                             if 2020 <= int(year) and 4 <= int(month): # rate: data per 60 seconds
-                                rate = 5
-                            else: # rate: data per 5 seconds
                                 rate = 60
+                            else: # rate: data per 5 seconds
+                                rate = 5
                             
                             # download
                             cur_time = datetime.strptime("000000", "%H%M%S")
@@ -71,7 +72,8 @@ def get_readsb_hist(path:str):
                                 if os.path.exists(f"{path}/{year}/{month}/{day}/{filename}") or os.path.exists(f"{path}/{year}/{month}/{day}/{filename[:-3]}"):
                                     cur_time += timedelta(seconds = rate)
                                     continue
-                                # get response
+                                # download
+                                print(f"Downloading {year}/{month}/{day}/{filename}")
                                 download_json_gz(f"{path}./{year}./{month}./{day}", f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/{filename}", filename)
                                 # update time
                                 cur_time += timedelta(seconds = rate)

@@ -1,3 +1,5 @@
+tqdm
+folium
 requests
 beautifulsoup4
 shapely

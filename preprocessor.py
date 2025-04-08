@@ -2,28 +2,49 @@ import os
 import gzip
 import json
 import shutil
+import filter
 import get_data
-import filter_Taiwan_ADIZ
+from tqdm import tqdm
 
-def filter_readsb_hist_by_Taiwan_ADIZ():
+def preprocess():
+    # let user choose a region file to filter
+    region_dict = {}
+    print("Please choose a region to filter data: ")
+    for i, region in enumerate(os.listdir("./data./filter_regions"), start = 1):
+        region_dict[i] = region
+        print(f"  {i}: {region}")
+    while True:
+        try:
+            region = region_dict[int(input("Enter the serial number: "))]
+            break
+        except ValueError:
+            print("Invalid input, try again.")
+        except KeyError:
+            print("No such file, try again.")
+    
+    # data path
     original_path = "./data./historical_adsbex_sample./readsb-hist"
-    new_path = f"./data./Taiwan./filtered_by_Taiwan_ADIZ"
+    
+    # download data
+    if (not os.path.exists(original_path)) or input("Do you want to download / update data?\nIf no then use current data (y/n): ").lower() == "y":
+        get_data.get_data()
+
+    # check path
+    new_path = f"./data./filtered./filtered_by_{region[:-5]}" # remove ".json"
     if os.path.exists(new_path):
         shutil.rmtree(new_path)
     os.makedirs(new_path)
-
-    # download data
-    get_data.get_data()
     
-    # filter by Taiwan ADIZ
-    adiz_polygon = filter_Taiwan_ADIZ.make_boundary()
+    # filter
+    polygon = filter.make_boundary(region)
     for year in os.listdir(original_path):
         for month in os.listdir(f"{original_path}./{year}"):
             for day in os.listdir(f"{original_path}./{year}./{month}"):
-                for file_by_time in os.listdir(f"{original_path}./{year}./{month}./{day}"):
+                for file_by_time in tqdm(os.listdir(f"{original_path}./{year}./{month}./{day}"), desc = f"Processing {year}/{month}/{day}", unit = "file"):
                     # unzip and load as a dict
                     if file_by_time.endswith(".json.gz"):
                         with gzip.open(f"{original_path}./{year}./{month}./{day}./{file_by_time}", "rb") as f_in:
+                            print(f"{original_path}./{year}./{month}./{day}./{file_by_time}")
                             
                             # unzipped file
                             unzipped_json = json.load(f_in)
@@ -39,7 +60,7 @@ def filter_readsb_hist_by_Taiwan_ADIZ():
                             # iterate each item
                             first_entry = True  # Flag to check if it's the first entry to write
                             for flight in unzipped_json.get("aircraft", []):
-                                if "lat" in flight and "lon" in flight and filter_Taiwan_ADIZ.in_Taiwan_ADIZ(flight, adiz_polygon):
+                                if "lat" in flight and "lon" in flight and filter.in_region(flight, polygon):
                                     # create the file if the first filtered flight exist
                                     if first_entry:
                                         with open(file_path, "w", encoding = "utf-8") as f_out:
@@ -60,9 +81,6 @@ def filter_readsb_hist_by_Taiwan_ADIZ():
                         # debug: only process two files
                         #if minute == "01":
                         #    exit()
-
-def preprocess():
-    filter_readsb_hist_by_Taiwan_ADIZ()
 
 if __name__ == "__main__":
     preprocess()

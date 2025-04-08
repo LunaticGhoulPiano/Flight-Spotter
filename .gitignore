@@ -3,5 +3,9 @@ __pycache__
 .env
 
 data/*
-!data/Taiwan/Taiwan_ADIZ.json
+!data/filter_regions
+//!data/filtered
+
+filtered_region_maps
+
 temp.py
