@@ -6,6 +6,13 @@ import get_data
 from tqdm import tqdm
 
 def preprocess():
+    # data path
+    original_path = "./data./historical_adsbex_sample./readsb-hist"
+    
+    # download data
+    if (not os.path.exists(original_path)) or input("Do you want to download / update data?\nIf no then use current data (y/n): ").lower() == "y":
+        get_data.get_data()
+    
     # let user choose a region file to filter
     region_dict = {}
     print("Please choose a region to filter data: ")
@@ -20,13 +27,6 @@ def preprocess():
             print("Invalid input, try again.")
         except KeyError:
             print("No such file, try again.")
-    
-    # data path
-    original_path = "./data./historical_adsbex_sample./readsb-hist"
-    
-    # download data
-    if (not os.path.exists(original_path)) or input("Do you want to download / update data?\nIf no then use current data (y/n): ").lower() == "y":
-        get_data.get_data()
 
     # check path
     new_path = f"./data./filtered./filtered_by_{region[:-5]}" # remove ".json"
