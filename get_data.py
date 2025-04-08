@@ -10,17 +10,19 @@ ADSB_EX_HISTORICAL_DATA_URL = "https://samples.adsbexchange.com"
 # set data you want to download here
 ENABLES_DATA = ["readsb-hist"] # , "traces", "hires-traces", "acas", "operations"
 # set time you want to download here
-ENABLES_YEAR = ["2025"]
-ENABLES_MONTH = ["01"]#, "02", "03", "04"]
+ENABLES_YEAR = ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
+ENABLES_MONTH = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
 ENABLES_DAY = ["01"] # free data only january available, so don't change this one
 
 # get response buy url, download file, unzip is optional
-def download_json_gz(path:str, url:str, filename:str, unzip:bool = False):
+def download_json_gz(path:str, url:str, filename:str, description:str, unzip:bool = False):
     # get response
     response = requests.get(url, stream = True)
+    size = int(response.headers.get("content-length", 0))
     # download .gz file
     with open(f"{path}./{filename}", "wb") as f:
-        shutil.copyfileobj(response.raw, f)
+        with tqdm.wrapattr(response.raw, "read", total = size, unit = "B", unit_scale = True, desc = description) as r:
+            shutil.copyfileobj(r, f)
     # don't unzip here cuz too big, just unzip when need
     if unzip and filename.endswith(".json.gz"):
         # unzip and save
@@ -41,7 +43,7 @@ def update_basic_aircraft_database(path:str):
     if os.path.exists(f"{path}./basic-ac-db.json"):
         os.remove(f"{path}./basic-ac-db.json")
     # download
-    download_json_gz(path, "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz", "basic-ac-db.json.gz")
+    download_json_gz(path = path, url = "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz", filename = "basic-ac-db.json.gz", description = "Updating aircraft database ...")
 
 # “readsb-hist” – Snapshots of all global airborne traffic are archived every 5 seconds starting April 2020, (prior data is available every 60 secs from starting in July 2016).
 def get_readsb_hist(path:str):
@@ -58,7 +60,8 @@ def get_readsb_hist(path:str):
                         # check if available
                         if requests.get(f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/").ok:
                             os.makedirs(f"{path}/{year}/{month}/{day}", exist_ok = True)
-                            if 2020 <= int(year) and 4 <= int(month): # rate: data per 60 seconds
+                            # TODO: fix judgement
+                            if int(year) < 2020 or (int(year) <= 2020 and int(month) <= 3): # rate: data per 60 seconds
                                 rate = 60
                             else: # rate: data per 5 seconds
                                 rate = 5
@@ -73,8 +76,7 @@ def get_readsb_hist(path:str):
                                     cur_time += timedelta(seconds = rate)
                                     continue
                                 # download
-                                print(f"Downloading {year}/{month}/{day}/{filename}")
-                                download_json_gz(f"{path}./{year}./{month}./{day}", f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/{filename}", filename)
+                                download_json_gz(path = f"{path}./{year}./{month}./{day}", url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/{filename}", filename = filename, description = f"Downloading {year}/{month}/{day}-{filename} ...")
                                 # update time
                                 cur_time += timedelta(seconds = rate)
 

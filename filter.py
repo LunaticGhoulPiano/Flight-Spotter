@@ -11,12 +11,10 @@ def DMS_to_DD(pos: str):
 
 # make boundary
 def make_boundary(region:str):
-    print(region)
     with open(f"./data./filter_regions./{region}", "r", encoding = "utf-8") as f:
         boundary_DMS = json.load(f)
     # transform into DD
     boundary_DD = []
-    boundary_DD_reverse = []
     center_lon = 0
     center_lat = 0
     for coordinate in boundary_DMS:

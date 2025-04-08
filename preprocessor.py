@@ -1,7 +1,7 @@
 import os
 import gzip
 import json
-import shutil
+#import shutil
 import filter
 import get_data
 from tqdm import tqdm
@@ -31,9 +31,10 @@ def preprocess():
 
     # check path
     new_path = f"./data./filtered./filtered_by_{region[:-5]}" # remove ".json"
-    if os.path.exists(new_path):
-        shutil.rmtree(new_path)
-    os.makedirs(new_path)
+    #if os.path.exists(new_path):
+    #    shutil.rmtree(new_path)
+    #os.makedirs(new_path)
+    os.makedirs(new_path, exist_ok = True)
     
     # filter
     polygon = filter.make_boundary(region)
@@ -44,8 +45,6 @@ def preprocess():
                     # unzip and load as a dict
                     if file_by_time.endswith(".json.gz"):
                         with gzip.open(f"{original_path}./{year}./{month}./{day}./{file_by_time}", "rb") as f_in:
-                            print(f"{original_path}./{year}./{month}./{day}./{file_by_time}")
-                            
                             # unzipped file
                             unzipped_json = json.load(f_in)
                             
