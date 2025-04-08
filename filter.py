@@ -37,15 +37,15 @@ def make_boundary(region:str):
     return Polygon(boundary_DD)
 
 # filter
-def in_region(flight:dict, polygon:Polygon):
-    point = Point(flight["lon"], flight["lat"])
+def in_region(lon:float, lat:float, polygon:Polygon):
+    point = Point(lon, lat)
     return polygon.contains(point)
 
 # test
 if __name__ == "__main__":
-    polygon = make_boundary("Taiwan_ADIZ.json")
-    #polygon = make_boundary("Taiwan_manual_edges.json")
-    test_point = Point(121.50963962666523, 24.79577412867427) # 24°47'43.9"N 121°30'34.6"E
+    #polygon = make_boundary("Taiwan_ADIZ.json")
+    polygon = make_boundary("Taiwan_manual_edges.json")
+    test_point = Point(120.006663, 22.999459) # 22°59'58.1"N 120°00'24.0"E
     if polygon.contains(test_point):
         print("In region")
     else:

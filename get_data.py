@@ -1,5 +1,7 @@
 import os
+import time
 import gzip
+import random
 import shutil
 import requests
 from tqdm import tqdm
@@ -10,28 +12,31 @@ ADSB_EX_HISTORICAL_DATA_URL = "https://samples.adsbexchange.com"
 # set data you want to download here
 ENABLES_DATA = ["readsb-hist"] # , "traces", "hires-traces", "acas", "operations"
 # set time you want to download here
-ENABLES_YEAR = ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
-ENABLES_MONTH = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+ENABLES_YEAR = ["2025"]#["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
+ENABLES_MONTH = ["04"]#["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
 ENABLES_DAY = ["01"] # free data only january available, so don't change this one
 
 # get response buy url, download file, unzip is optional
 def download_json_gz(path:str, url:str, filename:str, description:str, unzip:bool = False):
     # get response
     response = requests.get(url, stream = True)
-    size = int(response.headers.get("content-length", 0))
-    # download .gz file
-    with open(f"{path}./{filename}", "wb") as f:
-        with tqdm.wrapattr(response.raw, "read", total = size, unit = "B", unit_scale = True, desc = description) as r:
-            shutil.copyfileobj(r, f)
-    # don't unzip here cuz too big, just unzip when need
-    if unzip and filename.endswith(".json.gz"):
-        # unzip and save
-        with gzip.open(f"{path}./{filename}", "rb") as f_in:
-            with open(f"{path}./{filename[:-3]}", "wb") as f_out: # remove ".gz"
-                shutil.copyfileobj(f_in, f_out)
-        # delete .gz file
-        if os.path.exists(f"{path}./{filename}"):
-            os.remove(f"{path}./{filename}")
+    if response.ok:
+        size = int(response.headers.get("content-length", 0))
+        # download .gz file
+        with open(f"{path}./{filename}", "wb") as f:
+            with tqdm.wrapattr(response.raw, "read", total = size, unit = "B", unit_scale = True, desc = description) as r:
+                shutil.copyfileobj(r, f)
+        # don't unzip here cuz too big, just unzip when need
+        if unzip and filename.endswith(".json.gz"):
+            # unzip and save
+            with gzip.open(f"{path}./{filename}", "rb") as f_in:
+                with open(f"{path}./{filename[:-3]}", "wb") as f_out: # remove ".gz"
+                    shutil.copyfileobj(f_in, f_out)
+            # delete .gz file
+            if os.path.exists(f"{path}./{filename}"):
+                os.remove(f"{path}./{filename}")
+    else:
+        print(f"Failed: {description}")
 
 # Aircraft database (updated daily from government and various sources): http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz
 # Please note that all files are in gzip compressed format. “traces” and “hires-traces” are in gzip format, but do not have the .gz extension.
@@ -79,6 +84,14 @@ def get_readsb_hist(path:str):
                                 download_json_gz(path = f"{path}./{year}./{month}./{day}", url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/{filename}", filename = filename, description = f"Downloading {year}/{month}/{day}-{filename} ...")
                                 # update time
                                 cur_time += timedelta(seconds = rate)
+
+                                # avoid rate limit
+                                time.sleep(random.randint(1, 5)) # 1-5 seconds
+                        else:
+                            print("Failed to download data for", year, month, day)
+                print(f"Failed year month: {year}/{month}")
+        else:
+            print(f"Failed year: {year}")
 
 # “Trace Files” – Activity by individual ICAO hex for all aircraft during one 24-hour period are sub-organized by last two digits of hex code.
 def get_traces(path:str):
