@@ -45,18 +45,27 @@ def download_json_gz(path:str, url:str, filename:str, description:str, unzip:boo
             with gzip.open(f"{path}./{filename}", "rb") as f_in:
                 with open(f"{path}./{filename[:-3]}", "wb") as f_out: # remove ".gz"
                     shutil.copyfileobj(f_in, f_out)
+                    # calculate elements number of f_out's dict
             # delete .gz file
             if os.path.exists(f"{path}./{filename}"):
                 os.remove(f"{path}./{filename}")
+            try:
+                json_file = json.load(open(f"{path}./{filename[:-3]}", "r", encoding = "utf-8"))
+                return True, json_file
+            except:
+                return False, None
+        else:
+            return True, None
     else:
         print(f"Failed: {description}")
+        return False, None
 
 # Aircraft database (updated daily from government and various sources): http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz
 # Please note that all files are in gzip compressed format. “traces” and “hires-traces” are in gzip format, but do not have the .gz extension.
 # Your web browser may uncompress and display the raw JSON files based on the headers, but any programmatic access should anticipate gzipped JSON.
 def update_basic_aircraft_database(path:str):
     # download
-    download_json_gz(path = path, url = "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz", filename = "basic-ac-db.json.gz", description = "Updating aircraft database", unzip = True)
+    _, _ = download_json_gz(path = path, url = "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz", filename = "basic-ac-db.json.gz", description = "Updating aircraft database", unzip = True)
 
     # reformat
     print("Reformatting aircraft database...")
@@ -107,6 +116,8 @@ def update_basic_aircraft_database(path:str):
 
 # “readsb-hist” – Snapshots of all global airborne traffic are archived every 5 seconds starting April 2020, (prior data is available every 60 secs from starting in July 2016).
 def get_readsb_hist(path:str):
+    # log messages
+    msgs = []
     # get start and end date
     for year in ENABLES_YEAR:
         for month in ENABLES_MONTH:
@@ -124,20 +135,29 @@ def get_readsb_hist(path:str):
                     filename = cur_time.strftime("%H%M%SZ.json.gz") # 000000Z.json.gz
                     store_name = f"{year}_{month}_{date}_{filename[:-9]}.json.gz" # 2025_04_01_000000.json.gz
                     # check if .json.gz file exists
-                    if os.path.exists(f"{path}./{store_name}"):
+                    if os.path.exists(f"{path}./{store_name[:-3]}"): # .json
                         cur_time += timedelta(seconds = rate)
                         continue
                     # download
-                    download_json_gz(path = path, url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{date}/{filename}", filename = store_name, description = f"Downloading {store_name}", unzip = True)
-                    # update time
-                    cur_time += timedelta(seconds = rate)
+                    success, jf = download_json_gz(path = path, url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{date}/{filename}", filename = store_name, description = f"Downloading {store_name}", unzip = True)
+                    
+                    # write log
+                    if not success:
+                        msgs.append(f"Failed to download {store_name}")
+                    else:
+                        msgs.append(f"Downloaded {store_name} with {len(jf['aircraft'])} aircrafts")
 
                     # avoid Anti-DDoS
                     time.sleep(1) # random.randint(1, 5)) # 1-5 seconds
 
+                    # update time
+                    cur_time += timedelta(seconds = rate)
+    write_log(data_type = "readsb_hist", msgs = msgs, url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/")
+
 # “Trace Files” – Activity by individual ICAO hex for all aircraft during one 24-hour period are sub-organized by last two digits of hex code.
 # “hires-traces” – Same as trace files, but with an even higher sample rate of 2x per second, for detailed analysis of flightpaths, accidents, etc.
 def get_traces(path:str, hires:bool = False):
+    msgs = []
     res = "hires-traces" if hires else "traces"
     # get start and end date
     for year in ENABLES_YEAR:
@@ -171,14 +191,23 @@ def get_traces(path:str, hires:bool = False):
                 for key in table: # sort value
                     table[key] = sorted(table[key])
                 # download
+                total_flights_num = 0
                 for last_2_hex in table:
                     for icao_hex in tqdm(table[last_2_hex], desc = f"Downloading files that last 2 hex is {last_2_hex}"):
+                        if os.path.exists(f"{path}./{year}_{month}_{date}_{icao_hex}.json"):
+                            continue
                         json_file = requests.get(f"{ADSB_EX_HISTORICAL_DATA_URL}/{res}/{year}/{month}/{date}/{last_2_hex}/trace_full_{icao_hex}.json", stream = True)
                         if json_file.ok:
                             jf = json_file.json()
                             with open(f"{path}./{year}_{month}_{date}_{icao_hex}.json", "w") as f:
                                 json.dump(jf, f, indent = 4)
+                            total_flights_num += 1
+                        else:
+                            msgs.append(f"Failed to download {year}_{month}_{date}_{icao_hex}.json")
+                        # avoid Anti-DDoS
                         time.sleep(1)
+                msgs.append(f"Download {year}-{month}-{date} with {total_flights_num} flights")
+    write_log(data_type = res, msgs = msgs, url = f"{ADSB_EX_HISTORICAL_DATA_URL}/{res}/")
 
 # “ACAS” – TCAS/ACAS alerts detected by our ground stations, by day.
 def get_acas(path:str):
@@ -200,7 +229,7 @@ def get_data():
 
     # daily check for new data
     update_basic_aircraft_database(basic_aircraft_path)
-    return
+
     # download historical data
     for enable in ENABLES_DATA:
         os.makedirs(f"{adsbex_path}./{enable}", exist_ok=True)

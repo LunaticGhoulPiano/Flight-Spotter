@@ -36,7 +36,7 @@ def make_boundary(region:str):
 
     return Polygon(boundary_DD)
 
-# filter
+# filter by region
 def in_region(lon:float, lat:float, polygon:Polygon):
     point = Point(lon, lat)
     return polygon.contains(point)
