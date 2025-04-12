@@ -9,3 +9,4 @@ data/*
 filtered_region_maps
 
 temp.py
+logs

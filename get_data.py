@@ -14,9 +14,20 @@ ADSB_EX_HISTORICAL_DATA_URL = "https://samples.adsbexchange.com"
 # set data you want to download here
 ENABLES_DATA = ["readsb-hist", "traces"] #, "hires-traces", "acas", "operations"
 # set time you want to download here
-ENABLES_YEAR = ["2025"]#["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
-ENABLES_MONTH = ["04"]#["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+ENABLES_YEAR = ["2025"] # ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
+ENABLES_MONTH = ["04"] # ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
 ENABLES_DATE = ["01"] # free data only january available, so don't change this one
+
+def write_log(data_type:str, msgs:str, url:str):
+    os.makedirs("./logs", exist_ok = True)
+    if not os.path.exists(f"./logs./{data_type}.txt"):
+        with open(f"./logs./{data_type}.txt", "w", encoding = "utf-8") as f:
+            f.write(f"Download from {url}\n")
+    with open(f"./logs./{data_type}.txt", "a", encoding = "utf-8") as f:
+        # write time
+        f.write(f"\n> Update at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n")
+        for msg in msgs:
+            f.write(f"{msg}\n")
 
 # get response buy url, download file, unzip is optional
 def download_json_gz(path:str, url:str, filename:str, description:str, unzip:bool = False):
@@ -44,13 +55,55 @@ def download_json_gz(path:str, url:str, filename:str, description:str, unzip:boo
 # Please note that all files are in gzip compressed format. “traces” and “hires-traces” are in gzip format, but do not have the .gz extension.
 # Your web browser may uncompress and display the raw JSON files based on the headers, but any programmatic access should anticipate gzipped JSON.
 def update_basic_aircraft_database(path:str):
-    # delete old data
-    if os.path.exists(f"{path}./basic-ac-db.json.gz"):
-        os.remove(f"{path}./basic-ac-db.json.gz")
-    if os.path.exists(f"{path}./basic-ac-db.json"):
-        os.remove(f"{path}./basic-ac-db.json")
     # download
-    download_json_gz(path = path, url = "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz", filename = "basic-ac-db.json.gz", description = "Updating aircraft database")
+    download_json_gz(path = path, url = "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz", filename = "basic-ac-db.json.gz", description = "Updating aircraft database", unzip = True)
+
+    # reformat
+    print("Reformatting aircraft database...")
+    military_num = 0
+    with open(f"{path}./basic-ac-db.json", "r", encoding = "utf-8") as f:
+        file = f.readlines()
+    formatted = []
+    for line in file:
+        f = line.replace("{", "").replace("}", "").replace("\n", "").replace(":", "").split("\"")
+        d = {
+            "icao": None,
+            "reg": None,
+            "icaotype": None,
+            "year": None,
+            "manufacturer": None,
+            "model": None,
+            "ownop": None,
+            "faa_pia": None,
+            "faa_ladd": None,
+            "short_type": None,
+            "mil": None
+        }
+        cur_feature = ""
+        for ff in f:
+            if ff == "" or ff == ",":
+                continue
+            ff = ff.replace(",", "").strip()
+            if ff in d:
+                cur_feature = ff
+            else:
+                if cur_feature in ["faa_pia", "faa_ladd", "mil"]: # bool
+                    d[cur_feature] = True if ff == "true" else False
+                    if cur_feature == "mil" and d[cur_feature]:
+                        military_num += 1
+                elif ff == "null" or ff == "": # null
+                    d[cur_feature] = None
+                else:
+                    d[cur_feature] = ff.strip()
+                cur_feature = ""
+        formatted.append(d)
+    with open(f"{path}./basic-ac-db.json", "w", encoding = "utf-8") as f:
+        json.dump(formatted, f, indent = 4, ensure_ascii = False)
+
+    # write log
+    msgs = [f"Total: {len(formatted)} aircrafts, with {military_num} military aircrafts"]
+    write_log(data_type = "basic_ac_db", msgs = msgs, url = "http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz")
+    print("Done.\n")
 
 # “readsb-hist” – Snapshots of all global airborne traffic are archived every 5 seconds starting April 2020, (prior data is available every 60 secs from starting in July 2016).
 def get_readsb_hist(path:str):
@@ -146,9 +199,8 @@ def get_data():
     os.makedirs(adsbex_path, exist_ok = True)
 
     # daily check for new data
-    if not os.path.exists(f"{basic_aircraft_path}./basic-ac-db.json"): # or check_by_daily_time
-        update_basic_aircraft_database(basic_aircraft_path)
-    
+    update_basic_aircraft_database(basic_aircraft_path)
+    return
     # download historical data
     for enable in ENABLES_DATA:
         os.makedirs(f"{adsbex_path}./{enable}", exist_ok=True)
