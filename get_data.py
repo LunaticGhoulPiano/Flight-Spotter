@@ -1,7 +1,9 @@
 import os
+import re
+import json
 import time
 import gzip
-import random
+#import random
 import shutil
 import requests
 from tqdm import tqdm
@@ -10,11 +12,11 @@ from datetime import datetime, timedelta
 # data description at: https://www.adsbexchange.com/products/historical-data/
 ADSB_EX_HISTORICAL_DATA_URL = "https://samples.adsbexchange.com"
 # set data you want to download here
-ENABLES_DATA = ["readsb-hist"] # , "traces", "hires-traces", "acas", "operations"
+ENABLES_DATA = ["readsb-hist", "traces"] #, "hires-traces", "acas", "operations"
 # set time you want to download here
 ENABLES_YEAR = ["2025"]#["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
 ENABLES_MONTH = ["04"]#["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
-ENABLES_DAY = ["01"] # free data only january available, so don't change this one
+ENABLES_DATE = ["01"] # free data only january available, so don't change this one
 
 # get response buy url, download file, unzip is optional
 def download_json_gz(path:str, url:str, filename:str, description:str, unzip:bool = False):
@@ -54,52 +56,76 @@ def update_basic_aircraft_database(path:str):
 def get_readsb_hist(path:str):
     # get start and end date
     for year in ENABLES_YEAR:
-        # check if available
-        if requests.get(f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/").ok:
-            os.makedirs(f"{path}/{year}", exist_ok = True)
-            for month in ENABLES_MONTH:
-                # check if available
-                if requests.get(f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/").ok:
-                    os.makedirs(f"{path}/{year}/{month}", exist_ok = True)
-                    for day in ENABLES_DAY:
-                        # check if available
-                        if requests.get(f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/").ok:
-                            os.makedirs(f"{path}/{year}/{month}/{day}", exist_ok = True)
-                            # TODO: fix judgement
-                            if int(year) < 2020 or (int(year) <= 2020 and int(month) <= 3): # rate: data per 60 seconds
-                                rate = 60
-                            else: # rate: data per 5 seconds
-                                rate = 5
-                            
-                            # download
-                            cur_time = datetime.strptime("000000", "%H%M%S")
-                            end_time = datetime.strptime("235959", "%H%M%S")
-                            while cur_time < end_time:
-                                filename = cur_time.strftime("%H%M%SZ.json.gz")
-                                # check if .json.gz or .json file exists
-                                if os.path.exists(f"{path}/{year}/{month}/{day}/{filename}") or os.path.exists(f"{path}/{year}/{month}/{day}/{filename[:-3]}"):
-                                    cur_time += timedelta(seconds = rate)
-                                    continue
-                                # download
-                                download_json_gz(path = f"{path}./{year}./{month}./{day}", url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{day}/{filename}", filename = filename, description = f"Downloading {year}/{month}/{day}-{filename}")
-                                # update time
-                                cur_time += timedelta(seconds = rate)
+        for month in ENABLES_MONTH:
+            for date in ENABLES_DATE:
+                # judge rate
+                if int(year) < 2020 or (int(year) <= 2020 and int(month) <= 3): # rate: data per 60 seconds
+                    rate = 60
+                else: # rate: data per 5 seconds
+                    rate = 5
+                
+                # download
+                cur_time = datetime.strptime("000000", "%H%M%S")
+                end_time = datetime.strptime("235959", "%H%M%S")
+                while cur_time < end_time:
+                    filename = cur_time.strftime("%H%M%SZ.json.gz") # 000000Z.json.gz
+                    store_name = f"{year}_{month}_{date}_{filename[:-9]}.json.gz" # 2025_04_01_000000.json.gz
+                    # check if .json.gz file exists
+                    if os.path.exists(f"{path}./{store_name}"):
+                        cur_time += timedelta(seconds = rate)
+                        continue
+                    # download
+                    download_json_gz(path = path, url = f"{ADSB_EX_HISTORICAL_DATA_URL}/readsb-hist/{year}/{month}/{date}/{filename}", filename = store_name, description = f"Downloading {store_name}", unzip = True)
+                    # update time
+                    cur_time += timedelta(seconds = rate)
 
-                                # avoid rate limit
-                                time.sleep(random.randint(1, 5)) # 1-5 seconds
-                        else:
-                            print("Failed to download data for", year, month, day)
-                print(f"Failed year month: {year}/{month}")
-        else:
-            print(f"Failed year: {year}")
+                    # avoid Anti-DDoS
+                    time.sleep(1) # random.randint(1, 5)) # 1-5 seconds
 
 # “Trace Files” – Activity by individual ICAO hex for all aircraft during one 24-hour period are sub-organized by last two digits of hex code.
-def get_traces(path:str):
-    pass
-
 # “hires-traces” – Same as trace files, but with an even higher sample rate of 2x per second, for detailed analysis of flightpaths, accidents, etc.
-def get_hires_traces(path:str):
-    pass
+def get_traces(path:str, hires:bool = False):
+    res = "hires-traces" if hires else "traces"
+    # get start and end date
+    for year in ENABLES_YEAR:
+        for month in ENABLES_MONTH:
+            for date in ENABLES_DATE:
+                # get the indices form html
+                file_index = requests.get(f"{ADSB_EX_HISTORICAL_DATA_URL}/{res}/{year}/{month}/{date}/index.json", stream = True).json()
+                # build table
+                table = {}
+                for icao_hex in tqdm(file_index["traces"], desc = f"Building index for {res}/{year}-{month}-{date}"):
+                    icao_code = icao_hex.replace("trace_full_", "").replace(".json", "")
+                    if bool(re.match(r'^[0-9a-fA-F]{6}$', icao_code)):
+                        # build hash table
+                        # use icao last 2 hex as key
+                        # table = {
+                        #     "97": ["008597", "008697", "00b097", ... 
+                        # }
+                        if icao_code[-2:] not in table:
+                            table[icao_code[-2:]] = []
+                        table[icao_code[-2:]].append(icao_hex)
+                    else:
+                        continue
+                        # filename is in the format of f"trace_full_{icao_code}.json"
+                        # hex: the 24-bit ICAO identifier of the aircraft, as 6 hex digits.
+                        # The identifier may start with '~', this means that the address is a non-ICAO address (e.g. from TIS-B).
+                        # so if "~" in filename, skip
+                        # ex. "trace_full_e80600.json" -> normal
+                        # ex. "trace_full_~268400.json" -> non-ICAO
+                # sort
+                table = dict(sorted(table.items())) # sort key
+                for key in table: # sort value
+                    table[key] = sorted(table[key])
+                # download
+                for last_2_hex in table:
+                    for icao_hex in tqdm(table[last_2_hex], desc = f"Downloading files that last 2 hex is {last_2_hex}"):
+                        json_file = requests.get(f"{ADSB_EX_HISTORICAL_DATA_URL}/{res}/{year}/{month}/{date}/{last_2_hex}/trace_full_{icao_hex}.json", stream = True)
+                        if json_file.ok:
+                            jf = json_file.json()
+                            with open(f"{path}./{year}_{month}_{date}_{icao_hex}.json", "w") as f:
+                                json.dump(jf, f, indent = 4)
+                        time.sleep(1)
 
 # “ACAS” – TCAS/ACAS alerts detected by our ground stations, by day.
 def get_acas(path:str):
@@ -124,16 +150,21 @@ def get_data():
         update_basic_aircraft_database(basic_aircraft_path)
     
     # download historical data
-    run = {
-        "readsb-hist": get_readsb_hist(f"{adsbex_path}./readsb-hist"),
-        "traces": get_traces(f"{adsbex_path}./traces"),
-        "hires-traces": get_hires_traces(f"{adsbex_path}./hires-traces"),
-        "acas": get_acas(f"{adsbex_path}./acas"),
-        "operations": get_operations(f"{adsbex_path}./operations")
-    }
     for enable in ENABLES_DATA:
-        os.makedirs(f"{adsbex_path}./{enable}", exist_ok = True)
-        run[enable]
+        os.makedirs(f"{adsbex_path}./{enable}", exist_ok=True)
+        match enable:
+            case "readsb-hist":
+                get_readsb_hist(f"{adsbex_path}./readsb-hist")
+            case "traces":
+                get_traces(f"{adsbex_path}./traces")
+            case "hires-traces":
+                get_traces(f"{adsbex_path}./hires-traces", hires = True)
+            case "acas":
+                get_acas(f"{adsbex_path}./acas")
+            case "operations":
+                get_operations(f"{adsbex_path}./operations")
+            case _:
+                raise ValueError(f"Error: {enable} not available.")
 
 if __name__ == "__main__":
     get_data()

@@ -38,37 +38,38 @@ def preprocess():
     # filter
     polygon = filter.make_boundary(region)
     for year in os.listdir(original_path):
-        print(year)
         for month in os.listdir(f"{original_path}./{year}"):
-            for day in os.listdir(f"{original_path}./{year}./{month}"):
-                for file_by_time in os.listdir(f"{original_path}./{year}./{month}./{day}"):
-                    # unzip and load as a dict
-                    if file_by_time.endswith(".json.gz"):
-                        with gzip.open(f"{original_path}./{year}./{month}./{day}./{file_by_time}", "rb") as f_in:
-                            # unzipped file
+            for date in os.listdir(f"{original_path}./{year}./{month}"):
+                for file_by_time in os.listdir(f"{original_path}./{year}./{month}./{date}"):
+                    if file_by_time.endswith(".json.gz"): # unzip and load as a dict
+                        with gzip.open(f"{original_path}./{year}./{month}./{date}./{file_by_time}", "rb") as f_in:
                             unzipped_dicts = json.load(f_in)
-                            
-                            # fetch time
-                            hour = file_by_time[:2]
-                            minute = file_by_time[2:4]
-                            second = file_by_time[4:6]
-                            
-                            # filtered file
-                            file_path = f"{new_path}./{year}_{month}_{day}_{hour}_{minute}_{second}.json"
-                            
-                            # get size
-                            size = len(unzipped_dicts["aircraft"])
-                            filtered = []
-                            
-                            # filter
-                            for i, aircraft in tqdm(enumerate(unzipped_dicts["aircraft"]), total = size, desc = f"Filtering {file_path}"):
-                                if "lat" in aircraft and "lon" in aircraft and filter.in_region(aircraft["lon"], aircraft["lat"], polygon):
-                                    filtered.append(aircraft)
-                            
-                            # write only if has data
-                            if filtered:
-                                with open(file_path, "w", encoding = "utf-8") as f_out:
-                                    json.dump(filtered, f_out, indent = 4)
+                    elif file_by_time.endswith(".json"): # load as a dict
+                        with open(f"{original_path}./{year}./{month}./{date}./{file_by_time}", "r", encoding = "utf-8") as f_in:
+                            unzipped_dicts = json.load(f_in)
+                    else:# ignore
+                        continue
+                    # fetch time
+                    hour = file_by_time[:2]
+                    minute = file_by_time[2:4]
+                    second = file_by_time[4:6]
+                    
+                    # filtered file
+                    file_path = f"{new_path}./{year}_{month}_{date}_{hour}_{minute}_{second}.json"
+                    
+                    # get size
+                    size = len(unzipped_dicts["aircraft"])
+                    filtered = []
+                    
+                    # filter
+                    for i, aircraft in tqdm(enumerate(unzipped_dicts["aircraft"]), total = size, desc = f"Filtering {file_path}"):
+                        if "lat" in aircraft and "lon" in aircraft and filter.in_region(aircraft["lon"], aircraft["lat"], polygon):
+                            filtered.append(aircraft)
+                    
+                    # write only if has data
+                    if filtered:
+                        with open(file_path, "w", encoding = "utf-8") as f_out:
+                            json.dump(filtered, f_out, indent = 4)
 
 if __name__ == "__main__":
     preprocess()
