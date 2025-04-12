@@ -47,43 +47,47 @@ def in_region(lon:float, lat:float, polygon:Polygon):
 def filter_readsb_hist(region:str):
     # check output path
     data_path = "./data./historical_adsbex_sample./readsb-hist"
-    file_path = f"./data./filtered./filtered_by_{region[:-5]}.csv" # ".json" -> ".csv"
-    #if os.path.exists(file_path):
-    #    shutil.rmtree(file_path)
-    os.makedirs("./data./filtered", exist_ok = True)
-    
+    file_path = f"./data./filtered./filtered_by_{region[:-5]}.csv"
+    os.makedirs("./data./filtered", exist_ok=True)
+
     # filter
     polygon = make_boundary(region)
-    for snapshot_json in os.listdir(data_path):
+
+    all_rows = []
+    for snapshot_json in tqdm(os.listdir(data_path), desc = "Filtering readsb-hist", unit = " snapshots"):
         # file of a specific time
-        json_file = json.load(open(f"{data_path}./{snapshot_json}", "r", encoding = "utf-8"))
-        
-        # features
+        json_file = json.load(open(f"{data_path}./{snapshot_json}", "r", encoding="utf-8"))
+
+        # time features
         year, month, date, time = snapshot_json[:-5].split("_")
-        hour, minute, second = time[:2], time[2:4], time[4:] # 000000: hhmmss
+        hour, minute, second = time[:2], time[2:4], time[4:]
+
+        # headers
         time_headers = ["year", "month", "date", "hour", "minute", "second"]
-        feature_headers = ["hex", "flight", "t", "alt_baro", "alt_geom", "gs", "track", "geom_rate", "squawk", \
-                   "nav_qnh", "nav_altitude_mcp", "nav_altitude_fms", "nav_heading", \
-                    "lat", "lon", "nic", "rc", "track", "nic_baro", "nac_p", "nac_v", "sil", "sil_type"]
+        feature_headers = [
+            "hex", "flight", "t", "alt_baro", "alt_geom", "gs", "track", "geom_rate", "squawk", \
+            "nav_qnh", "nav_altitude_mcp", "nav_altitude_fms", "nav_heading", \
+            "lat", "lon", "nic", "rc", "track", "nic_baro", "nac_p", "nac_v", "sil", "sil_type"
+        ]
         full_headers = time_headers + feature_headers
-        
-        # make dataframe
-        df = pd.DataFrame(columns = time_headers + feature_headers)
-        
-        # filter
-        i = 0
+
+        # collect valid aircraft rows
         for aircraft in json_file["aircraft"]:
-            if all(feature in aircraft.keys() for feature in feature_headers) and in_region(aircraft["lon"], aircraft["lat"], polygon):
-                # add to dataframe
-                new_row = pd.DataFrame([[year, month, date, hour, minute, second] + [aircraft[feature].strip() for feature in feature_headers]], columns = full_headers)
-                df = pd.concat([df, new_row], ignore_index = True)
-    # save
-    df.to_csv(file_path, index = False)
-    
+            if all(feature in aircraft for feature in feature_headers) and in_region(aircraft["lon"], aircraft["lat"], polygon):
+                row = [year, month, date, hour, minute, second] + [aircraft[feature] for feature in feature_headers]
+                all_rows.append(row)
+
+    # make DataFrame once
+    if all_rows:
+        df = pd.DataFrame(all_rows, columns=full_headers)
+        df.to_csv(file_path, index = False)
+    else:
+        print("No data matched the filter. File not saved.")
+
     # log
-    with open(f"./logs./readsb-hist_filtered_by_{region[:-5]}.txt", "a", encoding = "utf-8") as f:
+    with open(f"./logs./readsb-hist_filtered_by_{region[:-5]}.txt", "a", encoding="utf-8") as f:
         f.write(f"> Update at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write(f"Total number of aircrafts: {df.shape[0]}\n\n")
+        f.write(f"Total number of aircrafts: {len(all_rows)}\n\n")
 
 def reduce_traces(hires:bool = False):
     res = "hires-traces" if hires else "traces"

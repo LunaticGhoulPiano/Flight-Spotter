@@ -3,9 +3,11 @@
 - Currently only could run on **Windows** (only knows how to get user's gps location on Windows, also don't have other platform to test)
 - Please **enable GPS** in settings ([official tutorial here](https://support.microsoft.com/en-us/windows/windows-location-service-and-privacy-3a8eee0a-5b0b-dc07-eede-2a5ca1c49088))
 
-## Flow
+## Flow (To be altered)
 ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/flow.jpg?raw=true)
 - See ```./flow.drawio```
+
+## Description
 - Mining:
     1. Get the historical data
     2. Set a default location (lat., lon., radius)
@@ -20,11 +22,11 @@
 ## Data resources
 - [ADS-B Exchange free historical data](https://www.adsbexchange.com/products/historical-data/)
 - [readsb official documentation](https://github.com/wiedehopf/readsb/blob/dev/README-json.md)
-- [Taiwan ADIZ](https://ais.caa.gov.tw/eaip/AIRAC%20AIP%20AMDT%2002-25_2025_04_17/index.html)
+- [```./data./filter_regions./Taiwan_ADIZ.json```](https://ais.caa.gov.tw/eaip/AIRAC%20AIP%20AMDT%2002-25_2025_04_17/index.html)
     - ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/Taiwan_ADIZ.jpg?raw=true)
     - ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg?raw=true)
     (This picture is from [wikipedia](https://en.wikipedia.org/wiki/Air_Defense_Identification_Zone_(Taiwan)))
-- Taiwan_manual_edges - human-setted region
+- ```./data./fliter_regions./Taiwan_manual_edges.json``` - human-setted region
     - ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/Taiwan_manual_edges.jpg?raw=true)
     - [台灣最北點](https://maps.app.goo.gl/trQLW1bgKLgX93AL9) (25°17'58.7"N 121°32'13.1"E)
     - [中華民國 領海基點](https://maps.app.goo.gl/y7jgJ5NkMmea9i1AA) (25°17'26.6"N 121°30'37.7"E)
@@ -78,9 +80,14 @@
 - [Other discussion](https://www.reddit.com/r/ADSB/comments/1gabgnf/any_free_sources_for_flight_historical_data/)
 - [adsb.lol api](https://api.adsb.lol/docs) (to get live data for the interactive stage)
 
-## Data mining Algo.
-- To be continued
-- Recommend methods by GhatGPT:
+## Data mining: to find the surrounding best GPS coordinates of spotting planes by user's GPS locations
+### Tools
+- weka:
+Will use [**optics_dbScan** package](https://weka.sourceforge.io/packageMetaData/optics_dbScan/index.html) .
+- Python:
+To be continued
+### Methods
+#### Recommend methods by GhatGPT:
     - DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
         - [Tutorial 1](https://tomohiroliu22.medium.com/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98%E7%B3%BB%E5%88%97-84-%E5%9F%BA%E6%96%BC%E5%AF%86%E5%BA%A6%E4%B9%8B%E5%90%AB%E5%99%AA%E7%A9%BA%E9%96%93%E8%81%9A%E9%A1%9E%E6%B3%95-density-based-spatial-clustering-of-applications-with-noise-63a88275d678)
         - [Tutorial 2](https://tomohiroliu22.medium.com/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98%E7%B3%BB%E5%88%97-87-%E5%9F%BA%E6%96%BC%E5%AF%86%E5%BA%A6%E4%B9%8B%E5%90%AB%E5%99%AA%E7%A9%BA%E9%96%93%E9%9A%8E%E5%B1%A4%E8%81%9A%E9%A1%9E%E6%B3%95-hierarchical-density-based-spatial-clustering-of-applications-with-af6e9933bba3)
@@ -145,6 +152,17 @@
     | 時間加權分析 | 考慮航班時間變化 | 動態/即時熱點推薦 |
     | 半球反推分析 | 精準匹配人眼可視區域 | 面點最佳化推薦 |
 
+## Generative AI application: to generate the remaining flight routes by the ADS-B signal of chose flight
+To be coutinued
+### Model
+To be coutinued
+### Training
+To be coutinued
+### Testing & Evaluation
+To be coutinued
+### Test with the current flying planes
+To be coutinued
+
 ## Data preprocessing
 ### Before running
 - Set the specific data to download by time: you **SHOULD** manually add ```ENABLES_YEAR``` and ```ENABLES_MONTH``` at ```./get_data.py```, by my default this code will only download 2020/03/01, cuz too big. Just straightly add the time into these two lists.
@@ -156,8 +174,24 @@ python -m pip install -r requirements.txt
 ```
 ### Run
 ```
-python preprocess.py
+python preprocessor.py
 ```
+### readsb-hist preprocessing
+0. Data range:
+2025/04/01 00:00:00 ~ 2025/04/01 08/08/20, sample rate = 5 seconds. Due to the massive data size (27.1 GB) we only use these data.
+1. Fliter 1:
+We fliter the flight that must have the following features:
+```hex```, ```flight```, ```t```, ```alt_baro```, ```alt_geom```, ```gs```, ```track```, ```geom_rate```, ```squawk```, ```nav_qnh```,```nav_altitude_mcp```, ```nav_altitude_fms```, ```nav_heading```, ```lat```, ```lon```, ```nic```, ```rc```, ```track```, ```nic_baro```, ```nac_p```, ```nac_v```, ```sil```, and ```sil_type```.
+2. Fliter 2:
+We use ```./data./fliter_regions./Taiwan_manual_edges.json```, draw a range by GPS coordinates, and fliter the flight in this zone.
+3. Final format:
+We store as a ```.csv``` file, with the following headers:
+```year,month,date,hour,minute,second,hex,flight,t,alt_baro,alt_geom,gs,track,geom_rate,squawk,nav_qnh,nav_altitude_mcp,nav_altitude_fms,nav_heading,lat,lon,nic,rc,track,nic_baro,nac_p,nac_v,sil,sil_type```
+See ```./data./filtered./filtered_by_Taiwan_manual_edges.csv``` .
+It has 6569 columns, each column is identified by ICAO 24-bit hex code with a specific time.
+
+### traces preprocessing
+To be continued, still have lots of bugs
 
 ## Discord bot
 - To be continued
@@ -180,7 +214,7 @@ python main.py
 ## Current progress
 - [x] Set a specific filtering range: Taiwan ADIZ, at ```./data./Taiwan./Taiwan_ADIZ.json``` (manually create)
 - [x] Get aircraft type data and readsb-hist data, store to  ```./data./aicraft``` and ```./data./historical_adsbex_sample``` (auto-created)
-- [x] Filter by Taiwan ADIZ and store with a formatted file name: ```{year}_{month}_{day}_{hour}_{minute}_{second}.json``` to ```./data./Taiwan./filtered_by_Taiwan_ADIX``` folder (auto-created)
+- [x] Filter by ```./data./fliter_regions./Taiwan_manual_edges.json``` to ```./data./filtered./filtered_by_Taiwan_manual_edges.csv```
 
 ## Structure
 - To be continued

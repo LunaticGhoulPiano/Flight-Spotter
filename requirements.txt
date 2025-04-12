@@ -4,3 +4,5 @@ requests
 beautifulsoup4
 shapely
 winsdk
+pandas
+discord.py
