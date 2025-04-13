@@ -29,7 +29,7 @@ pip install -r requirements.txt
 
 ## Structure
 ```
-.Flight-Spotter
+Flight-Spotter
 ├──.env (currently unused, to store discord bot token)
 ├──.gitignore
 ├──LICENSE
@@ -98,6 +98,7 @@ In this project, we decided to use the ADSBEX-provided ```readsb-hist``` data, i
     {second GPS coordinate},
     {third GPS coordinate},
     ...,
+    {last GPS coordinate},
     {first GPS coordinate},
 ]
 ```
@@ -171,6 +172,7 @@ We made two region filter files:
 2. Download all data in the Enable time range and unzip:
     - In ```get_data.py``` you can manually set these *ENABLE Parameters*:
         ```python
+        # default
         ENABLES_YEAR = ["2025"] # ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
         ENABLES_MONTH = ["04"] # ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
         ```
