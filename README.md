@@ -22,7 +22,49 @@ pip install -r requirements.txt
 - Sometimes ```winsdk``` may have building while installing python package.
 
 ## Structure
-- To be continued
+```
+.Flight-Spotter
+├──.env (currently unused, to store discord bot token)
+├──.gitignore
+├──LICENSE
+├──README.md
+├──requirements.txt
+├──flow.drawio
+├──gps.py (currently unused)
+├──bot.py (currently unused)
+├──adsb_lol.py (currently unused)
+├──main.py (currently unused)
+├──model.py (currently unused)
+├──get_data.py
+├──filter.py
+├──preprocessor.py
+├──pics
+│ ├──flow.png
+│ ├──JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg
+│ ├──Taiwan_SDIZ.jpg
+│ └──Taiwan_manual_edges.jpg
+├──data
+│ ├──aircraft (auto-generated)
+│ │  └──basic-ac-db.json
+│ ├──filter_regions
+│ │  ├──Taiwan_ADIZ.json
+│ │  └──Taiwan_manual_edges.json
+│ ├──historical_adsbex_sample (auto-generated, based on user's ENABLES settings)
+│ │  └──readsb-hist
+│ │     ├──2025_04_01_000000.json
+│ │     ├──...
+│ │     └──2025_04_01_120000.json
+│ └──preprocessed (auto-generated, based on the user's choose)
+│ ├──readsb-hist_merged.csv
+│ ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
+│ └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
+└──filter_region_maps (auto-generated, based on the user's choose)
+│ ├──Taiwan_ADIZ.html
+│ └──Taiwam_manual_edges.html
+└──logs (auto-generated)
+  ├──basic_ac_db.txt
+  └──readsb-hist.txt
+```
 
 ## Datasets
 In this project, we decided to use the ADSBEX-provided ```readsb-hist``` data, instead of using ```traces``` or ```hires-traces```. There are two reasons:
