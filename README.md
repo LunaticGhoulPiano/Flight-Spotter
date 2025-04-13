@@ -1,13 +1,13 @@
 # Flight-Spotter
-## Description
+## Overview
 To be continued
 
 ## Current progress
-- [x] Set a specific filtering range: Taiwan ADIZ, at ```./data./Taiwan./Taiwan_ADIZ.json``` (manually create)
+- [x] Set a specific filtering range: Taiwan manual edges, at ```./data./filter_regions./Taiwan_manual_edges.json``` (manually create)
 - [x] Get aircraft type data and readsb-hist data, store to  ```./data./aicraft``` and ```./data./historical_adsbex_sample``` (auto-created)
 - [x] Filter by ```./data./fliter_regions./Taiwan_manual_edges.json``` and store to ```./data./preprocessed./readsb-hist_merged.csv``` (no filter region file was choose) and ```./data./preprocessed./readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with filter region file)
 
-## Flow (To be altered)
+## Flow
 - See ```./flow.drawio``` :
     ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/flow.png?raw=true)
 
@@ -73,17 +73,26 @@ In this project, we decided to use the ADSBEX-provided ```readsb-hist``` data, i
 ### ADS-B Exchange data
 - [ADS-B Exchange free historical data](https://www.adsbexchange.com/products/historical-data/)
 - [readsb official documentation](https://github.com/wiedehopf/readsb/blob/dev/README-json.md)
-- Size:
-To be continued
-### Regions to filter
+- Data used in this project
+    - Our preprocessed data already upload to [huggingface](https://huggingface.co/datasets/LunaticGhoulPiano/readsb-hist_2025-04-01-000000-120000).
+    - Time range:
+        - 2025/04/01 00:00:00 ~ 12:00:00
+        - Sample rate: 5 seconds per data
+    - Numbers and Size:
+        - ```readsb-hist_merged.csv```: 6089010 rows, 857 MB
+        - ```readsb-hist_filtered_by_Taiwan_manual_edges.csv```: 9148 rows, 1.27 MB
+### Region Filter files
 - The \"region filter files\" are all manually generated json files, described in the following format:
-```json
+```
 [
-    {GPS coordinate 1},
-    {GPS coordinate 2},
-    {GPS coordinate 3},
+    {
+        "latitude": first GPS coordinate latitude,
+        "longitude": first GPS coordinate longitude
+    },
+    {second GPS coordinate},
+    {third GPS coordinate},
     ...,
-    {GPS coordinate 1},
+    {first GPS coordinate},
 ]
 ```
 Each GPS coordinate is in DMS (Degrees, Minutes, Seconds) format.
@@ -196,6 +205,7 @@ We made two region filter files:
         "sil"
         "sil_type"
         ```
+    - The meanings of above features see [ADS-B Exchange Version 2 API Fields Documentations](https://www.adsbexchange.com/version-2-api-wip/) and [wiedehopf's readsb README-json.md](https://github.com/wiedehopf/readsb/blob/dev/README-json.md).
     - If choose a region filter file, then will generate two files, the first one is the above global aircrafts with those features, and the second one is the aircrafts not only with the above features, but also with GPS coordinate in the polygon plotted by the choose region filter flie.
 4. Store:
     - The unfiltered (and filtered) data will stored at ```./data./preprocessed``` with name ```readsb-hist_merged.csv``` (no filter region file was choose) and ```readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with region filter file).

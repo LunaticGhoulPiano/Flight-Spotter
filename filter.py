@@ -86,9 +86,11 @@ def filter_readsb_hist(region:str = None):
 
     # make DataFrame once
     if all_rows:
+        print("Writing readsb-hist_merged.csv ...")
         df = pd.DataFrame(all_rows, columns = full_headers)
         df.to_csv(f"./data./preprocessed./readsb-hist_merged.csv", index = False)
         if in_region_rows:
+            print(f"readsb-hist_filtered_by_{region[:-5]}.csv ...")
             df = pd.DataFrame(in_region_rows, columns = full_headers)
             df.to_csv(f"./data./preprocessed./readsb-hist_filtered_by_{region[:-5]}.csv", index = False)
     else:
