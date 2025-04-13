@@ -1,93 +1,202 @@
 # Flight-Spotter
-## Warnings
-- Currently only could run on **Windows** (only knows how to get user's gps location on Windows, also don't have other platform to test)
-- Please **enable GPS** in settings ([official tutorial here](https://support.microsoft.com/en-us/windows/windows-location-service-and-privacy-3a8eee0a-5b0b-dc07-eede-2a5ca1c49088))
+## Description
+To be continued
+
+## Current progress
+- [x] Set a specific filtering range: Taiwan ADIZ, at ```./data./Taiwan./Taiwan_ADIZ.json``` (manually create)
+- [x] Get aircraft type data and readsb-hist data, store to  ```./data./aicraft``` and ```./data./historical_adsbex_sample``` (auto-created)
+- [x] Filter by ```./data./fliter_regions./Taiwan_manual_edges.json``` and store to ```./data./preprocessed./readsb-hist_merged.csv``` (no filter region file was choose) and ```./data./preprocessed./readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with filter region file)
 
 ## Flow (To be altered)
-![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/flow.jpg?raw=true)
-- See ```./flow.drawio```
+- See ```./flow.drawio``` :
+    ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/flow.png?raw=true)
 
-## Description
-- Mining:
-    1. Get the historical data
-    2. Set a default location (lat., lon., radius)
-    3. Filter flights by location in the circle with the provided radius
-    4. Mining / training routes of the flights for looking for the best place of spotting
-    5. Save the result data
-- Interactive:
-    0. Build a discord bot([tutorial here](https://github.com/smallshawn95/Python-Discord-Bot-Course)), and buy a server (Oracle Cloud VPS, or Raspberry pi...)
-    1. Get user GPS location / manually input / set a default location
-    2. Search the neighbouring spotting place in the result data
+## Warnings
+### Please install required packages first by pip
+```
+pip install -r requirements.txt
+```
+### About ```main.py```
+- Currently ```main.py``` only could run on **Windows** (only knows how to get user's gps location on Windows, also don't have other platform to test).
+- Please enable **Windows GPS** in settings ([official tutorial here](https://support.microsoft.com/en-us/windows/windows-location-service-and-privacy-3a8eee0a-5b0b-dc07-eede-2a5ca1c49088)).
+- Sometimes ```winsdk``` may have building while installing python package.
 
-## Data resources
+## Structure
+- To be continued
+
+## Datasets
+In this project, we decided to use the ADSBEX-provided ```readsb-hist``` data, instead of using ```traces``` or ```hires-traces```. There are two reasons:
+1. It's hard to calculate the sampling rate of ```traces``` and ```hires-traces```, but ```readsb-hist``` has steady sampling rate (60 or 5 seconds, decided by the data time).
+2. It's hard to reduce the dimension of all traces of an aircraft, especially the sampling rate is not steady.
+### ADS-B Exchange data
 - [ADS-B Exchange free historical data](https://www.adsbexchange.com/products/historical-data/)
 - [readsb official documentation](https://github.com/wiedehopf/readsb/blob/dev/README-json.md)
-- [```./data./filter_regions./Taiwan_ADIZ.json```](https://ais.caa.gov.tw/eaip/AIRAC%20AIP%20AMDT%2002-25_2025_04_17/index.html)
-    - ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/Taiwan_ADIZ.jpg?raw=true)
-    - ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg?raw=true)
-    (This picture is from [wikipedia](https://en.wikipedia.org/wiki/Air_Defense_Identification_Zone_(Taiwan)))
-- ```./data./fliter_regions./Taiwan_manual_edges.json``` - human-setted region
-    - ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/Taiwan_manual_edges.jpg?raw=true)
-    - [台灣最北點](https://maps.app.goo.gl/trQLW1bgKLgX93AL9) (25°17'58.7"N 121°32'13.1"E)
-    - [中華民國 領海基點](https://maps.app.goo.gl/y7jgJ5NkMmea9i1AA) (25°17'26.6"N 121°30'37.7"E)
-    - [沙崙湖](https://maps.app.goo.gl/ipTihKnHkPq4sJpD7) (25°14'56.8"N 121°27'16.9"E)
-    - [台北港貨櫃碼頭股份有限公司](https://maps.app.goo.gl/6TvEjkNbNKBtA71F9) (25°10'04.6"N 121°23'25.5"E)
-    - [竹圍漁港北堤](https://maps.app.goo.gl/mD5d18n5VXB7PmaD9) (25°07'17.0"N, 121°14'29.4"E)
-    - [觀音大堀溪北岸](https://maps.app.goo.gl/ifha5pf98GAYSDLW6) (25°03'49.6"N 121°05'57.9"E)
-    - [外傘頂洲](https://maps.app.goo.gl/RREqbQtUCU4S8Kx58) (23°28'27.5"N 120°04'06.7"E)
-    - [布袋北堤](https://maps.app.goo.gl/cY5wBbxcqWXTWa3d6) (23°23'03.7"N 120°07'54.1"E)
-    - [台灣最西點-國聖港燈塔](https://maps.app.goo.gl/euwYMfqghc3qLsRAA) (23°06'02.6"N 120°02'09.6"E)
-    - [曾文溪口月牙彎道](https://maps.app.goo.gl/c5yPx3G1DMHDkLnQ9) (23°03'11.3"N 120°03'15.1"E)
-    - [黃金海岸](https://maps.app.goo.gl/hBF2PMC3M4vKTcJ39) (22°55'53.1"N 120°10'34.9"E)
-    - [海蝕洞](https://maps.app.goo.gl/WsPMYcwrJvATXu1y8) (22°39'03.0"N 120°15'01.7"E)
-    - [紅毛港南星燈杆](https://maps.app.goo.gl/oZwHi4ZaEWWnwaA78) (22°32'37.8"N 120°17'11.4"E)
-    - [加祿防波堤彩繪牆](https://maps.app.goo.gl/xN1JU7bYHM87tssU7) (22°19'43.8"N 120°37'16.7"E)
-    - [北勢鼻](https://maps.app.goo.gl/bqnuCZQYSLJdXo818) (21°56'05.0"N 120°42'46.6"E)
-    - [龍蝦堀](https://maps.app.goo.gl/DZW9oSNBrVVnHZZH8) (21°55'13.1"N 120°43'30.1"E)
-    - [雷公石](https://maps.app.goo.gl/SyJcrtPHx91uB6eV9) (21°55'14.5"N 120°44'21.2"E)
-    - [南灣遊憩區](https://maps.app.goo.gl/5dHyytPvTBm4mobL8) (21°57'34.8"N 120°45'45.9"E)
-    - [臺灣最南點](https://maps.app.goo.gl/5Lp7YSjpVMeuN1868) (21°53'51.9"N 120°51'30.1"E)
-    - [興海灣沙灘](https://maps.app.goo.gl/8puKnqc8hT9tKWk88) (21°58'41.4"N 120°50'40.1"E)
-    - [佳樂水漁村公園](https://maps.app.goo.gl/VGaaVYs6aiNboe8u7) (21°59'20.5"N 120°50'48.5"E)
-    - [佳樂水風景區 售票處](https://maps.app.goo.gl/zG6yArje9jeRhpFa6) (21°59'40.2"N 120°51'50.4"E)
-    - [蟾蜍石](https://maps.app.goo.gl/RBrLQVfJpWVacuYJ6) (22°00'04.7"N 120°52'33.2"E)
-    - [出風鼻](https://maps.app.goo.gl/zujJisic5zCVF9zZ9) (22°02'03.6"N 120°54'00.5"E)
-    - [鼻頭礁](https://maps.app.goo.gl/ZUgDDVrM6TV49Jmg9) (22°06'19.5"N 120°54'05.4"E)
-    - [台東最東點](https://maps.app.goo.gl/Dba9725eJT4iyZju6) (23°07'36.4"N 121°25'26.5"E)
-    - [烏石鼻](https://maps.app.goo.gl/zk6csHfiksBsyaXn8) (24°28'53.8"N 121°51'31.1"E)
-    - [黑礁坪](https://maps.app.goo.gl/6g1WTaAR9dZeYgYVA) (24°36'13.7"N 121°53'13.1"E)
-    - [第二機動巡邏站(合興)](https://maps.app.goo.gl/5SL1SRwuvjmsbdRF7) (24°55'02.7"N 121°52'59.1"E)
-    - [台灣最東點](https://maps.app.goo.gl/V3JNAsyLSbGNiZRF6) (25°00'40.7"N 122°00'25.8"E)
-    - [福連里](https://maps.app.goo.gl/SJiMijVJYQ3EQKgm6) (25°00'51.8"N 122°00'17.0"E)
-    - [海廢bar](https://maps.app.goo.gl/354usCaEbjKzoT4h8) (25°01'23.4"N 121°58'56.8"E)
-    - [吃飯看海](https://maps.app.goo.gl/2pEr26FgoJq7abRKA) (25°01'30.2"N 121°58'20.6"E)
-    - [Air Space 福隆海水浴場](https://maps.app.goo.gl/dkyKYTZqa5CNy2Ry8) (25°01'20.0"N 121°56'37.1"E)
-    - [美艷山海角奇岩](https://maps.app.goo.gl/wiQ9hk3UHtP2RSym8) (25°03'47.4"N 121°55'52.7"E)
-    - [阿義海鮮商店（柑仔店內海鮮）](https://maps.app.goo.gl/YdsjaFnmzwmonTLR8) (25°04'59.2"N 121°54'49.6"E)
-    - [龍洞灣岬](https://maps.app.goo.gl/mzd87dLzokVaW4K99) (25°06'14.4"N 121°55'23.9"E)
-    - [鼻頭角燈塔](https://maps.app.goo.gl/3Ydez8vf5vCjU6wp6) (25°07'43.5"N 121°55'24.5"E)
-    - [犀牛望月](https://maps.app.goo.gl/F8L4pgTgGSNwvrik7) (25°09'48.2"N 121°45'55.2"E)
-    - [大義公](https://maps.app.goo.gl/Q74UWiFfWA2WzbfB8) (25°10'29.5"N 121°42'28.4"E)
-    - [步道終點觀景台](https://maps.app.goo.gl/KUzsb8AFoxMCE8Tt9) (25°12'56.0"N 121°41'60.0"E)
-    - [頂寮沙灘](https://maps.app.goo.gl/XZvXvLqtFLajgPZK8) (25°12'37.2"N 121°39'31.7"E)
-    - [神秘海岸](https://maps.app.goo.gl/VKczBJhTfSr4L2vJ7) (25°13'45.2"N 121°39'11.3"E)
-    - [金山區跳石海岸停車場](https://maps.app.goo.gl/3enGPy5953AtnTq69) (25°15'29.7"N 121°38'00.2"E)
-    - [跳石海岸 芋頭產銷](https://maps.app.goo.gl/mBPtH4qXqToHqCpv6) (25°16'04.9"N 121°37'37.5"E)
-    - [草里一號店](https://maps.app.goo.gl/MaWnmypqTKwWUc7F7) (25°16'38.5"N 121°37'01.7"E)
-    - [草里漁港垂釣區](https://maps.app.goo.gl/455KzweFwxhVTMah9) (25°16'56.8"N 121°36'25.0"E)
-    - [核一廠專用港](https://maps.app.goo.gl/sFRX7aY6V4nifWmKA) (25°17'26.3"N 121°35'45.5"E)
-    - [鹿邊咖啡Deer cafe](https://maps.app.goo.gl/2PkKrUGdGA6wHFEBA) (25°17'51.7"N 121°34'24.2"E)
-- [Other discussion](https://www.reddit.com/r/ADSB/comments/1gabgnf/any_free_sources_for_flight_historical_data/)
-- [adsb.lol api](https://api.adsb.lol/docs) (to get live data for the interactive stage)
+- Size:
+To be continued
+### Regions to filter
+- The \"region filter files\" are all manually generated json files, described in the following format:
+```json
+[
+    {GPS coordinate 1},
+    {GPS coordinate 2},
+    {GPS coordinate 3},
+    ...,
+    {GPS coordinate 1},
+]
+```
+Each GPS coordinate is in DMS (Degrees, Minutes, Seconds) format.
+In  ```filter.py```, it will fetch those ADS-B signals with their GPS locations in the polygon surrounded by the above region filter file.
+We made two region filter files:
+1. ```./data./filter_regions./Taiwan_ADIZ.json```:
+    - The exact GPS coordinates of Taiwan ADIZ (Air Defense Identification Zone) is described in *Part 2 - ENR 5.2.3 ADIZ*, provided by [Taiwan eAIP](https://ais.caa.gov.tw/eaip/AIRAC%20AIP%20AMDT%2002-25_2025_04_17/index.html).
+    - Here is the plotted polygon:
+    ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/Taiwan_ADIZ.jpg?raw=true)
+    - This picture is from [wikipedia](https://en.wikipedia.org/wiki/Air_Defense_Identification_Zone_(Taiwan)), ADIZs in East Asia:
+    ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg?raw=true)
+2. ```./data./fliter_regions./Taiwan_manual_edges.json```
+    - We use [google map](https://www.google.com.tw/maps/) tp plot the Taiwan main Island roughly by the following GPS coordinates:
+        - [台灣最北點](https://maps.app.goo.gl/trQLW1bgKLgX93AL9) (25°17'58.7"N 121°32'13.1"E)
+        - [中華民國 領海基點](https://maps.app.goo.gl/y7jgJ5NkMmea9i1AA) (25°17'26.6"N 121°30'37.7"E)
+        - [沙崙湖](https://maps.app.goo.gl/ipTihKnHkPq4sJpD7) (25°14'56.8"N 121°27'16.9"E)
+        - [台北港貨櫃碼頭股份有限公司](https://maps.app.goo.gl/6TvEjkNbNKBtA71F9) (25°10'04.6"N 121°23'25.5"E)
+        - [竹圍漁港北堤](https://maps.app.goo.gl/mD5d18n5VXB7PmaD9) (25°07'17.0"N, 121°14'29.4"E)
+        - [觀音大堀溪北岸](https://maps.app.goo.gl/ifha5pf98GAYSDLW6) (25°03'49.6"N 121°05'57.9"E)
+        - [外傘頂洲](https://maps.app.goo.gl/RREqbQtUCU4S8Kx58) (23°28'27.5"N 120°04'06.7"E)
+        - [布袋北堤](https://maps.app.goo.gl/cY5wBbxcqWXTWa3d6) (23°23'03.7"N 120°07'54.1"E)
+        - [台灣最西點-國聖港燈塔](https://maps.app.goo.gl/euwYMfqghc3qLsRAA) (23°06'02.6"N 120°02'09.6"E)
+        - [曾文溪口月牙彎道](https://maps.app.goo.gl/c5yPx3G1DMHDkLnQ9) (23°03'11.3"N 120°03'15.1"E)
+        - [黃金海岸](https://maps.app.goo.gl/hBF2PMC3M4vKTcJ39) (22°55'53.1"N 120°10'34.9"E)
+        - [海蝕洞](https://maps.app.goo.gl/WsPMYcwrJvATXu1y8) (22°39'03.0"N 120°15'01.7"E)
+        - [紅毛港南星燈杆](https://maps.app.goo.gl/oZwHi4ZaEWWnwaA78) (22°32'37.8"N 120°17'11.4"E)
+        - [加祿防波堤彩繪牆](https://maps.app.goo.gl/xN1JU7bYHM87tssU7) (22°19'43.8"N 120°37'16.7"E)
+        - [北勢鼻](https://maps.app.goo.gl/bqnuCZQYSLJdXo818) (21°56'05.0"N 120°42'46.6"E)
+        - [龍蝦堀](https://maps.app.goo.gl/DZW9oSNBrVVnHZZH8) (21°55'13.1"N 120°43'30.1"E)
+        - [雷公石](https://maps.app.goo.gl/SyJcrtPHx91uB6eV9) (21°55'14.5"N 120°44'21.2"E)
+        - [南灣遊憩區](https://maps.app.goo.gl/5dHyytPvTBm4mobL8) (21°57'34.8"N 120°45'45.9"E)
+        - [臺灣最南點](https://maps.app.goo.gl/5Lp7YSjpVMeuN1868) (21°53'51.9"N 120°51'30.1"E)
+        - [興海灣沙灘](https://maps.app.goo.gl/8puKnqc8hT9tKWk88) (21°58'41.4"N 120°50'40.1"E)
+        - [佳樂水漁村公園](https://maps.app.goo.gl/VGaaVYs6aiNboe8u7) (21°59'20.5"N 120°50'48.5"E)
+        - [佳樂水風景區 售票處](https://maps.app.goo.gl/zG6yArje9jeRhpFa6) (21°59'40.2"N 120°51'50.4"E)
+        - [蟾蜍石](https://maps.app.goo.gl/RBrLQVfJpWVacuYJ6) (22°00'04.7"N 120°52'33.2"E)
+        - [出風鼻](https://maps.app.goo.gl/zujJisic5zCVF9zZ9) (22°02'03.6"N 120°54'00.5"E)
+        - [鼻頭礁](https://maps.app.goo.gl/ZUgDDVrM6TV49Jmg9) (22°06'19.5"N 120°54'05.4"E)
+        - [台東最東點](https://maps.app.goo.gl/Dba9725eJT4iyZju6) (23°07'36.4"N 121°25'26.5"E)
+        - [烏石鼻](https://maps.app.goo.gl/zk6csHfiksBsyaXn8) (24°28'53.8"N 121°51'31.1"E)
+        - [黑礁坪](https://maps.app.goo.gl/6g1WTaAR9dZeYgYVA) (24°36'13.7"N 121°53'13.1"E)
+        - [第二機動巡邏站(合興)](https://maps.app.goo.gl/5SL1SRwuvjmsbdRF7) (24°55'02.7"N 121°52'59.1"E)
+        - [台灣最東點](https://maps.app.goo.gl/V3JNAsyLSbGNiZRF6) (25°00'40.7"N 122°00'25.8"E)
+        - [福連里](https://maps.app.goo.gl/SJiMijVJYQ3EQKgm6) (25°00'51.8"N 122°00'17.0"E)
+        - [海廢bar](https://maps.app.goo.gl/354usCaEbjKzoT4h8) (25°01'23.4"N 121°58'56.8"E)
+        - [吃飯看海](https://maps.app.goo.gl/2pEr26FgoJq7abRKA) (25°01'30.2"N 121°58'20.6"E)
+        - [Air Space 福隆海水浴場](https://maps.app.goo.gl/dkyKYTZqa5CNy2Ry8) (25°01'20.0"N 121°56'37.1"E)
+        - [美艷山海角奇岩](https://maps.app.goo.gl/wiQ9hk3UHtP2RSym8) (25°03'47.4"N 121°55'52.7"E)
+        - [阿義海鮮商店（柑仔店內海鮮）](https://maps.app.goo.gl/YdsjaFnmzwmonTLR8) (25°04'59.2"N 121°54'49.6"E)
+        - [龍洞灣岬](https://maps.app.goo.gl/mzd87dLzokVaW4K99) (25°06'14.4"N 121°55'23.9"E)
+        - [鼻頭角燈塔](https://maps.app.goo.gl/3Ydez8vf5vCjU6wp6) (25°07'43.5"N 121°55'24.5"E)
+        - [犀牛望月](https://maps.app.goo.gl/F8L4pgTgGSNwvrik7) (25°09'48.2"N 121°45'55.2"E)
+        - [大義公](https://maps.app.goo.gl/Q74UWiFfWA2WzbfB8) (25°10'29.5"N 121°42'28.4"E)
+        - [步道終點觀景台](https://maps.app.goo.gl/KUzsb8AFoxMCE8Tt9) (25°12'56.0"N 121°41'60.0"E)
+        - [頂寮沙灘](https://maps.app.goo.gl/XZvXvLqtFLajgPZK8) (25°12'37.2"N 121°39'31.7"E)
+        - [神秘海岸](https://maps.app.goo.gl/VKczBJhTfSr4L2vJ7) (25°13'45.2"N 121°39'11.3"E)
+        - [金山區跳石海岸停車場](https://maps.app.goo.gl/3enGPy5953AtnTq69) (25°15'29.7"N 121°38'00.2"E)
+        - [跳石海岸 芋頭產銷](https://maps.app.goo.gl/mBPtH4qXqToHqCpv6) (25°16'04.9"N 121°37'37.5"E)
+        - [草里一號店](https://maps.app.goo.gl/MaWnmypqTKwWUc7F7) (25°16'38.5"N 121°37'01.7"E)
+        - [草里漁港垂釣區](https://maps.app.goo.gl/455KzweFwxhVTMah9) (25°16'56.8"N 121°36'25.0"E)
+        - [核一廠專用港](https://maps.app.goo.gl/sFRX7aY6V4nifWmKA) (25°17'26.3"N 121°35'45.5"E)
+        - [鹿邊咖啡Deer cafe](https://maps.app.goo.gl/2PkKrUGdGA6wHFEBA) (25°17'51.7"N 121°34'24.2"E)
+    - And here is the plotted polygon:
+    ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/Taiwan_manual_edges.jpg?raw=true)
 
-## Data mining: to find the surrounding best GPS coordinates of spotting planes by user's GPS locations
+## Data preprocessing
+### Processes
+1. Checking the aircraft database:
+    This [ADSBEX aircraft database](http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz) is daily-uploaded (at \"Supplementary Information\" in [ADSBEX historical data](https://www.adsbexchange.com/products/historical-data/)).
+2. Download all data in the Enable time range and unzip:
+    - In ```get_data.py``` you can manually set these *ENABLE Parameters*:
+        ```python
+        ENABLES_YEAR = ["2025"] # ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
+        ENABLES_MONTH = ["04"] # ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
+        ```
+    - In this project, we only use the ```readsb-hist``` data in 2025/04/01.
+        Note that in this sample historical data, only the first day is available. So please **don\'t** modify ```ENABLES_DATE```.
+    - According to the official description of ads-b exchange historical data of readsb-hist:
+        > "Snapshots of all global airborne traffic are archived every 5 seconds starting April 2020, (prior data is available every 60 secs from starting in July 2016)."
+    - However the accurate sampling rate by time is:
+        - Sampling rate = 60 seconds: 2016 July ~ 2020 March
+        - Sampling rate = 5 seconds: 2020 April ~ Now
+    - The downloaded data will be stored at ```./data./historical_adsbex_sample./readsb-hist``` with the formatted name: ```yyyy_mm_dd_hhmmss.json```, e.g. ```2025_04_01_003655```.
+    - Those ```.json.zip``` data will auto-unzipped into ```.json``` format.
+3. Filtering:
+    - The preprocessor will let user choose a region filter file.
+    - If choose ```No filter``` then will filter the aircrafts in file that must have the following features:
+        ```
+        "hex"
+        "flight"
+        "t"
+        "alt_baro"
+        "alt_geom"
+        "gs"
+        "track"
+        "geom_rate"
+        "squawk"
+        "nav_qnh"
+        "nav_altitude_mcp"
+        "nav_altitude_fms"
+        "nav_heading"
+        "lat"
+        "lon"
+        "nic"
+        "rc"
+        "track"
+        "nic_baro"
+        "nac_p"
+        "nac_v"
+        "sil"
+        "sil_type"
+        ```
+    - If choose a region filter file, then will generate two files, the first one is the above global aircrafts with those features, and the second one is the aircrafts not only with the above features, but also with GPS coordinate in the polygon plotted by the choose region filter flie.
+4. Store:
+    - The unfiltered (and filtered) data will stored at ```./data./preprocessed``` with name ```readsb-hist_merged.csv``` (no filter region file was choose) and ```readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with region filter file).
+    - Here is some example data:
+        ```csv
+        year,month,date,hour,minute,second,hex,flight,t,alt_baro,alt_geom,gs,track,geom_rate,squawk,nav_qnh,nav_altitude_mcp,nav_altitude_fms,nav_heading,lat,lon,nic,rc,track,nic_baro,nac_p,nac_v,sil,sil_type
+        ...
+        2025,04,01,01,04,25,780e96,CHH7981,B738,24525,25775,437.4,67.13,-1088,3127,1013.6,20992,4000,14.77,23.561142,120.194855,8,186,67.13,1,9,1,3,perhour
+        2025,04,01,01,04,30,780e96,CHH7981,B738,24400,25650,431.4,61.47,-1088,3127,1013.6,20992,4000,14.77,23.56604,120.20518,8,186,61.47,1,9,1,3,perhour
+        2025,04,01,01,04,35,780e96,CHH7981,B738,24325,25550,424.4,56.05,-1216,3127,1013.6,20992,4000,14.77,23.570389,120.212657,8,186,56.05,1,9,1,3,perhour
+        2025,04,01,01,04,35,71be42,KAL173,B748,38000,39900,412.5,228.93,0,7161,1013.6,38016,38000,241.17,25.262596,121.630261,8,186,228.93,1,9,1,3,perhour
+        2025,04,01,01,04,40,780e96,CHH7981,B738,24175,25425,419.7,52.07,-1472,3127,1013.6,20992,4000,14.77,23.577777,120.223078,8,186,52.07,1,9,1,3,perhour
+        2025,04,01,01,04,40,71be42,KAL173,B748,38000,39900,412.5,228.93,0,7161,1013.6,38016,38000,241.17,25.256405,121.622487,8,186,228.93,1,9,1,3,perhour
+        2025,04,01,01,04,45,780e96,CHH7981,B738,24050,25275,411.6,45.98,-1472,3127,1013.6,20992,4000,14.77,23.584109,120.230333,8,186,45.98,1,9,1,3,perhour
+        2025,04,01,01,04,45,71be42,KAL173,B748,38000,39900,413.3,229.02,0,7161,1013.6,38016,38000,241.17,25.25012,121.614558,8,186,229.02,1,9,1,3,perhour
+        2025,04,01,01,04,50,780e96,CHH7981,B738,23925,25150,406.4,42.21,-1472,3127,1013.6,20992,4000,14.77,23.590942,120.23702,8,186,42.21,1,9,1,3,perhour
+        2025,04,01,01,04,50,71be42,KAL173,B748,38000,39900,413.9,228.92,0,7161,1013.6,38016,38000,241.17,25.243696,121.606474,8,186,228.92,1,9,1,3,perhour
+        2025,04,01,01,04,55,780e96,CHH7981,B738,23800,25000,399.1,37.87,-1472,3127,1013.6,20992,4000,14.77,23.597935,120.242874,8,186,37.87,1,9,1,3,perhour
+        ...
+        ```
+### Run
+```
+python preprocessor.py
+```
+
+## Data mining methods
+### Goal
+To find the surrounding best GPS coordinates with height of spotting planes by user's GPS locations.
+### Course requirements
+- Must use [weka](https://www.weka.io/).
 ### Tools
-- weka:
-Will use [**optics_dbScan** package](https://weka.sourceforge.io/packageMetaData/optics_dbScan/index.html) .
+- [weka ```optics_dbScan``` package](https://weka.sourceforge.io/packageMetaData/optics_dbScan/index.html)
 - Python:
 To be continued
-### Methods
-#### Recommend methods by GhatGPT:
+### Recommend methods by GhatGPT:
+- Sum up:
+    | 方法名稱 | 特點 | 適合用途 |
+    | ------- | ---- | ------- |
+    | DBSCAN | 不需指定群數，找密集點 | 發現空中熱點/通道 |
+    | Grid頻率分析 | 快速統計 + 熱區標記 | 建立初步地面觀察點候選 |
+    | 時間加權分析 | 考慮航班時間變化 | 動態/即時熱點推薦 |
+    | 半球反推分析 | 精準匹配人眼可視區域 | 面點最佳化推薦 |
+- Details:
     - DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
         - [Tutorial 1](https://tomohiroliu22.medium.com/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98%E7%B3%BB%E5%88%97-84-%E5%9F%BA%E6%96%BC%E5%AF%86%E5%BA%A6%E4%B9%8B%E5%90%AB%E5%99%AA%E7%A9%BA%E9%96%93%E8%81%9A%E9%A1%9E%E6%B3%95-density-based-spatial-clustering-of-applications-with-noise-63a88275d678)
         - [Tutorial 2](https://tomohiroliu22.medium.com/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98%E7%B3%BB%E5%88%97-87-%E5%9F%BA%E6%96%BC%E5%AF%86%E5%BA%A6%E4%B9%8B%E5%90%AB%E5%99%AA%E7%A9%BA%E9%96%93%E9%9A%8E%E5%B1%A4%E8%81%9A%E9%A1%9E%E6%B3%95-hierarchical-density-based-spatial-clustering-of-applications-with-af6e9933bba3)
@@ -144,16 +253,10 @@ To be continued
         實現方向：
         - 這是你描述中已經設想的核心方法，可搭配以上聚類或統計方式交叉驗證。
         ```
-- Sum up
-    | 方法名稱 | 特點 | 適合用途 |
-    | ------- | ---- | ------- |
-    | DBSCAN | 不需指定群數，找密集點 | 發現空中熱點/通道 |
-    | Grid頻率分析 | 快速統計 + 熱區標記 | 建立初步地面觀察點候選 |
-    | 時間加權分析 | 考慮航班時間變化 | 動態/即時熱點推薦 |
-    | 半球反推分析 | 精準匹配人眼可視區域 | 面點最佳化推薦 |
 
-## Generative AI application: to generate the remaining flight routes by the ADS-B signal of chose flight
-To be coutinued
+## Generative-AI application
+### Goal
+To generate the remaining flight routes by the ADS-B signal of chose flight.
 ### Model
 To be coutinued
 ### Training
@@ -162,36 +265,6 @@ To be coutinued
 To be coutinued
 ### Test with the current flying planes
 To be coutinued
-
-## Data preprocessing
-### Before running
-- Set the specific data to download by time: you **SHOULD** manually add ```ENABLES_YEAR``` and ```ENABLES_MONTH``` at ```./get_data.py```, by my default this code will only download 2020/03/01, cuz too big. Just straightly add the time into these two lists.
-- According to the [official description of ads-b exchange historical data](https://www.adsbexchange.com/products/historical-data/) - **readsb-hist**: **"Snapshots of all global airborne traffic are archived every 5 seconds starting April 2020, (prior data is available every 60 secs from starting in July 2016)."** (The official description says that "... every 5 seconds starting April 2020 ...", but the actucal data shows that it starts from **april**).
-- The free historical data only provides **the first day of a month**, so don't modify ```ENABLES_DAY```.
-### Install packages by pip
-```
-python -m pip install -r requirements.txt
-```
-### Run
-```
-python preprocessor.py
-```
-### readsb-hist preprocessing
-0. Data range:
-2025/04/01 00:00:00 ~ 2025/04/01 08/08/20, sample rate = 5 seconds. Due to the massive data size (27.1 GB) we only use these data.
-1. Fliter 1:
-We fliter the flight that must have the following features:
-```hex```, ```flight```, ```t```, ```alt_baro```, ```alt_geom```, ```gs```, ```track```, ```geom_rate```, ```squawk```, ```nav_qnh```,```nav_altitude_mcp```, ```nav_altitude_fms```, ```nav_heading```, ```lat```, ```lon```, ```nic```, ```rc```, ```track```, ```nic_baro```, ```nac_p```, ```nac_v```, ```sil```, and ```sil_type```.
-2. Fliter 2:
-We use ```./data./fliter_regions./Taiwan_manual_edges.json```, draw a range by GPS coordinates, and fliter the flight in this zone.
-3. Final format:
-We store as a ```.csv``` file, with the following headers:
-```year,month,date,hour,minute,second,hex,flight,t,alt_baro,alt_geom,gs,track,geom_rate,squawk,nav_qnh,nav_altitude_mcp,nav_altitude_fms,nav_heading,lat,lon,nic,rc,track,nic_baro,nac_p,nac_v,sil,sil_type```
-See ```./data./filtered./filtered_by_Taiwan_manual_edges.csv``` .
-It has 6569 columns, each column is identified by ICAO 24-bit hex code with a specific time.
-
-### traces preprocessing
-To be continued, still have lots of bugs
 
 ## Discord bot
 - To be continued
@@ -205,16 +278,7 @@ To be continued, still have lots of bugs
 ### Before running
 -  Used scripts: ```./adsb_lol_api.py```, ```./gps.py```, ```./main.py```
 - Documentations please read [this official webpage](https://api.adsb.lol/docs)
-- Remember should install ```./requirements.txt```
 ### Run
 ```
 python main.py
 ```
-
-## Current progress
-- [x] Set a specific filtering range: Taiwan ADIZ, at ```./data./Taiwan./Taiwan_ADIZ.json``` (manually create)
-- [x] Get aircraft type data and readsb-hist data, store to  ```./data./aicraft``` and ```./data./historical_adsbex_sample``` (auto-created)
-- [x] Filter by ```./data./fliter_regions./Taiwan_manual_edges.json``` to ```./data./filtered./filtered_by_Taiwan_manual_edges.csv```
-
-## Structure
-- To be continued

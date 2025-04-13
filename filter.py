@@ -44,16 +44,19 @@ def in_region(lon:float, lat:float, polygon:Polygon):
     point = Point(lon, lat)
     return polygon.contains(point)
 
-def filter_readsb_hist(region:str):
+def filter_readsb_hist(region:str = None):
     # check output path
     data_path = "./data./historical_adsbex_sample./readsb-hist"
-    file_path = f"./data./filtered./filtered_by_{region[:-5]}.csv"
-    os.makedirs("./data./filtered", exist_ok=True)
+    os.makedirs("./data./preprocessed", exist_ok = True)
 
     # filter
-    polygon = make_boundary(region)
+    if region:
+        polygon = make_boundary(region)
+    else:
+        polygon = None
 
     all_rows = []
+    in_region_rows = []
     for snapshot_json in tqdm(os.listdir(data_path), desc = "Filtering readsb-hist", unit = " snapshots"):
         # file of a specific time
         json_file = json.load(open(f"{data_path}./{snapshot_json}", "r", encoding="utf-8"))
@@ -73,23 +76,35 @@ def filter_readsb_hist(region:str):
 
         # collect valid aircraft rows
         for aircraft in json_file["aircraft"]:
-            if all(feature in aircraft for feature in feature_headers) and in_region(aircraft["lon"], aircraft["lat"], polygon):
-                row = [year, month, date, hour, minute, second] + [aircraft[feature] for feature in feature_headers]
+            if all(feature in aircraft for feature in feature_headers):
+                row = [year, month, date, hour, minute, second] + \
+                    [aircraft[feature].strip() if isinstance(aircraft[feature], str) else aircraft[feature] \
+                     for feature in feature_headers]
                 all_rows.append(row)
+                if polygon and in_region(aircraft["lon"], aircraft["lat"], polygon):
+                    in_region_rows.append(row)
 
     # make DataFrame once
     if all_rows:
-        df = pd.DataFrame(all_rows, columns=full_headers)
-        df.to_csv(file_path, index = False)
+        df = pd.DataFrame(all_rows, columns = full_headers)
+        df.to_csv(f"./data./preprocessed./readsb-hist_merged.csv", index = False)
+        if in_region_rows:
+            df = pd.DataFrame(in_region_rows, columns = full_headers)
+            df.to_csv(f"./data./preprocessed./readsb-hist_filtered_by_{region[:-5]}.csv", index = False)
     else:
         print("No data matched the filter. File not saved.")
 
     # log
-    with open(f"./logs./readsb-hist_filtered_by_{region[:-5]}.txt", "a", encoding="utf-8") as f:
+    with open(f"./logs./readsb-hist.txt", "a", encoding = "utf-8") as f:
         f.write(f"> Update at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write(f"Total number of aircrafts: {len(all_rows)}\n\n")
+        f.write(f"Total number of aircrafts: {len(all_rows)}\n")
+        if in_region_rows:
+            f.write(f"Number of aircrafts in {region[:-5]}: {len(in_region_rows)}\n")
+        else:
+            f.write("\n")
 
 def reduce_traces(hires:bool = False):
+    return
     res = "hires-traces" if hires else "traces"
     # check output path
     data_path = f"./data./historical_adsbex_sample./{res}"
@@ -97,38 +112,27 @@ def reduce_traces(hires:bool = False):
     #if os.path.exists(file_path):
     #    shutil.rmtree(file_path)
     os.makedirs("./data./filtered", exist_ok = True)
-    """
-    # calculate threshold of the number of traces
-    # the threshold is 15% of the average (manually set)
-    factor = 0.05
-    has_data_counts = []
-    for aircraft in tqdm(os.listdir(data_path), desc = "Calculating threshold", unit = " aircrafts"):
+
+    # calculate max the number of traces
+    trace_count = []
+    for aircraft in tqdm(os.listdir(data_path), desc = "Calculating num of max tracees", unit = " aircrafts"):
         jf = json.load(open(f"{data_path}./{aircraft}", "r", encoding = "utf-8"))
-        i = 0
-        for trace in jf["trace"]:
-            if trace[8]:
-                i += 1
-        has_data_counts.append(i)
-    threshold = int(round(round(sum(has_data_counts) / len(has_data_counts), 1) * factor, 1))
-    """
-    threshold = 18
-    
+        trace_count.append(len(jf["trace"]))
+    max_trace_count = max(trace_count) # use this for padding null traces
+
     # check aircraft
     k = 0
     for aircraft in tqdm(os.listdir(data_path), desc = "Reducing traces", unit = " aircrafts"):
         # file of a specific time
         json_file = json.load(open(f"{data_path}./{aircraft}", "r", encoding = "utf-8"))
-
-        # first filter: if has key "noRegData" and its value is True
-        if "noRegData" in json_file.keys() and json_file["noRegData"] == True:
-            continue
         
         # features
         year, month, date, _ = aircraft[:-5].split("_")
         hex = json_file["icao"]
         timestamp = json_file["timestamp"] # start time: unix timestamp in seconds since epoch (1970)
-        before_features = {}
-        i = 0
+        timeline = {}
+
+        print(aircraft)
 
         for trace in json_file["trace"]:
             # index meanings: see "Trace File Fields" at https://www.adsbexchange.com/version-2-api-wip/
@@ -145,61 +149,37 @@ def reduce_traces(hires:bool = False):
             #    (flags & 8 > 0): altitude is geometric and not barometric
             # 7: vertical rate in fpm or null
             # 8: aircraft object with extra details or null (see aircraft.json documentation,
-            #    note that not all fields are present as lat and lon for example arlready in the values above)
+            #    note that not all fields are present as lat and lon for example already in the values above)
             # -- the following fields only in files generated 2022 and later: --
             # 9: type / source of this position or null
             # 10: geometric altitude or null
             # 11: geometric vertical rate or null
             # 12: indicated airspeed or null
             # 13: roll angle or null
-
-            # second filter: the usable traces
-            print(trace)
-            k += 1
-            if k == 10:
-                exit()
-            continue
-            if not trace[0] or not trace[1] or not trace[2] or not trace[4] or not trace[5] or not trace[6] or not trace[7] or not trace[8]:
-                continue
             
-            # third filter: if these keys not in trace[8]
-            requirements =  ["type", "alt_geom", "squawk", "baro_rate", "nav_qnh", "nav_altitude_mcp", "nic", "rc", "nic_baro", "nac_p", "nac_v", "gva"]
-            if not all(key in trace[8].keys() for key in requirements):
-                continue
+            # padding null traces
+            if not trace[8]:
+                pass
+            else:
+                # filter: if these keys not in trace[8] or is null
+                required_keys = ["alt_geom", "gs", "track"]
+                if not trace[8][0] or not trace[8][1] or not trace[8][2]: # time interval by second, latitude, longitude
+                    continue
+
+            
             
             # build feature table by time
-            before_features[str(trace[0])] = {
+            # timeline[float]: {lat, lon, alt_geom, gs, track}
+            timeline[str(trace[0])] = {
                 "lat": trace[1],
                 "lon": trace[2],
-                "alt_geom": trace[8]["alt_geom"],
+                "alt_ft": trace[3],
+                "alt_geom": trace[8]["alt_geom"] if trace[8] else 0,
                 "gs": trace[4],
-                "track": trace[5],
-                "flags": trace[6],
-                "v_rate": trace[7],
-                "squawk": trace[8]["squawk"],
-                "baro_rate": trace[8]["baro_rate"],
-                "nav_qnh": trace[8]["nav_qnh"],
-                "nav_altitude_mcp": trace[8]["nav_altitude_mcp"],
-                "nic": trace[8]["nic"],
-                "rc": trace[8]["rc"],
-                "nic_baro": trace[8]["nic_baro"],
-                "nac_p": trace[8]["nac_p"],
-                "nac_v": trace[8]["nac_v"],
-                "gva": trace[8]["gva"]
+                "track": trace[5]
             }
-        
-        # fourth filter: if the number of trace features is less than threshold
-        print(aircraft, len(before_features))
-        k += 1
-        if k == 10:
-            exit()
-        #if len(before_features) < threshold:
-        #    continue
 
-        # first reduce: get the traces evenly by threshold in before_features
-        index_of_usable_traces = list(before_features.keys())[::threshold]
-        print(index_of_usable_traces)
-
+        print(timeline)
 # test
 if __name__ == "__main__":
     #polygon = make_boundary("Taiwan_ADIZ.json")

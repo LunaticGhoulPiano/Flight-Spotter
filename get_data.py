@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 # data description at: https://www.adsbexchange.com/products/historical-data/
 ADSB_EX_HISTORICAL_DATA_URL = "https://samples.adsbexchange.com"
 # set data you want to download here
-ENABLES_DATA = ["readsb-hist", "traces"] #, "hires-traces", "acas", "operations"
+ENABLES_DATA = ["readsb-hist"] #, "traces", "hires-traces", "acas", "operations"
 # set time you want to download here
 ENABLES_YEAR = ["2025"] # ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025"]
 ENABLES_MONTH = ["04"] # ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"]
@@ -106,6 +106,8 @@ def update_basic_aircraft_database(path:str):
                     d[cur_feature] = ff.strip()
                 cur_feature = ""
         formatted.append(d)
+    # use icao as key
+    formatted = {d["icao"]: {k: v for k, v in d.items() if k != "icao"} for d in formatted}
     with open(f"{path}./basic-ac-db.json", "w", encoding = "utf-8") as f:
         json.dump(formatted, f, indent = 4, ensure_ascii = False)
 
