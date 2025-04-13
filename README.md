@@ -61,9 +61,9 @@ Flight-Spotter
 │ │     ├──...
 │ │     └──2025_04_01_120000.json
 │ └──preprocessed (auto-generated, based on the user's choose)
-│ ├──readsb-hist_merged.csv
-│ ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
-│ └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    ├──readsb-hist_merged.csv
+│    ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
+│    └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
 └──filter_region_maps (auto-generated, based on the user's choose)
 │ ├──Taiwan_ADIZ.html
 │ └──Taiwam_manual_edges.html
