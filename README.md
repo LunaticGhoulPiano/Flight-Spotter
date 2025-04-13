@@ -1,6 +1,12 @@
 # Flight-Spotter
 ## Overview
-To be continued
+This is the Midterm & Final project for \"高等資料探勘\" (Advanced Data Mining) and \"生成式AI基礎與應用\" (The Fundementals and Applications of Generative-AI), which I took at senior second semester (2025/02/01 ~ 2025/07/31, aka 113-2), at 中原大學 (Chung Yuan Christian University, CYCU), by the professor Hsiu-Min, Chuang (莊秀敏 教授).
+We split this project into the three (or four) stages:
+1. Data preprocessing: fetch and filter with custom conditions from [ADS-B Exchange historical data](https://www.adsbexchange.com/products/historical-data/).
+2. Analyze and Build model:
+    1. About Data mining: analyze the ADS-B signals which above Taiwan Main Island.
+    2. About GAI: train a model for generating future flight routes simulation.
+3. Interactive system: react with user's commands.
 
 ## Current progress
 - [x] Set a specific filtering range: Taiwan manual edges, at ```./data./filter_regions./Taiwan_manual_edges.json``` (manually create)
@@ -105,7 +111,7 @@ We made two region filter files:
     - This picture is from [wikipedia](https://en.wikipedia.org/wiki/Air_Defense_Identification_Zone_(Taiwan)), ADIZs in East Asia:
     ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg?raw=true)
 2. ```./data./fliter_regions./Taiwan_manual_edges.json```
-    - We use [google map](https://www.google.com.tw/maps/) tp plot the Taiwan main Island roughly by the following GPS coordinates:
+    - We use [google map](https://www.google.com.tw/maps/) to plot the Taiwan main Island roughly by the following GPS coordinates:
         - [台灣最北點](https://maps.app.goo.gl/trQLW1bgKLgX93AL9) (25°17'58.7"N 121°32'13.1"E)
         - [中華民國 領海基點](https://maps.app.goo.gl/y7jgJ5NkMmea9i1AA) (25°17'26.6"N 121°30'37.7"E)
         - [沙崙湖](https://maps.app.goo.gl/ipTihKnHkPq4sJpD7) (25°14'56.8"N 121°27'16.9"E)
@@ -158,7 +164,7 @@ We made two region filter files:
     - And here is the plotted polygon:
     ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/Taiwan_manual_edges.jpg?raw=true)
 
-## Data preprocessing
+## Stage 1: Data preprocessing
 ### Processes
 1. Checking the aircraft database:
     This [ADSBEX aircraft database](http://downloads.adsbexchange.com/downloads/basic-ac-db.json.gz) is daily-uploaded (at \"Supplementary Information\" in [ADSBEX historical data](https://www.adsbexchange.com/products/historical-data/)).
@@ -231,7 +237,7 @@ We made two region filter files:
 python preprocessor.py
 ```
 
-## Data mining methods
+## Stage 2.1: Data mining methods
 ### Goal
 To find the surrounding best GPS coordinates with height of spotting planes by user's GPS locations.
 ### Course requirements
@@ -306,7 +312,7 @@ To be continued
         - 這是你描述中已經設想的核心方法，可搭配以上聚類或統計方式交叉驗證。
         ```
 
-## Generative-AI application
+## Stage 2.2: Generative-AI application
 ### Goal
 To generate the remaining flight routes by the ADS-B signal of chose flight.
 ### Model
@@ -318,7 +324,7 @@ To be coutinued
 ### Test with the current flying planes
 To be coutinued
 
-## Discord bot
+## Stage 3: Discord bot - Interactive system
 - To be continued
 -  Used scripts and folders: ```./bot.py```
 - If you want to build you own bot:
