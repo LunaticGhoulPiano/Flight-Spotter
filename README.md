@@ -236,21 +236,21 @@ We made two region filter files:
             3. Geometric altitude (alt_geom) $h_{ft}$，unit = feet
         - Encode:
             1. Degree to Radian:
-            $$
-            \phi_{\text{rad}} = \phi \cdot \frac{\pi}{180}, \quad \lambda_{\text{rad}} = \lambda \cdot \frac{\pi}{180}
-            $$
+                $$
+                    \phi_{\text{rad}} = \phi \cdot \frac{\pi}{180}, \quad \lambda_{\text{rad}} = \lambda \cdot \frac{\pi}{180}
+                $$
             2. Feet to Meter:
-            $$
-            h_{\text{m}} = h_{ft} \cdot 0.3048
-            $$
+                $$
+                    h_{\text{m}} = h_{ft} \cdot 0.3048
+                $$
             3. ECEF convertion:
-            $$
-            \begin{aligned}
-            x &= (ER + h_{\text{m}}) \cdot \cos(\phi_{\text{rad}}) \cdot \cos(\lambda_{\text{rad}}) \\
-            y &= (ER + h_{\text{m}}) \cdot \cos(\phi_{\text{rad}}) \cdot \sin(\lambda_{\text{rad}}) \\
-            z &= (ER + h_{\text{m}}) \cdot \sin(\phi_{\text{rad}})
-            \end{aligned}
-            $$
+                $$
+                    \begin{aligned}
+                    x &= (ER + h_{\text{m}}) \cdot \cos(\phi_{\text{rad}}) \cdot \cos(\lambda_{\text{rad}}) \\
+                    y &= (ER + h_{\text{m}}) \cdot \cos(\phi_{\text{rad}}) \cdot \sin(\lambda_{\text{rad}}) \\
+                    z &= (ER + h_{\text{m}}) \cdot \sin(\phi_{\text{rad}})
+                    \end{aligned}
+                $$
 5. Store:
     - The unfiltered (and filtered) data will stored at ```./data./preprocessed``` with name ```readsb-hist_merged.csv``` (no filter region file was choose) and ```readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with region filter file).
     - For instance, the first 5 rows of ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv``` :
