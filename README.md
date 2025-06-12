@@ -42,13 +42,17 @@ Flight-Spotter
 ├──main.py (currently unused)
 ├──model.py (currently unused)
 ├──get_data.py
-├──filter.py
+├──ecef.py
+├──filter_and_encode.py
 ├──preprocessor.py
 ├──pics
 │ ├──flow.png
 │ ├──JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg
 │ ├──Taiwan_SDIZ.jpg
-│ └──Taiwan_manual_edges.jpg
+│ ├──Taiwan_manual_edges.jpg
+│ ├──degree2radian.png
+│ ├──feet2meter.png
+│ └──ecef.png
 ├──data
 │ ├──aircraft (auto-generated)
 │ │  └──basic-ac-db.json
@@ -236,11 +240,11 @@ We made two region filter files:
             3. Geometric altitude (alt_geom) $h_{ft}$，unit = feet
         - Encode:
             1. Degree to Radian:
-                ![equation](./pics/degree2radian.png)
+            ![equation](./pics/degree2radian.jpg)
             2. Feet to Meter:
-                ![equation](./pics/feet2meter.png)
+            ![equation](./pics/feet2meter.jpg)
             3. ECEF convertion:
-                ![equation](./pics/ecef_conversion.png)
+            ![equation](./pics/ecef_conversion.jpg)
 5. Store:
     - The unfiltered (and filtered) data will stored at ```./data./preprocessed``` with name ```readsb-hist_merged.csv``` (no filter region file was choose) and ```readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with region filter file).
     - For instance, the first 5 rows of ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv``` :
