@@ -1,5 +1,5 @@
 import os
-import filter
+import filter_and_encode
 import get_data
 
 def preprocess():
@@ -27,8 +27,8 @@ def preprocess():
             print("Invalid input, try again.")
         except KeyError:
             print("No such file, try again.")
-    
-    filter.filter_readsb_hist(region)
+    filter_all = input("Do you want to (re) build all data? (y/n): ").lower() == "y"
+    filter_and_encode.filter_readsb_hist(filter_all, region)
 
 if __name__ == "__main__":
     preprocess()

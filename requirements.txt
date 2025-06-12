@@ -6,3 +6,4 @@ shapely
 winsdk
 pandas
 discord.py
+geohash2
