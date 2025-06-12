@@ -215,24 +215,52 @@ We made two region filter files:
         ```
     - The meanings of above features see [ADS-B Exchange Version 2 API Fields Documentations](https://www.adsbexchange.com/version-2-api-wip/) and [wiedehopf's readsb README-json.md](https://github.com/wiedehopf/readsb/blob/dev/README-json.md).
     - If choose a region filter file, then will generate two files, the first one is the above global aircrafts with those features, and the second one is the aircrafts not only with the above features, but also with GPS coordinate in the polygon plotted by the choose region filter flie.
-4. Store:
+4. Encoding:
+    - The encoded features are:
+        ```
+        "geohash"
+        "ecef_x"
+        "ecef_y"
+        "ecef_z"
+        ```
+    1. [Geohash](https://en.wikipedia.org/wiki/Geohash)
+        - Using [geohash2](https://pypi.org/project/geohash2/) (precision = 12)
+    2. [ECEF](https://en.wikipedia.org/wiki/Earth-centered,_Earth-fixed_coordinate_system) (Earth-Centered, Earth-Fixed)
+        - Encode and Decode implementation: [ecef.py](./ecef.py)
+        - Crucial coefficients:
+            - Radius of Earth $ER$ = 6371000 meters
+            - 1 feet (ft) = 0.3047 meter (m)
+        - Encode inputs:
+            1. Latitude (lat) $\phi$, unit = degree
+            2. Longitude (lon) $\lambda$, unit = degree
+            3. Geometric altitude (alt_geom) $h_{ft}$，unit = feet
+        - Encode:
+            1. Degree to Radian:
+            $$
+            \phi_{\text{rad}} = \phi \cdot \frac{\pi}{180}, \quad \lambda_{\text{rad}} = \lambda \cdot \frac{\pi}{180}
+            $$
+            2. Feet to Meter:
+            $$
+            h_{\text{m}} = h_{ft} \cdot 0.3048
+            $$
+            3. ECEF convertion:
+            $$
+            \begin{aligned}
+            x &= (ER + h_{\text{m}}) \cdot \cos(\phi_{\text{rad}}) \cdot \cos(\lambda_{\text{rad}}) \\
+            y &= (ER + h_{\text{m}}) \cdot \cos(\phi_{\text{rad}}) \cdot \sin(\lambda_{\text{rad}}) \\
+            z &= (ER + h_{\text{m}}) \cdot \sin(\phi_{\text{rad}})
+            \end{aligned}
+            $$
+5. Store:
     - The unfiltered (and filtered) data will stored at ```./data./preprocessed``` with name ```readsb-hist_merged.csv``` (no filter region file was choose) and ```readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with region filter file).
-    - Here is some example data:
+    - For instance, the first 5 rows of ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv``` :
         ```csv
-        year,month,date,hour,minute,second,hex,flight,t,alt_baro,alt_geom,gs,track,geom_rate,squawk,nav_qnh,nav_altitude_mcp,nav_altitude_fms,nav_heading,lat,lon,nic,rc,track,nic_baro,nac_p,nac_v,sil,sil_type
-        ...
-        2025,04,01,01,04,25,780e96,CHH7981,B738,24525,25775,437.4,67.13,-1088,3127,1013.6,20992,4000,14.77,23.561142,120.194855,8,186,67.13,1,9,1,3,perhour
-        2025,04,01,01,04,30,780e96,CHH7981,B738,24400,25650,431.4,61.47,-1088,3127,1013.6,20992,4000,14.77,23.56604,120.20518,8,186,61.47,1,9,1,3,perhour
-        2025,04,01,01,04,35,780e96,CHH7981,B738,24325,25550,424.4,56.05,-1216,3127,1013.6,20992,4000,14.77,23.570389,120.212657,8,186,56.05,1,9,1,3,perhour
-        2025,04,01,01,04,35,71be42,KAL173,B748,38000,39900,412.5,228.93,0,7161,1013.6,38016,38000,241.17,25.262596,121.630261,8,186,228.93,1,9,1,3,perhour
-        2025,04,01,01,04,40,780e96,CHH7981,B738,24175,25425,419.7,52.07,-1472,3127,1013.6,20992,4000,14.77,23.577777,120.223078,8,186,52.07,1,9,1,3,perhour
-        2025,04,01,01,04,40,71be42,KAL173,B748,38000,39900,412.5,228.93,0,7161,1013.6,38016,38000,241.17,25.256405,121.622487,8,186,228.93,1,9,1,3,perhour
-        2025,04,01,01,04,45,780e96,CHH7981,B738,24050,25275,411.6,45.98,-1472,3127,1013.6,20992,4000,14.77,23.584109,120.230333,8,186,45.98,1,9,1,3,perhour
-        2025,04,01,01,04,45,71be42,KAL173,B748,38000,39900,413.3,229.02,0,7161,1013.6,38016,38000,241.17,25.25012,121.614558,8,186,229.02,1,9,1,3,perhour
-        2025,04,01,01,04,50,780e96,CHH7981,B738,23925,25150,406.4,42.21,-1472,3127,1013.6,20992,4000,14.77,23.590942,120.23702,8,186,42.21,1,9,1,3,perhour
-        2025,04,01,01,04,50,71be42,KAL173,B748,38000,39900,413.9,228.92,0,7161,1013.6,38016,38000,241.17,25.243696,121.606474,8,186,228.92,1,9,1,3,perhour
-        2025,04,01,01,04,55,780e96,CHH7981,B738,23800,25000,399.1,37.87,-1472,3127,1013.6,20992,4000,14.77,23.597935,120.242874,8,186,37.87,1,9,1,3,perhour
-        ...
+        year,month,day,hour,minute,second,hex,flight,t,alt_baro,alt_geom,gs,track,geom_rate,squawk,nav_qnh,nav_altitude_mcp,nav_altitude_fms,nav_heading,lat,lon,nic,rc,nic_baro,nac_p,nac_v,sil,sil_type,geohash,ecef_x,ecef_y,ecef_z
+        2025,4,1,0,2,45,899046,CAL601,B738,1725,1950,169.9,47.39,1184,6264,1019.2,3008,3008,51.33,25.109067,121.26227,8,186,1,10,2,3,perhour,wsqnz6uqztq4,-2994112.9568203683,4931763.774640314,2703739.699255408
+        2025,4,1,0,2,50,899046,CAL601,B738,1825,2075,177.0,47.75,1184,6264,1019.2,3008,3008,51.33,25.111767,121.265535,8,186,1,10,2,3,perhour,wsqnz7qyeu8t,-2994345.7634592457,4931513.723232558,2704027.7461128747
+        2025,4,1,0,2,55,899046,CAL601,B738,1925,2150,184.1,48.08,1120,6264,1019.2,18592,18000,51.33,25.11442,121.268748,8,186,1,10,2,3,perhour,wsqnzecnnehq,-2994568.0573173896,4931256.46817952,2704304.58935681
+        2025,4,1,0,3,0,899046,CAL601,B738,2050,2300,188.5,48.87,1120,6264,1019.2,20000,18000,51.33,25.117865,121.273049,8,186,1,10,2,3,perhour,wsqnzss64v7m,-2994875.2970717354,4930928.05980613,2704670.879634547
+        2025,4,1,0,3,5,899046,CAL601,B738,2100,2325,193.1,50.04,1472,6264,1019.2,20000,20000,51.33,25.11882,121.274261,8,186,1,10,2,3,perhour,wsqnzstpxp7j,-2994959.7803176898,4930832.072570452,2704770.2738511804
         ```
 ### Run
 ```
