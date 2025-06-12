@@ -240,11 +240,11 @@ We made two region filter files:
             3. Geometric altitude (alt_geom) $h_{ft}$，unit = feet
         - Encode:
             1. Degree to Radian:
-            ![equation](./pics/degree2radian.jpg)
+                - ![equation](./pics/degree2radian.jpg)
             2. Feet to Meter:
-            ![equation](./pics/feet2meter.jpg)
+                - ![equation](./pics/feet2meter.jpg)
             3. ECEF convertion:
-            ![equation](./pics/ecef_conversion.jpg)
+                - ![equation](./pics/ecef_conversion.jpg)
 5. Store:
     - The unfiltered (and filtered) data will stored at ```./data./preprocessed``` with name ```readsb-hist_merged.csv``` (no filter region file was choose) and ```readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with region filter file).
     - For instance, the first 5 rows of ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv``` :
