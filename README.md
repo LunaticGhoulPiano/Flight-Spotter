@@ -68,6 +68,11 @@ Flight-Spotter
 │    ├──readsb-hist_merged.csv
 │    ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
 │    └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
+├──weka_results
+│    ├──clusterers.DBSCAN
+│    │  ├──eps06_min20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    │  └──eps007_min7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    └──
 └──filter_region_maps (auto-generated, based on the user's choose)
 │ ├──Taiwan_ADIZ.html
 │ └──Taiwam_manual_edges.html
@@ -264,79 +269,36 @@ python preprocessor.py
 ## Stage 2.1: Data mining methods
 ### Goal
 To find the surrounding best GPS coordinates with height of spotting planes by user's GPS locations.
+So I choose to use clustering.
 ### Course requirements
-- Must use [weka](https://www.weka.io/).
-### Tools
-- [weka ```optics_dbScan``` package](https://weka.sourceforge.io/packageMetaData/optics_dbScan/index.html)
-- Python:
-To be continued
-### Recommend methods by GhatGPT:
-- Sum up:
-    | 方法名稱 | 特點 | 適合用途 |
-    | ------- | ---- | ------- |
-    | DBSCAN | 不需指定群數，找密集點 | 發現空中熱點/通道 |
-    | Grid頻率分析 | 快速統計 + 熱區標記 | 建立初步地面觀察點候選 |
-    | 時間加權分析 | 考慮航班時間變化 | 動態/即時熱點推薦 |
-    | 半球反推分析 | 精準匹配人眼可視區域 | 面點最佳化推薦 |
-- Details:
-    - DBSCAN (Density-Based Spatial Clustering of Applications with Noise)
-        - [Tutorial 1](https://tomohiroliu22.medium.com/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98%E7%B3%BB%E5%88%97-84-%E5%9F%BA%E6%96%BC%E5%AF%86%E5%BA%A6%E4%B9%8B%E5%90%AB%E5%99%AA%E7%A9%BA%E9%96%93%E8%81%9A%E9%A1%9E%E6%B3%95-density-based-spatial-clustering-of-applications-with-noise-63a88275d678)
-        - [Tutorial 2](https://tomohiroliu22.medium.com/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92-%E5%AD%B8%E7%BF%92%E7%AD%86%E8%A8%98%E7%B3%BB%E5%88%97-87-%E5%9F%BA%E6%96%BC%E5%AF%86%E5%BA%A6%E4%B9%8B%E5%90%AB%E5%99%AA%E7%A9%BA%E9%96%93%E9%9A%8E%E5%B1%A4%E8%81%9A%E9%A1%9E%E6%B3%95-hierarchical-density-based-spatial-clustering-of-applications-with-af6e9933bba3)
-        - [Tutorial 3](https://medium.com/ai-academy-taiwan/clustering-method-1-11bcbe0fb12f)
-        ```
-        【基於 GPS 資料點的空間密度聚類 (Spatial Clustering)】
-        方法：
-        - 使用 DBSCAN（Density-Based Spatial Clustering of Applications with Noise），適合空間座標聚類。
-        - 搭配 haversine 距離（球面距離）處理。
-        - 可以將所有在一定高度內的飛機位置（例如 alt_geom ≤ 40000ft ≈ 12192m）集中，然後根據經緯度聚類出「常見的空中航線」或「飛機頻繁出現的區域」。
+- Must choose one data mining tool to use: [Weka](https://www.weka.io/) / [Orange](https://orangedatamining.com/download/) / [KNIME](https://www.knime.com/).
+### Experiments
+- Dataset: ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv```
+- Because the dataset is small, so finetuning minPoint is crucial.
+- Used attributes:
+    ```
+    t
+    gs
+    track
+    squawk
+    nav_heading
+    ecef_x
+    ecef_y
+    ecef_z
+    ```
+### Weka
+- weka.clusterers.DBSCAN
+    - Ideal hyperparameters:
+        - 0.07 <= epsilon <= 0.6
+        - 7 <= minPoints <= 20
+    - Results:
+        - Path: ```./weka_results./clusterers.DBSCAN```
+        - File naming: ```eps{epsilon}_min{minPoints}_{dataset name}.arff```
+            - ex. ```eps007_min7```: epsilon = 0.07, minPoints = 7
+            - ex. ```eps06_min20```: epsilon = 0.6, minPoints = 20
+### Python
 
-        適合場景：
-        - 找出歷史上經常飛過的地點 → 這些地點對應地面點，最有潛力成為觀察點。
-        ```
-    - Grid-and-Heatmap-based hotspot-frequency analysis
-        ```
-        【網格化頻率統計 + 熵 / 熱點分析 (Grid Frequency Analysis)】
-        方法：
-        - 建立一個地理網格（例如 0.01° × 0.01°），每格統計有多少飛機「在半球內經過」。
-        - 可結合高度條件（如在一定高度以下）。
-        - 最後篩選出高頻區塊作為觀察候選地點。
-
-        適合場景：
-        - 預處理階段快速初步找出「熱點」，再進一步結合地面位置（可進一步排除海洋或山區）。
-
-        Python 工具：
-        - 使用 numpy + pandas 建立網格計數。
-        - 可加上 geopandas / folium / matplotlib 做地圖視覺化。
-        ```
-    - Spatiotemporal weighted Analysis with Decay
-        ```
-        【時間維度加權的熱度分析（Temporal Heatmap with decay）】
-        方法：
-        - 對於每一個航班，紀錄其經過地點與時間。
-        - 可考慮時間衰退權重（近期比久遠的權重大）。
-        - 最終得出熱度地圖，再轉換為地面觀測點候選。
-
-        適合場景：
-        - 若想要支援近期趨勢而非歷史均值，例如現在飛機航線因疫情或戰爭改變。
-
-        Python 工具：
-        - pandas 時間處理 + 自訂權重函數
-        ```
-    - Backprojection by skyview
-        ```
-        【視野半球範圍內的反推熱區 (Skyview Backprojection)】
-        方法：
-        - 對每個飛機位置，反推出它能被哪個地面位置看到（使用半球幾何，地面為底）。
-        - 所有飛機都這樣反推，再在地面上統計「被能看到的次數最多的點」。
-
-        適合場景：
-        - 你想要嚴格考慮視野邊界（仰角/可視半徑），而不僅是飛機在哪裡。
-
-        實現方向：
-        - 這是你描述中已經設想的核心方法，可搭配以上聚類或統計方式交叉驗證。
-        ```
-
-## Stage 2.2: Generative-AI application
+## Stage 2.2: Generative-AI application (deprecated)
 ### Goal
 To generate the remaining flight routes by the ADS-B signal of chose flight.
 ### Model
