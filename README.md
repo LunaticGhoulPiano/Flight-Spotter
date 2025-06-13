@@ -72,7 +72,11 @@ Flight-Spotter
 │    ├──clusterers.DBSCAN
 │    │  ├──eps06_min20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
 │    │  └──eps007_min7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    └──
+│    ├──clusterers.XMeans
+│    │  └──readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    └──clusterers.EM
+│       ├──cluster7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│       └──cluster20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
 └──filter_region_maps (auto-generated, based on the user's choose)
 │ ├──Taiwan_ADIZ.html
 │ └──Taiwam_manual_edges.html
@@ -287,15 +291,42 @@ So I choose to use clustering.
     ecef_z
     ```
 ### Weka
-- weka.clusterers.DBSCAN
-    - Ideal hyperparameters:
-        - 0.07 <= epsilon <= 0.6
-        - 7 <= minPoints <= 20
+- [weka.clusterers.DBSCAN](https://weka.sourceforge.io/doc.stable/weka/clusterers/DBSCAN.html)
+    - Hyperparameters:
+        - 0.07 <= ```epsilon``` <= 0.6
+        - 7 <= ```minPoints``` <= 20
     - Results:
         - Path: ```./weka_results./clusterers.DBSCAN```
         - File naming: ```eps{epsilon}_min{minPoints}_{dataset name}.arff```
-            - ex. ```eps007_min7```: epsilon = 0.07, minPoints = 7
-            - ex. ```eps06_min20```: epsilon = 0.6, minPoints = 20
+            - ex. ```eps007_min7```: ```epsilon``` = 0.07, ```minPoints``` = 7
+            - ex. ```eps06_min20```: ```epsilon``` = 0.6, ```minPoints``` = 20
+- [weka.clusterers.XMeans](https://weka.sourceforge.io/doc.stable/weka/clusterers/XMeans.html)
+    - Hyperparameters:
+        - ```seed```: 10
+        - ```binValue```: 1.0
+        - ```cutOffFactors```: 0.5
+        - ```maxIterations```: 500
+        - ```maxKMeans```: 1000
+        - ```maxKMeansForChildren```: 1000
+        - ```minNumClusters```: 7
+        - ```maxNumClusters```: 20
+    - Result:
+        - Path: ```./weka_results./clusterers.XMeans./readsb-hist_filtered_by_Taiwan_manual_edges.arff```
+- [weka.clusterers.EM](https://weka.sourceforge.io/doc.dev/weka/clusterers/EM.html)
+    - Hyperparameters:
+        - ```maxIterations```: 500
+        - ```minLogLikelihoodImprovementCV```: 1.0E-6
+        - ```minLogLikelihoodImprovementIterating```: 1.0E-6
+        - ```minStdDev```: 1.0E-6
+        - ```numExecutionSlots```: 1
+        - ```numFolds```: 10
+        - ```numKMeansRuns```: 10
+        - ```seed```: 10
+    - Results:
+        - Path: ```./weka_results./clusterers.EM```
+        - File naming: ```cluster{num_of_clusters}_readsb-hist_filtered_by_Taiwan_manual_edges.arff```
+            - ex. ```cluster7_readsb-hist_filtered_by_Taiwan_manual_edges.arff```: 7 clusters
+            - ex. ```cluster20_readsb-hist_filtered_by_Taiwan_manual_edges.arff```: 20 clusters
 ### Python
 
 ## Stage 2.2: Generative-AI application (deprecated)
