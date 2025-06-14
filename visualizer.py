@@ -24,4 +24,4 @@ def draw_distribution(distribution, filename, save_path):
     plt.title(f"Cluster Distribution")
     plt.xticks(distribution["cluster"])
     plt.tight_layout()
-    plt.savefig(f"{save_path}./distribution_{filename}.png")
+    plt.savefig(f"{save_path}./{filename}.png")

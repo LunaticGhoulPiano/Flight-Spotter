@@ -107,8 +107,10 @@ Flight-Spotter
 │    │  │  ├──3D_lowest_sse.png
 │    │  │  ├──evaluation.png
 │    │  │  ├──distribution_highest_silhouette.csv
+│    │  │  ├──distribution_highest_silhouette.png
 │    │  │  ├──clustered_highest_silhouette.csv
 │    │  │  ├──distribution_lowest_sse.csv
+│    │  │  ├──distribution_lowest_sse.png
 │    │  │  ├──clustered_lowest_sse.csv
 │    │  │  └──ranking.csv
 │    │  ├──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
@@ -116,8 +118,10 @@ Flight-Spotter
 │    │  │  ├──3D_lowest_sse.png
 │    │  │  ├──evaluation.png
 │    │  │  ├──distribution_highest_silhouette.csv
+│    │  │  ├──distribution_highest_silhouette.png
 │    │  │  ├──clustered_highest_silhouette.csv
 │    │  │  ├──distribution_lowest_sse.csv
+│    │  │  ├──distribution_lowest_sse.png
 │    │  │  ├──clustered_lowest_sse.csv
 │    │  │  └──ranking.csv
 │    │  └──min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges
@@ -125,32 +129,39 @@ Flight-Spotter
 │    │     ├──3D_lowest_sse.png
 │    │     ├──evaluation.png
 │    │     ├──distribution_highest_silhouette.csv
+│    │     ├──distribution_highest_silhouette.png
 │    │     ├──clustered_highest_silhouette.csv
 │    │     ├──distribution_lowest_sse.csv
+│    │     ├──distribution_lowest_sse.png
 │    │     ├──clustered_lowest_sse.csv
 │    │     └──ranking.csv
 │    ├──hdbscan
 │    │  ├──min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │  │  ├──3D_hdbscan.png
 │    │  │  ├──clustered.csv
-│    │  │  └──distribution.csv
+│    │  │  ├──distribution.csv
+│    │  │  └──distribution.png
 │    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │  │  ├──3D_hdbscan.png
 │    │  │  ├──clustered.csv
-│    │  │  └──distribution.csv
+│    │  │  ├──distribution.csv
+│    │  │  └──distribution.png
 │    │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │  │  ├──3D_hdbscan.png
 │    │  │  ├──clustered.csv
-│    │  │  └──distribution.csv
+│    │  │  ├──distribution.csv
+│    │  │  └──distribution.png
 │    │  └──min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │     ├──3D_hdbscan.png
 │    │     ├──clustered.csv
-│    │     └──distribution.csv
+│    │     ├──distribution.csv
+│    │     └──distribution.png
 │    └──optics
 │       ├──min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges
 │       │  ├──3D_optics.png
 │       │  ├──clustered.csv
-│       │  └──distribution.csv
+│       │  ├──distribution.csv
+│       │  └──distribution.png
 │       ├──finetune_records.csv
 │       ├──heatmap_clustering.png
 │       └──heatmap_noise.png
@@ -390,8 +401,10 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
     - Outputs:
         - ```min_cluster``` = 7, ```epsilon``` = 0.007
             ![image](./weka_results/clusterers.DBSCAN/3D_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png)
+            ![image](./weka_results/clusterers.DBSCAN/distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png)
         - ```min_cluster``` = 20, ```epsilon``` = 0.6
             ![image](./weka_results/clusterers.DBSCAN/3D_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png)
+            ![image](./weka_results/clusterers.DBSCAN/distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png)
 - [weka.clusterers.EM](https://weka.sourceforge.io/doc.dev/weka/clusterers/EM.html)
     - Hyperparameters:
         - ```maxIterations```: 500
@@ -410,8 +423,10 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
     - Outputs:
         - ```num_of_clusters``` = 7
             ![image](./weka_results/clusterers.EM/3D_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png)
+            ![image](./weka_results/clusterers.EM/distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png)
         - ```num_of_clusters``` = 20
             ![image](./weka_results/clusterers.EM/3D_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png)
+            ![image](./weka_results/clusterers.EM/distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png)
 - [weka.clusterers.XMeans](https://weka.sourceforge.io/doc.stable/weka/clusterers/XMeans.html)
     - Preprocessing:
         - Using [weka.filters.unsupervised.attribute.NominalToBinary](https://weka.sourceforge.io/doc.dev/weka/filters/unsupervised/attribute/NominalToBinary.html) to one-hot encode the attribute ```t```
@@ -429,6 +444,7 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
     - Output:
         - ```num_of_clusters``` = 20
             ![image](./weka_results/clusterers.XMeans/3D_readsb-hist_filtered_by_Taiwan_manual_edges.png)
+            ![image](./weka_results/clusterers.XMeans/distribution_readsb-hist_filtered_by_Taiwan_manual_edges.png)
 ##### Convert the Weka outputs
 ```
 python eval_end_draw_weka_results.py
@@ -450,17 +466,22 @@ python cluster.py
                 - Minimum clustering points = 7, epsilon = 0.6
         - Outputs:
             - ```3D_hdbscan.png```: visualizing by latitude, longitude, and geometric altitude with clustering
-            - ```distribution.csv```: the distribution of the clustering
             - ```clustered.csv```: merge the original dataset with the clustering
+            - ```distribution.csv```: the distribution of the clustering
+            - ```distribution.png```: the visualized distribution of the clustering
         - 3D position visualization:
             - ```min_points``` = 7, ```epsilon``` = 0.07
                 ![image](./python_results/hdbscan/min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
+                ![image](./python_results/hdbscan/min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
             - ```min_points``` = 7, ```epsilon``` = 0.6
                 ![image](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
+                ![image](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
             - ```min_points``` = 20, ```epsilon``` = 0.07
                 ![image](./python_results/hdbscan/min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
+                ![image](./python_results/hdbscan/min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
             - ```min_points``` = 7, ```epsilon``` = 0.07
                 ![image](./python_results/hdbscan/min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
+                ![image](./python_results/hdbscan/min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
 - [```cluster.run_KMeans()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html)
     - Hyperparameters:
         - Given minimum and maximum cluster number: ```min_cluster``` and ```max_cluster```
@@ -474,29 +495,36 @@ python cluster.py
     - Outputs:
         - ```evaluation.png```: evaluating SSE and Silhouette Score
         - ```3D_lowest_sse.png``` and ```3D_highest_silhouette.png```: visualizing by latitude, longitude, and geometric altitude with clustering
-        - ```distribution_lowest_sse.csv``` and ```distribution_highest_silhouette.csv```: the distribution of the clustering by the evaluation method
         - ```clustered_lowest_sse.csv``` and ```clustered_highest_silhouette.csv```: merge the original dataset with the clustering
+        - ```distribution_lowest_sse.csv``` and ```distribution_highest_silhouette.csv```: the distribution of the clustering by the evaluation method
+        - ```distribution_lowest_sse.png``` and ```distribution_highest_silhouette.png```: the visualized distribution of the clustering by the evaluation method
         - ```ranking.csv```: all SSEs and Silhouette Scores from minimum cluster numnber to maximum cluster numnber
     - Evaluation graphs:
         - ```min_cluster``` = 2, ```max_cluster``` = 40
             - Lowest SSE: 3D position visualization
                 ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
+                ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_lowest_sse.png)
             - Highest Silhouette score: 3D position visualization
                 ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
+                ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_highest_silhouette.png)
             - Evaluation of SSE and Silhouette score
                 ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
         - ```min_cluster``` = 2, ```max_cluster``` = 125
             - Lowest SSE: 3D position visualization
                 ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
+                ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_lowest_sse.png)
             - Highest Silhouette score: 3D position visualization
                 ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
+                ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_highest_silhouette.png)
             - Evaluation of SSE and Silhouette score
                 ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
         - ```min_cluster``` = 7, ```max_cluster``` = 20
             - Lowest SSE: 3D position visualization
                 ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
+                ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_lowest_sse.png)
             - Highest Silhouette score: 3D position visualization
                 ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
+                ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_highest_silhouette.png)
             - Evaluation of SSE and Silhouette score
                 ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
 - [```cluster.run_OPTICS()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html)
@@ -511,11 +539,13 @@ python cluster.py
             ![image](./python_results/optics/heatmap_noise.png)
     - Outputs:
         - ```3D_optics.png```: visualizing by latitude, longitude, and geometric altitude with clustering
-        - ```distribution.csv```: the distribution of the clustering
         - ```clustered.csv```: merge the original dataset with the clustering
+        - ```distribution.csv```: the distribution of the clustering
+        - ```distribution.png```: the visualized distribution of the clustering
     - 3D position visualization:
         - ```min_points``` = 50, ```epsilon``` = 1.1
             ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/3D_optics.png)
+            ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
 #### Draw the animation of the clustered data by time (TODO)
 ##### Draw
 ```

@@ -70,6 +70,8 @@ def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max
     print("Distribution (first 5 rows):")
     print(lowest_sse_distribution.head(5))
     lowest_sse_distribution.to_csv(f"./python_results./kmeans./{path}./distribution_lowest_sse.csv", index = False)
+    ### draw distribution
+    visualizer.draw_distribution(lowest_sse_distribution, "distribution_lowest_sse", f"./python_results./kmeans./{path}")
     ## highest Silhouette score
     ### save clustered data
     clustered_df['cluster'] = highest_silhouette_score_clusterings
@@ -81,7 +83,9 @@ def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max
     print("Distribution (first 5 rows):")
     print(highest_silhouette_distribution.head(5))
     highest_silhouette_distribution.to_csv(f"./python_results./kmeans./{path}./distribution_highest_silhouette.csv", index = False)
-    
+    ### draw distribution
+    visualizer.draw_distribution(highest_silhouette_distribution, "distribution_highest_silhouette", f"./python_results./kmeans./{path}")
+
     # save ranking
     sses_list = list(sses.values())
     silhouette_scores_list = list(silhouette_scores.values())
@@ -135,6 +139,9 @@ def run_HDBSCAN(original_df, filtered_df, x, filename: str, min_points: int, eps
     print(distribution.head(5))
     distribution.to_csv(f"./python_results./hdbscan./{path}./distribution.csv", index = False)
 
+    # draw distribution
+    visualizer.draw_distribution(distribution, "distribution", f"./python_results./hdbscan./{path}")
+
     # draw 3D
     visualizer.draw_3D(filtered_df, clustered_df["cluster"], clustering_num, "HDBSCAN", "hdbscan", f"./python_results./hdbscan./{path}")
 
@@ -162,6 +169,9 @@ def run_OPTICS(original_df, filtered_df, x, filename: str, min_points: int, epsi
     print("Distribution (first 5 rows):")
     print(distribution.head(5))
     distribution.to_csv(f"./python_results./optics./{path}./distribution.csv", index = False)
+
+    # draw distribution
+    visualizer.draw_distribution(distribution, "distribution", f"./python_results./optics./{path}")
 
     # draw 3D
     visualizer.draw_3D(filtered_df, clustered_df["cluster"], clustering_num, "OPTICS", "optics", f"./python_results./optics./{path}")
