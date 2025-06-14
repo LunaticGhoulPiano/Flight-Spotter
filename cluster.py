@@ -64,6 +64,8 @@ def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max
     clustered_df["cluster"] = lowest_sse_clusterings
     clustered_df.to_csv(f"./python_results./kmeans./{path}./clustered_lowest_sse.csv", index = False)
     print(f"lowest SSE: {lowest_sse_cluster_num} clusters with SSE = {sses[lowest_sse_cluster_num]}")
+    ### draw html
+    visualizer.draw_map(f"./python_results./kmeans./{path}", "clustered_lowest_sse.csv")
     ### save distribution
     lowest_sse_distribution = clustered_df["cluster"].value_counts().reset_index()
     lowest_sse_distribution.columns = ["cluster", "count"]
@@ -75,8 +77,10 @@ def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max
     ## highest Silhouette score
     ### save clustered data
     clustered_df['cluster'] = highest_silhouette_score_clusterings
-    print(f"Highest Silhouette score: {highest_silhouette_score_cluster_num} clusters with silhouette score = {silhouette_scores[highest_silhouette_score_cluster_num]}")
     clustered_df.to_csv(f"./python_results./kmeans./{path}./clustered_highest_silhouette.csv", index = False)
+    print(f"Highest Silhouette score: {highest_silhouette_score_cluster_num} clusters with silhouette score = {silhouette_scores[highest_silhouette_score_cluster_num]}")
+    ### draw html
+    visualizer.draw_map(f"./python_results./kmeans./{path}", "clustered_highest_silhouette.csv")
     ### save distribution
     highest_silhouette_distribution = clustered_df["cluster"].value_counts().reset_index()
     highest_silhouette_distribution.columns = ["cluster", "count"]
@@ -145,6 +149,9 @@ def run_HDBSCAN(original_df, filtered_df, x, filename: str, min_points: int, eps
     # draw 3D
     visualizer.draw_3D(filtered_df, clustered_df["cluster"], clustering_num, "HDBSCAN", "hdbscan", f"./python_results./hdbscan./{path}")
 
+    # draw html
+    visualizer.draw_map(f"./python_results./hdbscan./{path}", "clustered.csv")
+
 # OPTICS
 def run_OPTICS(original_df, filtered_df, x, filename: str, min_points: int, epsilon: float):
     os.makedirs("./python_results./optics", exist_ok = True)
@@ -175,6 +182,9 @@ def run_OPTICS(original_df, filtered_df, x, filename: str, min_points: int, epsi
 
     # draw 3D
     visualizer.draw_3D(filtered_df, clustered_df["cluster"], clustering_num, "OPTICS", "optics", f"./python_results./optics./{path}")
+
+    # draw html
+    visualizer.draw_map(f"./python_results./optics./{path}", "clustered.csv")
 
 # draw fine-tune records of OPTICS
 def draw_finetune_record_OPTICS(df = pd.read_csv("./python_results./optics./finetune_records.csv")):

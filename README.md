@@ -114,9 +114,11 @@ Flight-Spotter
 │    │  │  ├──distribution_highest_silhouette.csv
 │    │  │  ├──distribution_highest_silhouette.png
 │    │  │  ├──clustered_highest_silhouette.csv
+│    │  │  ├──clustered_highest_silhouette.html
 │    │  │  ├──distribution_lowest_sse.csv
 │    │  │  ├──distribution_lowest_sse.png
 │    │  │  ├──clustered_lowest_sse.csv
+│    │  │  ├──clustered_lowest_sse.html
 │    │  │  └──ranking.csv
 │    │  ├──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │  │  ├──3D_highest_silhouette.png
@@ -125,9 +127,11 @@ Flight-Spotter
 │    │  │  ├──distribution_highest_silhouette.csv
 │    │  │  ├──distribution_highest_silhouette.png
 │    │  │  ├──clustered_highest_silhouette.csv
+│    │  │  ├──clustered_highest_silhouette.html
 │    │  │  ├──distribution_lowest_sse.csv
 │    │  │  ├──distribution_lowest_sse.png
 │    │  │  ├──clustered_lowest_sse.csv
+│    │  │  ├──clustered_lowest_sse.html
 │    │  │  └──ranking.csv
 │    │  └──min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │     ├──3D_highest_silhouette.png
@@ -136,9 +140,11 @@ Flight-Spotter
 │    │     ├──distribution_highest_silhouette.csv
 │    │     ├──distribution_highest_silhouette.png
 │    │     ├──clustered_highest_silhouette.csv
+│    │     ├──clustered_highest_silhouette.html
 │    │     ├──distribution_lowest_sse.csv
 │    │     ├──distribution_lowest_sse.png
 │    │     ├──clustered_lowest_sse.csv
+│    │     ├──clustered_lowest_sse.html
 │    │     └──ranking.csv
 │    ├──hdbscan
 │    │  ├──min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
@@ -502,6 +508,7 @@ python cluster.py
         - ```evaluation.png```: evaluating SSE and Silhouette Score
         - ```3D_lowest_sse.png``` and ```3D_highest_silhouette.png```: visualizing by latitude, longitude, and geometric altitude with clustering
         - ```clustered_lowest_sse.csv``` and ```clustered_highest_silhouette.csv```: merge the original dataset with the clustering
+        - ```clustered_lowest_sse.html``` and ```clustered_highest_silhouette.html```: interactive clustered data
         - ```distribution_lowest_sse.csv``` and ```distribution_highest_silhouette.csv```: the distribution of the clustering by the evaluation method
         - ```distribution_lowest_sse.png``` and ```distribution_highest_silhouette.png```: the visualized distribution of the clustering by the evaluation method
         - ```ranking.csv```: all SSEs and Silhouette Scores from minimum cluster numnber to maximum cluster numnber
