@@ -80,25 +80,42 @@ Flight-Spotter
 │       ├──cluster7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
 │       └──cluster20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
 ├──python_results
-│    └──kmeans
-│       ├──min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges
-│       │  ├──3D_highest_silhouette.png
-│       │  ├──3D_lowest_sse.png
-│       │  ├──evaluation.png
-│       │  ├──highest_silhouette_distribution.csv
-│       │  ├──highest_silhouette.csv
-│       │  ├──lowest_sse_distribution.csv
-│       │  ├──lowest_sse.csv
-│       │  └──ranking.csv
-│       └──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
-│          ├──3D_highest_silhouette.png
-│          ├──3D_lowest_sse.png
-│          ├──evaluation.png
-│          ├──highest_silhouette_distribution.csv
-│          ├──highest_silhouette.csv
-│          ├──lowest_sse_distribution.csv
-│          ├──lowest_sse.csv
-│          └──ranking.csv
+│    ├──kmeans
+│    │  ├──min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges
+│    │  │  ├──3D_highest_silhouette.png
+│    │  │  ├──3D_lowest_sse.png
+│    │  │  ├──evaluation.png
+│    │  │  ├──highest_silhouette_distribution.csv
+│    │  │  ├──highest_silhouette.csv
+│    │  │  ├──lowest_sse_distribution.csv
+│    │  │  ├──lowest_sse.csv
+│    │  │  └──ranking.csv
+│    │  └──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
+│    │     ├──3D_highest_silhouette.png
+│    │     ├──3D_lowest_sse.png
+│    │     ├──evaluation.png
+│    │     ├──highest_silhouette_distribution.csv
+│    │     ├──highest_silhouette.csv
+│    │     ├──lowest_sse_distribution.csv
+│    │     ├──lowest_sse.csv
+│    │     └──ranking.csv
+│    ├──hdbscan
+│    │  ├──min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
+│    │  │  ├──3D_hdbscan.png
+│    │  │  ├──clustered.csv
+│    │  │  └──distribution.csv
+│    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
+│    │  │  ├──3D_hdbscan.png
+│    │  │  ├──clustered.csv
+│    │  │  └──distribution.csv
+│    │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
+│    │  │  ├──3D_hdbscan.png
+│    │  │  ├──clustered.csv
+│    │  │  └──distribution.csv
+│    │  └──min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
+│    │     ├──3D_hdbscan.png
+│    │     ├──clustered.csv
+│    │     └──distribution.csv
 └──filter_region_maps (auto-generated, based on the user's choose)
 │ ├──Taiwan_ADIZ.html
 │ └──Taiwam_manual_edges.html
@@ -356,8 +373,10 @@ So I choose to use clustering.
 ### Python
 - Path: ```./python_results```
 - Run: ```./cluster.py```
-    - ```cluster.KMeans_elbow()```
-        - Given minimum and maximum cluster number
+    - [```cluster.run_KMeans()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html)
+        - Hyperparameters:
+            - Given minimum and maximum cluster number: ```min_cluster``` and ```max_cluster```
+            - Test 3 combinations (described as ()```min_cluster```, ```max_cluster```): (2, 40), (2, 125), (7, 20)
         - Using Elbow Method - SSE (Sum of the Squared Errors) and Silhouette Score to evaluate
         - Save the clusterings of lowest SSE and highest Silhouette Score
         - Result folder naming:
@@ -370,6 +389,18 @@ So I choose to use clustering.
             - ```lowest_sse_distribution.csv``` and ```highest_silhouette_distribution.csv```: the distribution of the clustering by the evaluation method
             - ```lowest_sse.csv``` and ```highest_silhouette.csv```: merge the original dataset with the clustering
             - ```ranking.csv```: all SSEs and Silhouette Scores from minimum cluster numnber to maximum cluster numnber
+    - [```cluster.run_HDBSCAN()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.HDBSCAN.html)
+        - Hyperparameters:
+            - Given minimum clustering points ```min_points``` and epsilon ```epsilon```
+            - Test 3 combinations (described as ()```min_points```, ```epsilon```): (7, 0.07), (7, 0.6), (20, 0.07), (20, 0.6)
+            - Result folder naming:
+                - ex. ```min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges```
+                    - Dataset = ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv```
+                    - Minimum clustering points = 7, epsilon = 0.6
+            - Outputs:
+                - ```3D_hdbscan.png```: visualizing by latitude, longitude, and geometric altitude with clustering
+                - ```distribution.csv```: the distribution of the clustering
+                - ```clustered.csv```: merge the original dataset with the clustering
 ## Stage 2.2: Generative-AI application (deprecated)
 ### Goal
 To generate the remaining flight routes by the ADS-B signal of chose flight.

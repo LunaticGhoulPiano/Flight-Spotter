@@ -5,6 +5,7 @@ beautifulsoup4
 shapely
 winsdk
 pandas
+numpy
 discord.py
 geohash2
 sklearn
