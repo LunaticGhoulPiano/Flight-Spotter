@@ -569,7 +569,7 @@ python cluster.py
 ### Demo: interact with the clustered data
 - Demo file: [HDBSCAN with min_points = 7, epsilon = 0.6](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/clustered.html)
 - [Demo video (or click the image below)](https://www.youtube.com/watch?v=HUHzWu-EKtc)
-[![Watch the demo](https://img.youtube.com/vi/HUHzWu-EKtc/0.jpg)](https://www.youtube.com/watch?v=HUHzWu-EKtc)
+    [![Watch the demo](https://img.youtube.com/vi/HUHzWu-EKtc/0.jpg)](https://www.youtube.com/watch?v=HUHzWu-EKtc)
 ## Stage 3: Discord bot - Interactive system
 - To be continued
 -  Used scripts and folders: ```./bot.py```
