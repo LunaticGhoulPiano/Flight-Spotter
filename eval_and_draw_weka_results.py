@@ -38,6 +38,8 @@ def run(original_dataset: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv
                 filtered_df = clustered_df[["t", "gs", "track", "squawk", "nav_heading", "ecef_x", "ecef_y", "ecef_z"]]
                 m = method.replace("clusterers.", "")
                 visualizer.draw_3D(filtered_df, clustered_df["cluster"], len(np.unique(clustered_df["cluster"])), m, f"{arff_file[:-5]}", f"./weka_results./{method}")
+                # draw html
+                visualizer.draw_map(f"./weka_results./{method}", f"clustered_{arff_file[:-5]}.csv")
 
 if __name__ == "__main__":
     run()

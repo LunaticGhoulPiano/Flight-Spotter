@@ -76,28 +76,33 @@ Flight-Spotter
 │    │  ├──3D_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.arff
 │    │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.html
 │    │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │    │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──3D_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.arff
 │    │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.html
 │    │  ├──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │    │  └──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    ├──clusterers.EM
 │    │  ├──3D_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
 │    │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.html
 │    │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │    │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──3D_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  ├──clustered_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──clustered_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│       ├──clustered_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.html
 │    │  ├──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │    │  └──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    └──clusterers.XMeans
 │       ├──3D_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │       ├──readsb-hist_filtered_by_Taiwan_manual_edges.arff
 │       ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│       ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.html
 │       ├──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │       └──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.png
 ├──python_results
@@ -383,6 +388,7 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
 - First use Weka to generate ```.arff``` file, then convert and visualize by running ```./eval_end_draw_weka_results.py```
 - Outputs after running ```./eval_end_draw_weka_results.py```:
     - ```clustered_{filename}.csv``` file: merge the original dataset with the clustering
+    - ```clustered_{filename}.html``` file: interactive clustered data
     - ```distribution_{filename}.csv``` file: the distribution of the clustering
     - ```distribution_{filename}.png``` file: the visualized distribution of the clustering
     - ```3D_{filename}.png``` file: 3D position visualization
@@ -546,13 +552,6 @@ python cluster.py
         - ```min_points``` = 50, ```epsilon``` = 1.1
             ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/3D_optics.png)
             ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
-#### Draw the animation of the clustered data by time (TODO)
-##### Draw
-```
-python draw_animation_by_time.py
-```
-##### Details
-- Outputs
 
 ## Stage 3: Discord bot - Interactive system
 - To be continued
