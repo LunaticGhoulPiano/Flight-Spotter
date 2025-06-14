@@ -72,13 +72,13 @@ Flight-Spotter
 │    └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
 ├──weka_results
 │    ├──clusterers.DBSCAN
-│    │  ├──eps06_min20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  └──eps007_min7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    ├──clusterers.XMeans
-│    │  └──readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    └──clusterers.EM
-│       ├──cluster7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│       └──cluster20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    │  └──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    ├──clusterers.EM
+│    │  ├──cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    │  └──cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    └──clusterers.XMeans
+│       └──readsb-hist_filtered_by_Taiwan_manual_edges.arff
 ├──python_results
 │    ├──kmeans
 │    │  ├──min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges
@@ -338,21 +338,9 @@ So I choose to use clustering.
             - 7 <= ```minPoints``` <= 20
         - Results:
             - Path: ```./weka_results./clusterers.DBSCAN```
-            - File naming: ```eps{epsilon}_min{minPoints}_{dataset name}.arff```
-                - ex. ```eps007_min7```: ```epsilon``` = 0.07, ```minPoints``` = 7
-                - ex. ```eps06_min20```: ```epsilon``` = 0.6, ```minPoints``` = 20
-    - [weka.clusterers.XMeans](https://weka.sourceforge.io/doc.stable/weka/clusterers/XMeans.html)
-        - Hyperparameters:
-            - ```seed```: 10
-            - ```binValue```: 1.0
-            - ```cutOffFactors```: 0.5
-            - ```maxIterations```: 500
-            - ```maxKMeans```: 1000
-            - ```maxKMeansForChildren```: 1000
-            - ```minNumClusters```: 7
-            - ```maxNumClusters```: 20
-        - Result:
-            - Path: ```./weka_results./clusterers.XMeans./readsb-hist_filtered_by_Taiwan_manual_edges.arff```
+            - File naming: ```min_{minPoints}_epsilon_{epsilon}_{dataset name}.arff```
+                - ex. ```min_7_epsilon_007_```: ```minPoints``` = 7, ```epsilon``` = 0.07
+                - ex. ```min_20_epsilon_06_```: ```minPoints``` = 20, ```epsilon``` = 0.6
     - [weka.clusterers.EM](https://weka.sourceforge.io/doc.dev/weka/clusterers/EM.html)
         - Hyperparameters:
             - ```maxIterations```: 500
@@ -365,9 +353,21 @@ So I choose to use clustering.
             - ```seed```: 10
         - Results:
             - Path: ```./weka_results./clusterers.EM```
-            - File naming: ```cluster{num_of_clusters}_readsb-hist_filtered_by_Taiwan_manual_edges.arff```
-                - ex. ```cluster7_readsb-hist_filtered_by_Taiwan_manual_edges.arff```: 7 clusters
-                - ex. ```cluster20_readsb-hist_filtered_by_Taiwan_manual_edges.arff```: 20 clusters
+            - File naming: ```cluster_{num_of_clusters}_readsb-hist_filtered_by_Taiwan_manual_edges.arff```
+                - ex. ```cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.arff```: 7 clusters
+                - ex. ```cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.arff```: 20 clusters
+    - [weka.clusterers.XMeans](https://weka.sourceforge.io/doc.stable/weka/clusterers/XMeans.html)
+        - Hyperparameters:
+            - ```seed```: 10
+            - ```binValue```: 1.0
+            - ```cutOffFactors```: 0.5
+            - ```maxIterations```: 500
+            - ```maxKMeans```: 1000
+            - ```maxKMeansForChildren```: 1000
+            - ```minNumClusters```: 7
+            - ```maxNumClusters```: 20
+        - Result:
+            - Path: ```./weka_results./clusterers.XMeans./readsb-hist_filtered_by_Taiwan_manual_edges.arff```
 - Convert the results: ```./eval_end_draw_weka_results.py```
     - TODO
 ### Python
