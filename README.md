@@ -49,144 +49,144 @@ Flight-Spotter
 ├──adsb_lol.py (currently unused)
 ├──main.py (currently unused)
 ├──pics
-│ ├──flow.png
-│ ├──JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg
-│ ├──Taiwan_SDIZ.jpg
-│ ├──Taiwan_manual_edges.jpg
-│ ├──degree2radian.png
-│ ├──feet2meter.png
-│ └──ecef.png
+│  ├──flow.png
+│  ├──JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg
+│  ├──Taiwan_SDIZ.jpg
+│  ├──Taiwan_manual_edges.jpg
+│  ├──degree2radian.png
+│  ├──feet2meter.png
+│  └──ecef.png
 ├──data
-│ ├──aircraft (auto-generated)
-│ │  └──basic-ac-db.json
-│ ├──filter_regions
-│ │  ├──Taiwan_ADIZ.json
-│ │  └──Taiwan_manual_edges.json
-│ ├──historical_adsbex_sample (auto-generated, based on user's ENABLES settings)
-│ │  └──readsb-hist
-│ │     ├──2025_04_01_000000.json
-│ │     ├──...
-│ │     └──2025_04_01_120000.json
-│ └──preprocessed (auto-generated, based on the user's choose)
-│    ├──readsb-hist_merged.csv
-│    ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
-│    └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│  ├──aircraft (auto-generated)
+│  │  └──basic-ac-db.json
+│  ├──filter_regions
+│  │  ├──Taiwan_ADIZ.json
+│  │  └──Taiwan_manual_edges.json
+│  ├──historical_adsbex_sample (auto-generated, based on user's ENABLES settings)
+│  │  └──readsb-hist
+│  │     ├──2025_04_01_000000.json
+│  │     ├──...
+│  │     └──2025_04_01_120000.json
+│  └──preprocessed (auto-generated, based on the user's choose)
+│     ├──readsb-hist_merged.csv
+│     ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
+│     └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
 ├──weka_results
-│    ├──clusterers.DBSCAN
-│    │  ├──3D_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│    │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│    │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│    │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    │  ├──3D_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│    │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│    │  ├──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│    │  └──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    ├──clusterers.EM
-│    │  ├──3D_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    │  ├──cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│    │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│    │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│    │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    │  ├──3D_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    │  ├──cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  ├──clustered_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│    │  ├──clustered_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│    │  ├──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│    │  └──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    └──clusterers.XMeans
-│       ├──3D_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│       ├──readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│       ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│       ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│       ├──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│       └──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     ├──clusterers.DBSCAN
+│     │  ├──3D_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│     │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│     │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.html
+│     │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│     │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     │  ├──3D_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│     │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│     │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.html
+│     │  ├──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│     │  └──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     ├──clusterers.EM
+│     │  ├──3D_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     │  ├──cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│     │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│     │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.html
+│     │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│     │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     │  ├──3D_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     │  ├──cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│     │  ├──clustered_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│     │  ├──clustered_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.html
+│     │  ├──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│     │  └──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│     └──clusterers.XMeans
+│        ├──3D_readsb-hist_filtered_by_Taiwan_manual_edges.png
+│        ├──readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│        ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│        ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.html
+│        ├──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│        └──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.png
 ├──python_results
-│    ├──kmeans
-│    │  ├──min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges
-│    │  │  ├──3D_highest_silhouette.png
-│    │  │  ├──3D_lowest_sse.png
-│    │  │  ├──evaluation.png
-│    │  │  ├──distribution_highest_silhouette.csv
-│    │  │  ├──distribution_highest_silhouette.png
-│    │  │  ├──clustered_highest_silhouette.csv
-│    │  │  ├──clustered_highest_silhouette.html
-│    │  │  ├──distribution_lowest_sse.csv
-│    │  │  ├──distribution_lowest_sse.png
-│    │  │  ├──clustered_lowest_sse.csv
-│    │  │  ├──clustered_lowest_sse.html
-│    │  │  └──ranking.csv
-│    │  ├──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
-│    │  │  ├──3D_highest_silhouette.png
-│    │  │  ├──3D_lowest_sse.png
-│    │  │  ├──evaluation.png
-│    │  │  ├──distribution_highest_silhouette.csv
-│    │  │  ├──distribution_highest_silhouette.png
-│    │  │  ├──clustered_highest_silhouette.csv
-│    │  │  ├──clustered_highest_silhouette.html
-│    │  │  ├──distribution_lowest_sse.csv
-│    │  │  ├──distribution_lowest_sse.png
-│    │  │  ├──clustered_lowest_sse.csv
-│    │  │  ├──clustered_lowest_sse.html
-│    │  │  └──ranking.csv
-│    │  └──min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges
-│    │     ├──3D_highest_silhouette.png
-│    │     ├──3D_lowest_sse.png
-│    │     ├──evaluation.png
-│    │     ├──distribution_highest_silhouette.csv
-│    │     ├──distribution_highest_silhouette.png
-│    │     ├──clustered_highest_silhouette.csv
-│    │     ├──clustered_highest_silhouette.html
-│    │     ├──distribution_lowest_sse.csv
-│    │     ├──distribution_lowest_sse.png
-│    │     ├──clustered_lowest_sse.csv
-│    │     ├──clustered_lowest_sse.html
-│    │     └──ranking.csv
-│    ├──hdbscan
-│    │  ├──min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
-│    │  │  ├──3D_hdbscan.png
-│    │  │  ├──clustered.csv
-│    │     ├──clustered.html
-│    │  │  ├──distribution.csv
-│    │  │  └──distribution.png
-│    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
-│    │  │  ├──3D_hdbscan.png
-│    │  │  ├──clustered.csv
-│    │     ├──clustered.html
-│    │  │  ├──distribution.csv
-│    │  │  └──distribution.png
-│    │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
-│    │  │  ├──3D_hdbscan.png
-│    │  │  ├──clustered.csv
-│    │     ├──clustered.html
-│    │  │  ├──distribution.csv
-│    │  │  └──distribution.png
-│    │  └──min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
-│    │     ├──3D_hdbscan.png
-│    │     ├──clustered.csv
-│    │     ├──clustered.html
-│    │     ├──distribution.csv
-│    │     └──distribution.png
-│    └──optics
-│       ├──min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges
-│       │  ├──3D_optics.png
-│       │  ├──clustered.csv
-│       │  ├──clustered.html
-│       │  ├──distribution.csv
-│       │  └──distribution.png
-│       ├──finetune_records.csv
-│       ├──heatmap_clustering.png
-│       └──heatmap_noise.png
-└──filter_region_maps (auto-generated, based on the user's choose)
-│ ├──Taiwan_ADIZ.html
-│ └──Taiwam_manual_edges.html
+│     ├──kmeans
+│     │  ├──min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges
+│     │  │  ├──3D_highest_silhouette.png
+│     │  │  ├──3D_lowest_sse.png
+│     │  │  ├──evaluation.png
+│     │  │  ├──distribution_highest_silhouette.csv
+│     │  │  ├──distribution_highest_silhouette.png
+│     │  │  ├──clustered_highest_silhouette.csv
+│     │  │  ├──clustered_highest_silhouette.html
+│     │  │  ├──distribution_lowest_sse.csv
+│     │  │  ├──distribution_lowest_sse.png
+│     │  │  ├──clustered_lowest_sse.csv
+│     │  │  ├──clustered_lowest_sse.html
+│     │  │  └──ranking.csv
+│     │  ├──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
+│     │  │  ├──3D_highest_silhouette.png
+│     │  │  ├──3D_lowest_sse.png
+│     │  │  ├──evaluation.png
+│     │  │  ├──distribution_highest_silhouette.csv
+│     │  │  ├──distribution_highest_silhouette.png
+│     │  │  ├──clustered_highest_silhouette.csv
+│     │  │  ├──clustered_highest_silhouette.html
+│     │  │  ├──distribution_lowest_sse.csv
+│     │  │  ├──distribution_lowest_sse.png
+│     │  │  ├──clustered_lowest_sse.csv
+│     │  │  ├──clustered_lowest_sse.html
+│     │  │  └──ranking.csv
+│     │  └──min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges
+│     │     ├──3D_highest_silhouette.png
+│     │     ├──3D_lowest_sse.png
+│     │     ├──evaluation.png
+│     │     ├──distribution_highest_silhouette.csv
+│     │     ├──distribution_highest_silhouette.png
+│     │     ├──clustered_highest_silhouette.csv
+│     │     ├──clustered_highest_silhouette.html
+│     │     ├──distribution_lowest_sse.csv
+│     │     ├──distribution_lowest_sse.png
+│     │     ├──clustered_lowest_sse.csv
+│     │     ├──clustered_lowest_sse.html
+│     │     └──ranking.csv
+│     ├──hdbscan
+│     │  ├──min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
+│     │  │  ├──3D_hdbscan.png
+│     │  │  ├──clustered.csv
+│     │  │  ├──clustered.html
+│     │  │  ├──distribution.csv
+│     │  │  └──distribution.png
+│     │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
+│     │  │  ├──3D_hdbscan.png
+│     │  │  ├──clustered.csv
+│     │  │  ├──clustered.html
+│     │  │  ├──distribution.csv
+│     │  │  └──distribution.png
+│     │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
+│     │  │  ├──3D_hdbscan.png
+│     │  │  ├──clustered.csv
+│     │  │  ├──clustered.html
+│     │  │  ├──distribution.csv
+│     │  │  └──distribution.png
+│     │  └──min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
+│     │     ├──3D_hdbscan.png
+│     │     ├──clustered.csv
+│     │     ├──clustered.html
+│     │     ├──distribution.csv
+│     │     └──distribution.png
+│     └──optics
+│        ├──min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges
+│        │  ├──3D_optics.png
+│        │  ├──clustered.csv
+│        │  ├──clustered.html
+│        │  ├──distribution.csv
+│        │  └──distribution.png
+│        ├──finetune_records.csv
+│        ├──heatmap_clustering.png
+│        └──heatmap_noise.png
+├──filter_region_maps (auto-generated, based on the user's choose)
+│  ├──Taiwan_ADIZ.html
+│  └──Taiwam_manual_edges.html
 └──logs (auto-generated)
-  ├──basic_ac_db.txt
-  └──readsb-hist.txt
+   ├──basic_ac_db.txt
+   └──readsb-hist.txt
 ```
 
 ## Datasets
