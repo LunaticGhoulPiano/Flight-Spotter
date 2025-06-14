@@ -62,25 +62,25 @@ def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max
     ### save clustered data
     clustered_df = original_df.copy()
     clustered_df["cluster"] = lowest_sse_clusterings
-    clustered_df.to_csv(f"./python_results./kmeans./{path}./lowest_sse.csv", index = False)
+    clustered_df.to_csv(f"./python_results./kmeans./{path}./clustered_lowest_sse.csv", index = False)
     print(f"lowest SSE: {lowest_sse_cluster_num} clusters with SSE = {sses[lowest_sse_cluster_num]}")
     ### save distribution
     lowest_sse_distribution = clustered_df["cluster"].value_counts().reset_index()
     lowest_sse_distribution.columns = ["cluster", "count"]
     print("Distribution (first 5 rows):")
     print(lowest_sse_distribution.head(5))
-    lowest_sse_distribution.to_csv(f"./python_results./kmeans./{path}./lowest_sse_distribution.csv", index = False)
+    lowest_sse_distribution.to_csv(f"./python_results./kmeans./{path}./distribution_lowest_sse.csv", index = False)
     ## highest Silhouette score
     ### save clustered data
     clustered_df['cluster'] = highest_silhouette_score_clusterings
     print(f"Highest Silhouette score: {highest_silhouette_score_cluster_num} clusters with silhouette score = {silhouette_scores[highest_silhouette_score_cluster_num]}")
-    clustered_df.to_csv(f"./python_results./kmeans./{path}./highest_silhouette.csv", index = False)
+    clustered_df.to_csv(f"./python_results./kmeans./{path}./clustered_highest_silhouette.csv", index = False)
     ### save distribution
     highest_silhouette_distribution = clustered_df["cluster"].value_counts().reset_index()
     highest_silhouette_distribution.columns = ["cluster", "count"]
     print("Distribution (first 5 rows):")
     print(highest_silhouette_distribution.head(5))
-    highest_silhouette_distribution.to_csv(f"./python_results./kmeans./{path}./highest_silhouette_distribution.csv", index = False)
+    highest_silhouette_distribution.to_csv(f"./python_results./kmeans./{path}./distribution_highest_silhouette.csv", index = False)
     
     # save ranking
     sses_list = list(sses.values())

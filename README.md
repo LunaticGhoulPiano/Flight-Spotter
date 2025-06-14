@@ -41,6 +41,7 @@ Flight-Spotter
 ├──filter_and_encode.py
 ├──eval_end_draw_weka_results.py
 ├──cluster.py
+├──draw_animation_by_time.py
 ├──ecef.py
 ├──gps.py
 ├──visualizer.py
@@ -95,19 +96,28 @@ Flight-Spotter
 │    │  │  ├──3D_highest_silhouette.png
 │    │  │  ├──3D_lowest_sse.png
 │    │  │  ├──evaluation.png
-│    │  │  ├──highest_silhouette_distribution.csv
-│    │  │  ├──highest_silhouette.csv
-│    │  │  ├──lowest_sse_distribution.csv
-│    │  │  ├──lowest_sse.csv
+│    │  │  ├──distribution_highest_silhouette.csv
+│    │  │  ├──clustered_highest_silhouette.csv
+│    │  │  ├──distribution_lowest_sse.csv
+│    │  │  ├──clustered_lowest_sse.csv
 │    │  │  └──ranking.csv
-│    │  └──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
+│    │  ├──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
+│    │  │  ├──3D_highest_silhouette.png
+│    │  │  ├──3D_lowest_sse.png
+│    │  │  ├──evaluation.png
+│    │  │  ├──distribution_highest_silhouette.csv
+│    │  │  ├──clustered_highest_silhouette.csv
+│    │  │  ├──distribution_lowest_sse.csv
+│    │  │  ├──clustered_lowest_sse.csv
+│    │  │  └──ranking.csv
+│    │  └──min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │     ├──3D_highest_silhouette.png
 │    │     ├──3D_lowest_sse.png
 │    │     ├──evaluation.png
-│    │     ├──highest_silhouette_distribution.csv
-│    │     ├──highest_silhouette.csv
-│    │     ├──lowest_sse_distribution.csv
-│    │     ├──lowest_sse.csv
+│    │     ├──distribution_highest_silhouette.csv
+│    │     ├──clustered_highest_silhouette.csv
+│    │     ├──distribution_lowest_sse.csv
+│    │     ├──clustered_lowest_sse.csv
 │    │     └──ranking.csv
 │    ├──hdbscan
 │    │  ├──min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
@@ -327,10 +337,9 @@ python preprocessor.py
         2025,4,1,0,3,5,899046,CAL601,B738,2100,2325,193.1,50.04,1472,6264,1019.2,20000,20000,51.33,25.11882,121.274261,8,186,1,10,2,3,perhour,wsqnzstpxp7j,-2994959.7803176898,4930832.072570452,2704770.2738511804
         ```
 
-## Stage 2.1: Data mining methods
+## Stage 2: Data mining
 ### Goal
-To find the surrounding best GPS coordinates with height of spotting planes by user's GPS locations.
-So I choose to use clustering.
+Cluster the aircrafts by position (GPS coordinates and geometric altitude) by different algorithms.
 ### Course requirements
 - Must choose one data mining tool to use: [Weka](https://www.weka.io/) / [Orange](https://orangedatamining.com/download/) / [KNIME](https://www.knime.com/).
 ### Experiments
@@ -347,16 +356,16 @@ So I choose to use clustering.
     ecef_y
     ecef_z
     ```
-### Weka
+#### Weka
 - Path: ```./weka_results```
 - Weka output: ```.arff``` file
 - First use Weka to generate ```.arff``` file, then convert and visualize by running ```./eval_end_draw_weka_results.py```
 - Outputs after running ```./eval_end_draw_weka_results.py```:
     - ```.csv``` file: merge the original dataset with the clustering
     - ```.png``` file: 3D position visualization
-#### Run Weka:
+##### Run Weka:
 - Download [Weka](https://www.weka.io/), set the hyperparameters in the following **Details** part and run
-#### Details:
+###### Details:
 - [weka.clusterers.DBSCAN](https://weka.sourceforge.io/doc.stable/weka/clusterers/DBSCAN.html)
     - Hyperparameters:
         - 0.07 <= ```epsilon``` <= 0.6
@@ -408,17 +417,17 @@ So I choose to use clustering.
     - Output:
         - ```num_of_clusters``` = 20
             ![image](./weka_results/clusterers.XMeans/3D_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-#### Run ```./eval_end_draw_weka_results.py```:
+##### Convert the Weka outputs
 ```
 python eval_end_draw_weka_results.py
 ```
-### Python
+#### Python
 - Path: ```./python_results```
-#### Run ```./cluster.py```:
+##### Run clustering
 ```
 python cluster.py
 ```
-#### Details:
+###### Details:
 - [```cluster.run_HDBSCAN()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.HDBSCAN.html)
     - Hyperparameters:
         - Given minimum clustering points ```min_points``` and epsilon ```epsilon```
@@ -453,8 +462,8 @@ python cluster.py
     - Outputs:
         - ```evaluation.png```: evaluating SSE and Silhouette Score
         - ```3D_lowest_sse.png``` and ```3D_highest_silhouette.png```: visualizing by latitude, longitude, and geometric altitude with clustering
-        - ```lowest_sse_distribution.csv``` and ```highest_silhouette_distribution.csv```: the distribution of the clustering by the evaluation method
-        - ```lowest_sse.csv``` and ```highest_silhouette.csv```: merge the original dataset with the clustering
+        - ```distribution_lowest_sse.csv``` and ```distribution_highest_silhouette.csv```: the distribution of the clustering by the evaluation method
+        - ```clustered_lowest_sse.csv``` and ```clustered_highest_silhouette.csv```: merge the original dataset with the clustering
         - ```ranking.csv```: all SSEs and Silhouette Scores from minimum cluster numnber to maximum cluster numnber
     - Evaluation graphs:
         - ```min_cluster``` = 2, ```max_cluster``` = 40
@@ -495,17 +504,13 @@ python cluster.py
     - 3D position visualization:
         - ```min_points``` = 50, ```epsilon``` = 1.1
             ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/3D_optics.png)
-## Stage 2.2: Generative-AI application (deprecated)
-### Goal
-To generate the remaining flight routes by the ADS-B signal of chose flight.
-### Model
-To be coutinued
-### Training
-To be coutinued
-### Testing & Evaluation
-To be coutinued
-### Test with the current flying planes
-To be coutinued
+#### Draw the animation of the clustered data by time (TODO)
+##### Draw
+```
+python draw_animation_by_time.py
+```
+##### Details
+- Outputs
 
 ## Stage 3: Discord bot - Interactive system
 - To be continued

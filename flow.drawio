@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="1Gvi93ntnL8X9OBL2Krt" name="第1頁">
-        <mxGraphModel dx="1793" dy="996" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" background="#ffffff" math="0" shadow="0">
+        <mxGraphModel dx="1216" dy="797" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="1654" background="#ffffff" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -61,74 +61,13 @@
                 <mxCell id="38" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;Mining&lt;/span&gt;" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="40" y="150" width="120" height="80" as="geometry"/>
                 </mxCell>
-                <mxCell id="42" value="" style="edgeStyle=none;html=1;" parent="1" source="39" target="41" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
+                <mxCell id="50" value="" style="edgeStyle=none;html=1;" parent="1" source="48" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="360" y="190" as="targetPoint"/>
+                    </mxGeometry>
                 </mxCell>
-                <mxCell id="39" value="Plot the whole GPS&lt;div&gt;coordinates on map&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="360" y="160" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="45" value="" style="edgeStyle=none;html=1;" parent="1" source="41" target="44" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="41" value="Generate heatmap" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="520" y="160" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="47" value="" style="edgeStyle=none;html=1;" parent="1" source="44" target="46" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="44" value="Fetch required&lt;div&gt;features&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="680" y="160" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="52" value="" style="edgeStyle=none;html=1;" parent="1" source="46" target="51" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="46" value="weka optics-dbScan" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="840" y="160" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="50" value="" style="edgeStyle=none;html=1;" parent="1" source="48" target="39" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="48" value="Choose the file&lt;div&gt;filtered by region&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                <mxCell id="48" value="Choose the preprocessed file&lt;div&gt;filtered by region&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="200" y="160" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="54" value="" style="edgeStyle=none;html=1;" parent="1" source="51" target="53" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="51" value="Decide a threshold&lt;div&gt;of popular GPS coordinates&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1000" y="160" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="56" value="" style="edgeStyle=none;html=1;" parent="1" source="53" target="55" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="53" value="Plot the popular GPS&lt;div&gt;coordinates on map&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="1000" y="240" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="58" value="" style="edgeStyle=none;html=1;" parent="1" source="55" target="57" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="55" value="Save result data" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="840" y="240" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="57" value="End" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="680" y="230" width="120" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="61" value="" style="edgeStyle=none;html=1;" parent="1" source="59" target="60" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="59" value="GAI" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="40" y="320" width="120" height="80" as="geometry"/>
-                </mxCell>
-                <mxCell id="63" value="" style="edgeStyle=none;html=1;" parent="1" source="60" target="62" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="60" value="Choose the&lt;div&gt;merged file&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="200" y="330" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="103" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="62" target="102">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="62" value="Set the usable columns" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                    <mxGeometry x="360" y="330" width="120" height="60" as="geometry"/>
                 </mxCell>
                 <mxCell id="66" value="" style="edgeStyle=none;html=1;" parent="1" source="64" target="65" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
@@ -261,57 +200,6 @@
                 </mxCell>
                 <mxCell id="101" value="No" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" parent="1" vertex="1">
                     <mxGeometry x="695" y="1060" width="40" height="30" as="geometry"/>
-                </mxCell>
-                <mxCell id="105" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="102" target="104">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="102" value="Build timestamp" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="520" y="330" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="107" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="104" target="106">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="104" value="Build time sequence" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="680" y="330" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="109" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="106" target="108">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="106" value="Normalize" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="840" y="330" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="111" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="108" target="110">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="108" value="Split to training and validation set" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="1000" y="330" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="113" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="110" target="112">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="110" value="Build dataset" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="1000" y="440" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="115" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="112" target="114">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="112" value="Build model" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="840" y="440" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="117" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="114" target="116">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="114" value="Train and Evaluate" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="680" y="440" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="119" value="" style="edgeStyle=none;html=1;" edge="1" parent="1" source="116" target="118">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="116" value="Save result model" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="520" y="440" width="120" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="118" value="End" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="360" y="430" width="120" height="80" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
