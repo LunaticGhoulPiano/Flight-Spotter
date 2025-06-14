@@ -75,21 +75,26 @@ Flight-Spotter
 │    ├──clusterers.DBSCAN
 │    │  ├──3D_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │    │  ├──3D_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│    │  └──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  └──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.arff
+│    │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  └──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │    ├──clusterers.EM
 │    │  ├──3D_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  ├──cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │    │  ├──3D_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │    │  ├──cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│    │  └──cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  ├──clustered_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│    │  └──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 │    └──clusterers.XMeans
 │       ├──3D_readsb-hist_filtered_by_Taiwan_manual_edges.png
 │       ├──readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│       └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│       ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│       └──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.csv
 ├──python_results
 │    ├──kmeans
 │    │  ├──min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges
@@ -361,7 +366,8 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
 - Weka output: ```.arff``` file
 - First use Weka to generate ```.arff``` file, then convert and visualize by running ```./eval_end_draw_weka_results.py```
 - Outputs after running ```./eval_end_draw_weka_results.py```:
-    - ```.csv``` file: merge the original dataset with the clustering
+    - ```clustered_{filename}.csv``` file: merge the original dataset with the clustering
+    - ```distribution_{filename}.csv``` file: the distribution of the clustering
     - ```.png``` file: 3D position visualization
 ##### Run Weka:
 - Download [Weka](https://www.weka.io/), set the hyperparameters in the following **Details** part and run
