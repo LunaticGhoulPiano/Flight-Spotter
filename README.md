@@ -566,7 +566,9 @@ python cluster.py
         - ```min_points``` = 50, ```epsilon``` = 1.1
             ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/3D_optics.png)
             ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
-
+### Interact with the clustered data
+- [Demo of HDBSCAN with min_points = 7, epsilon = 0.6](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/clustered.html):
+    <iframe width="1278" height="719" src="https://www.youtube.com/embed/HUHzWu-EKtc" title="【Side Project Demo】Flight-Spotter: clustering the ADSB data (based on ADSB-Exchange data)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 ## Stage 3: Discord bot - Interactive system
 - To be continued
 -  Used scripts and folders: ```./bot.py```
