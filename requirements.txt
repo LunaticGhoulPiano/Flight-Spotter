@@ -10,3 +10,4 @@ discord.py
 geohash2
 sklearn
 seaborn
+scipy
