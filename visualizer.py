@@ -118,3 +118,6 @@ def draw_map(folder_path: str, filename: str):
     # output
     r.to_html(f"{folder_path}./{filename[:-4]}.html", notebook_display = False)
     print(f"{folder_path}./{filename[:-4]}.html generated.")
+
+if __name__ == "__main__":
+    draw_map("./python_results./optics./min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges", "clustered.csv")
