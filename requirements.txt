@@ -7,3 +7,4 @@ winsdk
 pandas
 discord.py
 geohash2
+sklearn
