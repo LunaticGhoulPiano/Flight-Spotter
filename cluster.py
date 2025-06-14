@@ -2,7 +2,7 @@ import os
 from tqdm import tqdm
 import pandas as pd
 import numpy as np
-import visualize
+import visualizer
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import StandardScaler
@@ -107,8 +107,8 @@ def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max
     plt.savefig(f"./python_results./kmeans./{path}./evaluation.png")
     
     # draw 3D
-    visualize.draw_3D(filtered_df, lowest_sse_clusterings, lowest_sse_cluster_num, "Lowest SSE", "lowest_sse", f"./python_results./kmeans./{path}")
-    visualize.draw_3D(filtered_df, highest_silhouette_score_clusterings, highest_silhouette_score_cluster_num, "Highest Silhouette Score", "highest_silhouette", f"./python_results./kmeans./{path}")
+    visualizer.draw_3D(filtered_df, lowest_sse_clusterings, lowest_sse_cluster_num, "Lowest SSE", "lowest_sse", f"./python_results./kmeans./{path}")
+    visualizer.draw_3D(filtered_df, highest_silhouette_score_clusterings, highest_silhouette_score_cluster_num, "Highest Silhouette Score", "highest_silhouette", f"./python_results./kmeans./{path}")
 
 # HDBSCAN
 def run_HDBSCAN(original_df, filtered_df, x, filename: str, min_points: int, epsilon: float):
@@ -136,7 +136,7 @@ def run_HDBSCAN(original_df, filtered_df, x, filename: str, min_points: int, eps
     distribution.to_csv(f"./python_results./hdbscan./{path}./distribution.csv", index = False)
 
     # draw 3D
-    visualize.draw_3D(filtered_df, clustered_df["cluster"], clustering_num, "HDBSCAN", "hdbscan", f"./python_results./hdbscan./{path}")
+    visualizer.draw_3D(filtered_df, clustered_df["cluster"], clustering_num, "HDBSCAN", "hdbscan", f"./python_results./hdbscan./{path}")
 
 # OPTICS
 def run_OPTICS(original_df, filtered_df, x, filename: str, min_points: int, epsilon: float):
@@ -164,7 +164,7 @@ def run_OPTICS(original_df, filtered_df, x, filename: str, min_points: int, epsi
     distribution.to_csv(f"./python_results./optics./{path}./distribution.csv", index = False)
 
     # draw 3D
-    visualize.draw_3D(filtered_df, clustered_df["cluster"], clustering_num, "OPTICS", "optics", f"./python_results./optics./{path}")
+    visualizer.draw_3D(filtered_df, clustered_df["cluster"], clustering_num, "OPTICS", "optics", f"./python_results./optics./{path}")
 
 # draw fine-tune records of OPTICS
 def draw_finetune_record_OPTICS(df = pd.read_csv("./python_results./optics./finetune_records.csv")):

@@ -43,7 +43,7 @@ Flight-Spotter
 ├──cluster.py
 ├──ecef.py
 ├──gps.py
-├──visualize.py
+├──visualizer.py
 ├──bot.py (currently unused)
 ├──adsb_lol.py (currently unused)
 ├──main.py (currently unused)

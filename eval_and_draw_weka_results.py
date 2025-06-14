@@ -2,7 +2,7 @@ import os
 from scipy.io import arff
 import pandas as pd
 import numpy as np
-import visualize
+import visualizer
 
 def get_clustering(filename: str, path: str):
     with open(f"{path}./{filename}", "r", encoding = "utf-8") as f:
@@ -31,7 +31,7 @@ def run(original_dataset: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv
                 # draw 3D
                 filtered_df = clustered_df[["t", "gs", "track", "squawk", "nav_heading", "ecef_x", "ecef_y", "ecef_z"]]
                 m = method.replace("clusterers.", "")
-                visualize.draw_3D(filtered_df, clustered_df["cluster"], len(np.unique(clustered_df["cluster"])), m, f"{arff_file[:-5]}", f"./weka_results./{method}")
+                visualizer.draw_3D(filtered_df, clustered_df["cluster"], len(np.unique(clustered_df["cluster"])), m, f"{arff_file[:-5]}", f"./weka_results./{method}")
 
 if __name__ == "__main__":
     run()
