@@ -32,6 +32,8 @@ def run(original_dataset: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv
                 distribution = clustered_df["cluster"].value_counts().reset_index()
                 distribution.columns = ["cluster", "count"]
                 distribution.to_csv(f"./weka_results./{method}./distribution_{arff_file[:-5]}.csv", index = False)
+                # draw distribution
+                visualizer.draw_distribution(distribution, f"{arff_file[:-5]}", f"./weka_results./{method}")
                 # draw 3D
                 filtered_df = clustered_df[["t", "gs", "track", "squawk", "nav_heading", "ecef_x", "ecef_y", "ecef_z"]]
                 m = method.replace("clusterers.", "")

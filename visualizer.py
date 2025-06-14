@@ -14,3 +14,14 @@ def draw_3D(filtered_df, clustering, num_of_clusters, mode, name, path):
         fig.colorbar(scatter, label = "Cluster")
         plt.tight_layout()
         plt.savefig(f"{path}./3D_{name}.png")
+
+def draw_distribution(distribution, filename, save_path):
+    distribution["cluster"] = distribution["cluster"].apply(lambda x: "noise" if x == -1 else str(x))
+    plt.figure(figsize = (8, 6))
+    plt.bar(distribution["cluster"], distribution["count"], color = "skyblue", edgecolor = "black")
+    plt.xlabel("Cluster")
+    plt.ylabel("Count")
+    plt.title(f"Cluster Distribution")
+    plt.xticks(distribution["cluster"])
+    plt.tight_layout()
+    plt.savefig(f"{save_path}./distribution_{filename}.png")
