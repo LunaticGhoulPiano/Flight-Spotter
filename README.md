@@ -567,7 +567,7 @@ python cluster.py
             ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/3D_optics.png)
             ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
 ### Demo: interact with the clustered data
-- Demo file: [HDBSCAN with min_points = 7, epsilon = 0.6](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/clustered.html)
+- Demo file (video click the image below): [HDBSCAN with min_points = 7, epsilon = 0.6](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/clustered.html)
 [![Watch the demo](https://img.youtube.com/vi/HUHzWu-EKtc/0.jpg)](https://www.youtube.com/watch?v=HUHzWu-EKtc)
 ## Stage 3: Discord bot - Interactive system
 - To be continued
