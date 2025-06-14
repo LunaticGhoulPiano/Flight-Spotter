@@ -7,7 +7,6 @@ data/*
 //!data/preprocessed
 
 filtered_region_maps
-test.ipynb
-temp.py
+
 model.py
 logs

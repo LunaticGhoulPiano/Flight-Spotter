@@ -116,6 +116,14 @@ Flight-Spotter
 │    │     ├──3D_hdbscan.png
 │    │     ├──clustered.csv
 │    │     └──distribution.csv
+│    └──optics
+│       ├──min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges
+│       │  ├──3D_optics.png
+│       │  ├──clustered.csv
+│       │  └──distribution.csv
+│       ├──finetune_records.csv
+│       ├──heatmap_clustering.png
+│       └──heatmap_noise.png
 └──filter_region_maps (auto-generated, based on the user's choose)
 │ ├──Taiwan_ADIZ.html
 │ └──Taiwam_manual_edges.html
@@ -373,6 +381,27 @@ So I choose to use clustering.
 ### Python
 - Path: ```./python_results```
 - Run: ```./cluster.py```
+    - [```cluster.run_HDBSCAN()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.HDBSCAN.html)
+        - Hyperparameters:
+            - Given minimum clustering points ```min_points``` and epsilon ```epsilon```
+            - Test 3 combinations (described as ()```min_points```, ```epsilon```): (7, 0.07), (7, 0.6), (20, 0.07), (20, 0.6)
+            - Result folder naming:
+                - ex. ```min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges```
+                    - Dataset = ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv```
+                    - Minimum clustering points = 7, epsilon = 0.6
+            - Outputs:
+                - ```3D_hdbscan.png```: visualizing by latitude, longitude, and geometric altitude with clustering
+                - ```distribution.csv```: the distribution of the clustering
+                - ```clustered.csv```: merge the original dataset with the clustering
+            - 3D position visualization:
+                - ```min_points``` = 7, ```epsilon``` = 0.07
+                    ![image](./python_results/hdbscan/min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
+                - ```min_points``` = 7, ```epsilon``` = 0.6
+                    ![image](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
+                - ```min_points``` = 20, ```epsilon``` = 0.07
+                    ![image](./python_results/hdbscan/min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
+                - ```min_points``` = 7, ```epsilon``` = 0.07
+                    ![image](./python_results/hdbscan/min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
     - [```cluster.run_KMeans()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html)
         - Hyperparameters:
             - Given minimum and maximum cluster number: ```min_cluster``` and ```max_cluster```
@@ -389,18 +418,45 @@ So I choose to use clustering.
             - ```lowest_sse_distribution.csv``` and ```highest_silhouette_distribution.csv```: the distribution of the clustering by the evaluation method
             - ```lowest_sse.csv``` and ```highest_silhouette.csv```: merge the original dataset with the clustering
             - ```ranking.csv```: all SSEs and Silhouette Scores from minimum cluster numnber to maximum cluster numnber
-    - [```cluster.run_HDBSCAN()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.HDBSCAN.html)
-        - Hyperparameters:
-            - Given minimum clustering points ```min_points``` and epsilon ```epsilon```
-            - Test 3 combinations (described as ()```min_points```, ```epsilon```): (7, 0.07), (7, 0.6), (20, 0.07), (20, 0.6)
-            - Result folder naming:
-                - ex. ```min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges```
-                    - Dataset = ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv```
-                    - Minimum clustering points = 7, epsilon = 0.6
+        - Evaluation graphs:
+            - ```min_cluster``` = 2, ```max_cluster``` = 40
+                - Lowest SSE: 3D position visualization
+                    ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
+                - Highest Silhouette score: 3D position visualization
+                    ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
+                - Evaluation of SSE and Silhouette score
+                    ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
+            - ```min_cluster``` = 2, ```max_cluster``` = 125
+                - Lowest SSE: 3D position visualization
+                    ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
+                - Highest Silhouette score: 3D position visualization
+                    ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
+                - Evaluation of SSE and Silhouette score
+                    ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
+            - ```min_cluster``` = 7, ```max_cluster``` = 20
+                - Lowest SSE: 3D position visualization
+                    ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
+                - Highest Silhouette score: 3D position visualization
+                    ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
+                - Evaluation of SSE and Silhouette score
+                    ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
+    - [```cluster.run_OPTICS()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html)
+        - Fine-tune: ```cluster.finetune_OPTICS```
             - Outputs:
-                - ```3D_hdbscan.png```: visualizing by latitude, longitude, and geometric altitude with clustering
-                - ```distribution.csv```: the distribution of the clustering
-                - ```clustered.csv```: merge the original dataset with the clustering
+                - ```finetune_records.csv```: my fine-tuning records
+                - ```heatmap_clustering.png```: heatmap of ```min_points``` and ```epsilon``` to number of clustering
+                - ```heatmap_noise.png```: heatmap of ```min_points``` and ```epsilon``` to number of noise points
+        - Hyperparameters:
+            - After fine-tuning, when ```min_point``` = 50, ```epsilon``` = 1.1, the number of noise points is the lowest
+                ![image](./python_results/optics/heatmap_clustering.png)
+                ![image](./python_results/optics/heatmap_noise.png)
+        - Outputs:
+            - ```3D_optics.png```: visualizing by latitude, longitude, and geometric altitude with clustering
+            - ```distribution.csv```: the distribution of the clustering
+            - ```clustered.csv```: merge the original dataset with the clustering
+        - 3D position visualization:
+            - ```min_points``` = 50, ```epsilon``` = 1.1
+                ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/3D_optics.png)
 ## Stage 2.2: Generative-AI application (deprecated)
 ### Goal
 To generate the remaining flight routes by the ADS-B signal of chose flight.
