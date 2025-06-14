@@ -150,27 +150,32 @@ Flight-Spotter
 │    │  ├──min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │  │  ├──3D_hdbscan.png
 │    │  │  ├──clustered.csv
+│    │     ├──clustered.html
 │    │  │  ├──distribution.csv
 │    │  │  └──distribution.png
 │    │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │  │  ├──3D_hdbscan.png
 │    │  │  ├──clustered.csv
+│    │     ├──clustered.html
 │    │  │  ├──distribution.csv
 │    │  │  └──distribution.png
 │    │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │  │  ├──3D_hdbscan.png
 │    │  │  ├──clustered.csv
+│    │     ├──clustered.html
 │    │  │  ├──distribution.csv
 │    │  │  └──distribution.png
 │    │  └──min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
 │    │     ├──3D_hdbscan.png
 │    │     ├──clustered.csv
+│    │     ├──clustered.html
 │    │     ├──distribution.csv
 │    │     └──distribution.png
 │    └──optics
 │       ├──min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges
 │       │  ├──3D_optics.png
 │       │  ├──clustered.csv
+│       │  ├──clustered.html
 │       │  ├──distribution.csv
 │       │  └──distribution.png
 │       ├──finetune_records.csv
@@ -479,6 +484,7 @@ python cluster.py
         - Outputs:
             - ```3D_hdbscan.png```: visualizing by latitude, longitude, and geometric altitude with clustering
             - ```clustered.csv```: merge the original dataset with the clustering
+            - ```clustered.html```: interactive clustered data
             - ```distribution.csv```: the distribution of the clustering
             - ```distribution.png```: the visualized distribution of the clustering
         - 3D position visualization:
@@ -553,6 +559,7 @@ python cluster.py
     - Outputs:
         - ```3D_optics.png```: visualizing by latitude, longitude, and geometric altitude with clustering
         - ```clustered.csv```: merge the original dataset with the clustering
+        - ```clustered.html```: interactive clustered data
         - ```distribution.csv```: the distribution of the clustering
         - ```distribution.png```: the visualized distribution of the clustering
     - 3D position visualization:

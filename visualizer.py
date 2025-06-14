@@ -118,11 +118,3 @@ def draw_map(folder_path: str, filename: str):
     # output
     r.to_html(f"{folder_path}./{filename[:-4]}.html", notebook_display = False)
     print(f"{folder_path}./{filename[:-4]}.html generated.")
-
-#if __name__ == "__main__":
-#    draw_map("./python_results./kmeans./min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges", "clustered_highest_silhouette.csv")
-#    draw_map("./python_results./kmeans./min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges", "clustered_lowest_sse.csv")
-#    draw_map("./python_results./kmeans./min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges", "clustered_highest_silhouette.csv")
-#   draw_map("./python_results./kmeans./min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges", "clustered_lowest_sse.csv")
-#    draw_map("./python_results./kmeans./min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges", "clustered_highest_silhouette.csv")
-#    draw_map("./python_results./kmeans./min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges", "clustered_lowest_sse.csv")
