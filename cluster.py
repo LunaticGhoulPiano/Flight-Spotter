@@ -8,7 +8,7 @@ from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_score
 
 # K-Means
-def KMeans_elbow(original_df, filtered_df, x, filename: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv", min_cluster: int = 2, max_cluster: int = 125):
+def KMeans_elbow(original_df, filtered_df, x, filename: str, min_cluster: int, max_cluster: int):
     if max_cluster < min_cluster:
         print(f"Error: max_cluster {max_cluster} < min_cluster {min_cluster}")
         return
@@ -102,7 +102,12 @@ def KMeans_elbow(original_df, filtered_df, x, filename: str = "readsb-hist_filte
     visualize.draw_3D(filtered_df, lowest_sse_clusterings, lowest_sse_cluster_num, "Lowest SSE", "lowest_sse", f"./python_results./kmeans./{path}")
     visualize.draw_3D(filtered_df, highest_silhouette_score_clusterings, highest_silhouette_score_cluster_num, "Highest Silhouette Score", "highest_silhouette", f"./python_results./kmeans./{path}")
 
-def run(filename: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv"):
+# HDBSCAN
+def HDBSCAN(original_df, filtered_df, x, filename: str, min_cluster: int, max_cluster: int):
+    pass
+
+# main
+def run(filename: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv", min_cluster: int = 7, max_cluster: int = 20):
     # load
     df = pd.read_csv(f"./data./preprocessed./{filename}")
 
@@ -117,8 +122,11 @@ def run(filename: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv"):
     scaler = StandardScaler()
     x = scaler.fit_transform(df_encoded)
 
-    # elbow
-    KMeans_elbow(df, filtered_df, x, filename, 2, 40)
+    # K-Means
+    KMeans_elbow(df, filtered_df, x, filename, min_cluster, max_cluster)
+
+    # HDBSCAN
+    #HDBSCAN(df, filtered_df, x, filename, min_cluster, max_cluster)
 
 if __name__ == "__main__":
     run()
