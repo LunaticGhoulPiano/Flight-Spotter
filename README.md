@@ -15,6 +15,9 @@ We split this project into the three (or four) stages:
 
 ## TODO
 - [ ] Apply the traditional geography methods: KDE (Kernel Density Estimation) and Getis-ord G* (Hotspot Analysis); and social network analysis methods: In Degree, Betweenness Centrality, and Pagerank.
+- [ ] Update flow chart.
+- [ ] Add discord bot to query the cluster with adsb.lol api.
+- [ ] Update Overview.
 
 ## Flow
 - See ```./flow.drawio``` :
@@ -445,7 +448,7 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
 - Methods:
     - TODO
 #### Clustering
-- Weka
+1. Weka
     - Run:
         - Download [Weka](https://www.weka.io/), set the hyperparameters as the following and run
         - Convert and visualize the outputs:
@@ -504,7 +507,7 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
                 - ```minNumClusters``` = 7, ```maxNumClusters``` = 20: 20 clusters (0 ~ 19)
                     ![image](./weka_results/XMeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/distribution.png)
                     ![image](./weka_results/XMeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/3D.png)
-- Python
+2. Python
     - Run:
         ```
         python cluster.py
