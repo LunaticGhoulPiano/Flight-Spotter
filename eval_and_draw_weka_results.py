@@ -4,8 +4,8 @@ import pandas as pd
 import numpy as np
 import visualizer
 
-def get_clustering(filename: str, path: str):
-    with open(f"{path}./{filename}", "r", encoding = "utf-8") as f:
+def get_clustering(filepath: str):
+    with open(filepath, "r", encoding = "utf-8") as f:
         data, _ = arff.loadarff(f)
     clustering = pd.DataFrame(data)["Cluster"]
     
@@ -22,24 +22,24 @@ def run(original_dataset: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv
     path = f"./data./preprocessed./{original_dataset}"
     original_df = pd.read_csv(path)
     for method in os.listdir("./weka_results"):
-        for arff_file in os.listdir(f"./weka_results./{method}"):
-            if arff_file.endswith(".arff"):
-                clustered_df = original_df.copy()
-                # store the clustered data
-                clustered_df["cluster"] = get_clustering(arff_file, f"./weka_results./{method}")
-                clustered_df.to_csv(f"./weka_results./{method}./clustered_{arff_file[:-5]}.csv", index = False)
-                # store the distribution of clusters
-                distribution = clustered_df["cluster"].value_counts().reset_index()
-                distribution.columns = ["cluster", "count"]
-                distribution.to_csv(f"./weka_results./{method}./distribution_{arff_file[:-5]}.csv", index = False)
-                # draw distribution
-                visualizer.draw_distribution(distribution, f"distribution_{arff_file[:-5]}", f"./weka_results./{method}")
-                # draw 3D
-                filtered_df = clustered_df[["t", "gs", "track", "squawk", "nav_heading", "ecef_x", "ecef_y", "ecef_z"]]
-                m = method.replace("clusterers.", "")
-                visualizer.draw_3D(filtered_df, clustered_df["cluster"], len(np.unique(clustered_df["cluster"])), m, f"{arff_file[:-5]}", f"./weka_results./{method}")
-                # draw html
-                visualizer.draw_map(f"./weka_results./{method}", f"clustered_{arff_file[:-5]}.csv")
+        cur_path = f"./weka_results./{method}./{original_dataset[:-4]}"
+        for folder in os.listdir(cur_path):
+            for file in os.listdir(f"{cur_path}./{folder}"):
+                if file == "clustered.arff":
+                    output_path = f"{cur_path}./{folder}"
+                    # store the clusterings
+                    clusterings = get_clustering(f"{output_path}./{file}")
+                    pd.DataFrame({"cluster": clusterings}).to_csv(f"{output_path}./clustered.csv", index=False)
+                    # store the distribution of clusters
+                    original_df["cluster"] = clusterings
+                    distribution = original_df["cluster"].value_counts().reset_index()
+                    distribution.columns = ["cluster", "count"]
+                    distribution.to_csv(f"{output_path}./distribution.csv", index = False)
+                    filtered_df = original_df[["t", "gs", "track", "squawk", "nav_heading", "ecef_x", "ecef_y", "ecef_z"]]
+
+                    visualizer.draw_distribution(distribution, output_path)
+                    visualizer.draw_3D(filtered_df, clusterings, len(np.unique(original_df["cluster"])), method, output_path)
+                    visualizer.draw_map(original_df, output_path)
 
 if __name__ == "__main__":
     run()

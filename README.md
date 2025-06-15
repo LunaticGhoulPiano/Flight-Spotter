@@ -71,122 +71,152 @@ Flight-Spotter
 │     ├──readsb-hist_merged.csv
 │     ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
 │     └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
-├──weka_results
-│     ├──clusterers.DBSCAN
-│     │  ├──3D_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│     │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│     │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│     │  ├──clustered_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│     │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│     │  ├──distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│     │  ├──3D_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│     │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│     │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│     │  ├──clustered_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│     │  ├──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│     │  └──distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│     ├──clusterers.EM
-│     │  ├──3D_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│     │  ├──cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│     │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│     │  ├──clustered_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│     │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│     │  ├──distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│     │  ├──3D_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│     │  ├──cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│     │  ├──clustered_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│     │  ├──clustered_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│     │  ├──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│     │  └──distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│     └──clusterers.XMeans
-│        ├──3D_readsb-hist_filtered_by_Taiwan_manual_edges.png
-│        ├──readsb-hist_filtered_by_Taiwan_manual_edges.arff
-│        ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│        ├──clustered_readsb-hist_filtered_by_Taiwan_manual_edges.html
-│        ├──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.csv
-│        └──distribution_readsb-hist_filtered_by_Taiwan_manual_edges.png
-├──python_results
-│     ├──kmeans
-│     │  ├──min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges
-│     │  │  ├──3D_highest_silhouette.png
-│     │  │  ├──3D_lowest_sse.png
-│     │  │  ├──evaluation.png
-│     │  │  ├──distribution_highest_silhouette.csv
-│     │  │  ├──distribution_highest_silhouette.png
-│     │  │  ├──clustered_highest_silhouette.csv
-│     │  │  ├──clustered_highest_silhouette.html
-│     │  │  ├──distribution_lowest_sse.csv
-│     │  │  ├──distribution_lowest_sse.png
-│     │  │  ├──clustered_lowest_sse.csv
-│     │  │  ├──clustered_lowest_sse.html
-│     │  │  └──ranking.csv
-│     │  ├──min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges
-│     │  │  ├──3D_highest_silhouette.png
-│     │  │  ├──3D_lowest_sse.png
-│     │  │  ├──evaluation.png
-│     │  │  ├──distribution_highest_silhouette.csv
-│     │  │  ├──distribution_highest_silhouette.png
-│     │  │  ├──clustered_highest_silhouette.csv
-│     │  │  ├──clustered_highest_silhouette.html
-│     │  │  ├──distribution_lowest_sse.csv
-│     │  │  ├──distribution_lowest_sse.png
-│     │  │  ├──clustered_lowest_sse.csv
-│     │  │  ├──clustered_lowest_sse.html
-│     │  │  └──ranking.csv
-│     │  └──min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges
-│     │     ├──3D_highest_silhouette.png
-│     │     ├──3D_lowest_sse.png
-│     │     ├──evaluation.png
-│     │     ├──distribution_highest_silhouette.csv
-│     │     ├──distribution_highest_silhouette.png
-│     │     ├──clustered_highest_silhouette.csv
-│     │     ├──clustered_highest_silhouette.html
-│     │     ├──distribution_lowest_sse.csv
-│     │     ├──distribution_lowest_sse.png
-│     │     ├──clustered_lowest_sse.csv
-│     │     ├──clustered_lowest_sse.html
-│     │     └──ranking.csv
-│     ├──hdbscan
-│     │  ├──min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
-│     │  │  ├──3D_hdbscan.png
-│     │  │  ├──clustered.csv
-│     │  │  ├──clustered.html
-│     │  │  ├──distribution.csv
-│     │  │  └──distribution.png
-│     │  ├──min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
-│     │  │  ├──3D_hdbscan.png
-│     │  │  ├──clustered.csv
-│     │  │  ├──clustered.html
-│     │  │  ├──distribution.csv
-│     │  │  └──distribution.png
-│     │  ├──min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges
-│     │  │  ├──3D_hdbscan.png
-│     │  │  ├──clustered.csv
-│     │  │  ├──clustered.html
-│     │  │  ├──distribution.csv
-│     │  │  └──distribution.png
-│     │  └──min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges
-│     │     ├──3D_hdbscan.png
-│     │     ├──clustered.csv
-│     │     ├──clustered.html
-│     │     ├──distribution.csv
-│     │     └──distribution.png
-│     └──optics
-│        ├──min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges
-│        │  ├──3D_optics.png
-│        │  ├──clustered.csv
-│        │  ├──clustered.html
-│        │  ├──distribution.csv
-│        │  └──distribution.png
-│        ├──finetune_records.csv
-│        ├──heatmap_clustering.png
-│        └──heatmap_noise.png
 ├──filter_region_maps (auto-generated, based on the user's choose)
 │  ├──Taiwan_ADIZ.html
 │  └──Taiwam_manual_edges.html
-└──logs (auto-generated)
-   ├──basic_ac_db.txt
-   └──readsb-hist.txt
+│──logs (auto-generated)
+│  ├──basic_ac_db.txt
+│  └──readsb-hist.txt
+├──weka_results
+│     ├──DBSCAN
+│     │  └──readsb-hist_filtered_by_Taiwan_manual_edges
+│     │     ├──min_7_epsilon_0_007
+│     │     │  ├──clustered.arff
+│     │     │  ├──3D.png
+│     │     │  ├──clustered.csv
+│     │     │  ├──clustered.html
+│     │     │  ├──distribution.csv
+│     │     │  └──distribution.png
+│     │     └──min_20_epsilon_0_6
+│     │        ├──clustered.arff
+│     │        ├──3D.png
+│     │        ├──clustered.csv
+│     │        ├──clustered.html
+│     │        ├──distribution.csv
+│     │        └──distribution.png
+│     ├──EM
+│     │  └──readsb-hist_filtered_by_Taiwan_manual_edges
+│     │     ├──clusters_7
+│     │     │  ├──clustered.arff
+│     │     │  ├──3D.png
+│     │     │  ├──clustered.csv
+│     │     │  ├──clustered.html
+│     │     │  ├──distribution.csv
+│     │     │  └──distribution.png
+│     │     └──clusters_20
+│     │        ├──clustered.arff
+│     │        ├──3D.png
+│     │        ├──clustered.csv
+│     │        ├──clustered.html
+│     │        ├──distribution.csv
+│     │        └──distribution.png
+│     └──XMeans
+│        └──readsb-hist_filtered_by_Taiwan_manual_edges
+│           └──min_7_max_20
+│              ├──clustered.arff
+│              ├──3D.png
+│              ├──clustered.csv
+│              ├──clustered.html
+│              ├──distribution.csv
+│              └──distribution.png
+└──python_results
+      ├──kmeans
+      │  └──readsb-hist_filtered_by_Taiwan_manual_edges
+      │     ├──min_2_max_40
+      │     │  ├──SSE
+      │     │  │  ├──3D.png
+      │     │  │  ├──clustered.csv
+      │     │  │  ├──clustered.html
+      │     │  │  ├──distribution.csv
+      │     │  │  └──distribution.png
+      │     │  ├──Silhouette_Score
+      │     │  │  ├──3D.png
+      │     │  │  ├──clustered.csv
+      │     │  │  ├──clustered.html
+      │     │  │  ├──distribution.csv
+      │     │  │  └──distribution.png
+      │     │  ├──evaluation.csv
+      │     │  └──evaluation.png
+      │     ├──min_2_max_125
+      │     │  ├──SSE
+      │     │  │  ├──3D.png
+      │     │  │  ├──clustered.csv
+      │     │  │  ├──clustered.html
+      │     │  │  ├──distribution.csv
+      │     │  │  └──distribution.png
+      │     │  ├──Silhouette_Score
+      │     │  │  ├──3D.png
+      │     │  │  ├──clustered.csv
+      │     │  │  ├──clustered.html
+      │     │  │  ├──distribution.csv
+      │     │  │  └──distribution.png
+      │     │  ├──evaluation.csv
+      │     │  └──evaluation.png
+      │     └──min_7_max_20
+      │        ├──SSE
+      │        │  ├──3D.png
+      │        │  ├──clustered.csv
+      │        │  ├──clustered.html
+      │        │  ├──distribution.csv
+      │        │  └──distribution.png
+      │        ├──Silhouette_Score
+      │        │  ├──3D.png
+      │        │  ├──clustered.csv
+      │        │  ├──clustered.html
+      │        │  ├──distribution.csv
+      │        │  └──distribution.png
+      │        ├──evaluation.csv
+      │        └──evaluation.png
+      ├──hdbscan
+      │  ├──finetune_records
+      │  │  └──readsb-hist_filtered_by_Taiwan_manual_edges
+      │  │     ├──heatmap_clustering.png
+      │  │     ├──heatmap_noise.png
+      │  │     └──records.csv
+      │  └──readsb-hist_filtered_by_Taiwan_manual_edges
+      │     ├──min_7_epsilon_0_07
+      │     │     ├──3D.png
+      │     │     ├──clustered.csv
+      │     │     ├──clustered.html
+      │     │     ├──distribution.csv
+      │     │     └──distribution.png
+      │     ├──min_10_epsilon_1_4
+      │     │     ├──3D.png
+      │     │     ├──clustered.csv
+      │     │     ├──clustered.html
+      │     │     ├──distribution.csv
+      │     │     └──distribution.png
+      │     └──min_20_epsilon_0_6
+      │           ├──3D.png
+      │           ├──clustered.csv
+      │           ├──clustered.html
+      │           ├──distribution.csv
+      │           └──distribution.png
+      └──optics
+         ├──finetune_records
+         │  └──readsb-hist_filtered_by_Taiwan_manual_edges
+         │     ├──heatmap_clustering.png
+         │     ├──heatmap_noise.png
+         │     └──records.csv
+         └──readsb-hist_filtered_by_Taiwan_manual_edges
+            ├──min_7_epsilon_0_07
+            │     ├──3D.png
+            │     ├──clustered.csv
+            │     ├──clustered.html
+            │     ├──distribution.csv
+            │     └──distribution.png
+            ├──min_20_epsilon_0_6
+            │     ├──3D.png
+            │     ├──clustered.csv
+            │     ├──clustered.html
+            │     ├──distribution.csv
+            │     └──distribution.png
+            └──min_50_epsilon_1_1
+                  ├──3D.png
+                  ├──clustered.csv
+                  ├──clustered.html
+                  ├──distribution.csv
+                  └──distribution.png
 ```
 
 ## Datasets
@@ -393,182 +423,162 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
     ecef_y
     ecef_z
     ```
-#### Weka
-- Path: ```./weka_results```
-- Weka output: ```.arff``` file
-- First use Weka to generate ```.arff``` file, then convert and visualize by running ```./eval_end_draw_weka_results.py```
-- Outputs after running ```./eval_end_draw_weka_results.py```:
-    - ```clustered_{filename}.csv``` file: merge the original dataset with the clustering
-    - ```clustered_{filename}.html``` file: interactive clustered data
-    - ```distribution_{filename}.csv``` file: the distribution of the clustering
-    - ```distribution_{filename}.png``` file: the visualized distribution of the clustering
-    - ```3D_{filename}.png``` file: 3D position visualization
-##### Run Weka:
-- Download [Weka](https://www.weka.io/), set the hyperparameters in the following **Details** part and run
-###### Details:
-- [weka.clusterers.DBSCAN](https://weka.sourceforge.io/doc.stable/weka/clusterers/DBSCAN.html)
-    - Hyperparameters:
-        - 0.07 <= ```epsilon``` <= 0.6
-        - 7 <= ```minPoints``` <= 20
-    - Results:
-        - Path: ```./weka_results./clusterers.DBSCAN```
-        - File naming: ```min_{minPoints}_epsilon_{epsilon}_{dataset name}.arff```
-            - ex. ```min_7_epsilon_007_```: ```minPoints``` = 7, ```epsilon``` = 0.07
-            - ex. ```min_20_epsilon_06_```: ```minPoints``` = 20, ```epsilon``` = 0.6
-    - Outputs:
-        - ```min_cluster``` = 7, ```epsilon``` = 0.007
-            ![image](./weka_results/clusterers.DBSCAN/3D_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-            ![image](./weka_results/clusterers.DBSCAN/distribution_min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-        - ```min_cluster``` = 20, ```epsilon``` = 0.6
-            ![image](./weka_results/clusterers.DBSCAN/3D_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-            ![image](./weka_results/clusterers.DBSCAN/distribution_min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-- [weka.clusterers.EM](https://weka.sourceforge.io/doc.dev/weka/clusterers/EM.html)
-    - Hyperparameters:
-        - ```maxIterations```: 500
-        - ```minLogLikelihoodImprovementCV```: 1.0E-6
-        - ```minLogLikelihoodImprovementIterating```: 1.0E-6
-        - ```minStdDev```: 1.0E-6
-        - ```numExecutionSlots```: 1
-        - ```numFolds```: 10
-        - ```numKMeansRuns```: 10
-        - ```seed```: 10
-    - Results:
-        - Path: ```./weka_results./clusterers.EM```
-        - File naming: ```cluster_{num_of_clusters}_readsb-hist_filtered_by_Taiwan_manual_edges.arff```
-            - ex. ```cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.arff```: 7 clusters
-            - ex. ```cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.arff```: 20 clusters
-    - Outputs:
-        - ```num_of_clusters``` = 7
-            ![image](./weka_results/clusterers.EM/3D_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-            ![image](./weka_results/clusterers.EM/distribution_cluster_7_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-        - ```num_of_clusters``` = 20
-            ![image](./weka_results/clusterers.EM/3D_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-            ![image](./weka_results/clusterers.EM/distribution_cluster_20_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-- [weka.clusterers.XMeans](https://weka.sourceforge.io/doc.stable/weka/clusterers/XMeans.html)
-    - Preprocessing:
-        - Using [weka.filters.unsupervised.attribute.NominalToBinary](https://weka.sourceforge.io/doc.dev/weka/filters/unsupervised/attribute/NominalToBinary.html) to one-hot encode the attribute ```t```
-    - Hyperparameters:
-        - ```seed```: 10
-        - ```binValue```: 1.0
-        - ```cutOffFactors```: 0.5
-        - ```maxIterations```: 500
-        - ```maxKMeans```: 1000
-        - ```maxKMeansForChildren```: 1000
-        - ```minNumClusters```: 7
-        - ```maxNumClusters```: 20
-    - Result:
-        - Path: ```./weka_results./clusterers.XMeans./readsb-hist_filtered_by_Taiwan_manual_edges.arff```
-    - Output:
-        - ```num_of_clusters``` = 20
-            ![image](./weka_results/clusterers.XMeans/3D_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-            ![image](./weka_results/clusterers.XMeans/distribution_readsb-hist_filtered_by_Taiwan_manual_edges.png)
-##### Convert the Weka outputs
-```
-python eval_end_draw_weka_results.py
-```
-#### Python
-- Path: ```./python_results```
-##### Run clustering
-```
-python cluster.py
-```
-###### Details:
-- [```cluster.run_HDBSCAN()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.HDBSCAN.html)
-    - Hyperparameters:
-        - Given minimum clustering points ```min_points``` and epsilon ```epsilon```
-        - Test 3 combinations (described as ()```min_points```, ```epsilon```): (7, 0.07), (7, 0.6), (20, 0.07), (20, 0.6)
-        - Result folder naming:
-            - ex. ```min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges```
-                - Dataset = ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv```
-                - Minimum clustering points = 7, epsilon = 0.6
-        - Outputs:
-            - ```3D_hdbscan.png```: visualizing by latitude, longitude, and geometric altitude with clustering
-            - ```clustered.csv```: merge the original dataset with the clustering
-            - ```clustered.html```: interactive clustered data
-            - ```distribution.csv```: the distribution of the clustering
-            - ```distribution.png```: the visualized distribution of the clustering
-        - 3D position visualization:
-            - ```min_points``` = 7, ```epsilon``` = 0.07
-                ![image](./python_results/hdbscan/min_7_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
-                ![image](./python_results/hdbscan/min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
-            - ```min_points``` = 7, ```epsilon``` = 0.6
-                ![image](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
-                ![image](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
-            - ```min_points``` = 20, ```epsilon``` = 0.07
-                ![image](./python_results/hdbscan/min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
-                ![image](./python_results/hdbscan/min_20_epsilon_007_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
-            - ```min_points``` = 7, ```epsilon``` = 0.07
-                ![image](./python_results/hdbscan/min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/3D_hdbscan.png)
-                ![image](./python_results/hdbscan/min_20_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
-- [```cluster.run_KMeans()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html)
-    - Hyperparameters:
-        - Given minimum and maximum cluster number: ```min_cluster``` and ```max_cluster```
-        - Test 3 combinations (described as ()```min_cluster```, ```max_cluster```): (2, 40), (2, 125), (7, 20)
-    - Using Elbow Method - SSE (Sum of the Squared Errors) and Silhouette Score to evaluate
-    - Save the clusterings of lowest SSE and highest Silhouette Score
-    - Result folder naming:
-        - ex. ```min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges```
-            - Dataset = ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv```
-            - Minimum clustering = 2, maximum clustering = 40
-    - Outputs:
-        - ```evaluation.png```: evaluating SSE and Silhouette Score
-        - ```3D_lowest_sse.png``` and ```3D_highest_silhouette.png```: visualizing by latitude, longitude, and geometric altitude with clustering
-        - ```clustered_lowest_sse.csv``` and ```clustered_highest_silhouette.csv```: merge the original dataset with the clustering
-        - ```clustered_lowest_sse.html``` and ```clustered_highest_silhouette.html```: interactive clustered data
-        - ```distribution_lowest_sse.csv``` and ```distribution_highest_silhouette.csv```: the distribution of the clustering by the evaluation method
-        - ```distribution_lowest_sse.png``` and ```distribution_highest_silhouette.png```: the visualized distribution of the clustering by the evaluation method
-        - ```ranking.csv```: all SSEs and Silhouette Scores from minimum cluster numnber to maximum cluster numnber
-    - Evaluation graphs:
-        - ```min_cluster``` = 2, ```max_cluster``` = 40
-            - Lowest SSE: 3D position visualization
-                ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
-                ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_lowest_sse.png)
-            - Highest Silhouette score: 3D position visualization
-                ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
-                ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_highest_silhouette.png)
-            - Evaluation of SSE and Silhouette score
-                ![image](./python_results/kmeans/min_2_max_40_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
-        - ```min_cluster``` = 2, ```max_cluster``` = 125
-            - Lowest SSE: 3D position visualization
-                ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
-                ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_lowest_sse.png)
-            - Highest Silhouette score: 3D position visualization
-                ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
-                ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_highest_silhouette.png)
-            - Evaluation of SSE and Silhouette score
-                ![image](./python_results/kmeans/min_2_max_125_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
-        - ```min_cluster``` = 7, ```max_cluster``` = 20
-            - Lowest SSE: 3D position visualization
-                ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/3D_lowest_sse.png)
-                ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_lowest_sse.png)
-            - Highest Silhouette score: 3D position visualization
-                ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/3D_highest_silhouette.png)
-                ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/distribution_highest_silhouette.png)
-            - Evaluation of SSE and Silhouette score
-                ![image](./python_results/kmeans/min_7_max_20_readsb-hist_filtered_by_Taiwan_manual_edges/evaluation.png)
-- [```cluster.run_OPTICS()```](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html)
-    - Fine-tune: ```cluster.finetune_OPTICS```
-        - Outputs:
-            - ```finetune_records.csv```: my fine-tuning records
-            - ```heatmap_clustering.png```: heatmap of ```min_points``` and ```epsilon``` to number of clustering
-            - ```heatmap_noise.png```: heatmap of ```min_points``` and ```epsilon``` to number of noise points
-    - Hyperparameters:
-        - After fine-tuning, when ```min_point``` = 50, ```epsilon``` = 1.1, the number of noise points is the lowest
-            ![image](./python_results/optics/heatmap_clustering.png)
-            ![image](./python_results/optics/heatmap_noise.png)
-    - Outputs:
-        - ```3D_optics.png```: visualizing by latitude, longitude, and geometric altitude with clustering
-        - ```clustered.csv```: merge the original dataset with the clustering
-        - ```clustered.html```: interactive clustered data
-        - ```distribution.csv```: the distribution of the clustering
-        - ```distribution.png```: the visualized distribution of the clustering
-    - 3D position visualization:
-        - ```min_points``` = 50, ```epsilon``` = 1.1
-            ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/3D_optics.png)
-            ![image](./python_results/optics/min_50_epsilon_11_readsb-hist_filtered_by_Taiwan_manual_edges/distribution.png)
-### Demo: interact with the clustered data
-- Demo file (video click the image below): [HDBSCAN with min_points = 7, epsilon = 0.6](./python_results/hdbscan/min_7_epsilon_06_readsb-hist_filtered_by_Taiwan_manual_edges/clustered.html)
-[![Watch the demo](https://img.youtube.com/vi/HUHzWu-EKtc/0.jpg)](https://www.youtube.com/watch?v=HUHzWu-EKtc)
+- File naming
+    - ```clustered.arff```: the output file after using Weka.
+    - ```clustered.csv```: the output file after clustered, only has one column ```cluster```, ```-1``` means noise, else means the serial number of the cluster.
+    - ```clustered.html```: the visualized map page that scatter each row in data, colored by the cluster number. The color of noise must be gray, else chosen randomly. The color will not repeat.
+    - ```3D.png```: the 3D (```lat```, ```lon```, ```alt_geom```) visualized graph that colored by cluster number.
+    - ```distribution.csv```: the distribution of the number of each cluster.
+    - ```distribution.png```: the bar chart of ```distribution.csv```.
+#### Clustering
+- Weka
+    - Run:
+        - Download [Weka](https://www.weka.io/), set the hyperparameters in the following and run
+        1. [DBSCAN](https://weka.sourceforge.io/doc.stable/weka/clusterers/DBSCAN.html)
+            - After fine-tuned manually, I choose 2 combinations of ```minPoints``` and ```epsilon```:
+                1. ```minPoints``` = 7, ```epsilon``` = 0.07
+                2. ```minPoints``` = 20, ```epsilon``` = 0.6
+            - Other hyperparameters remain as the defaults
+            - The result clustering will be legitimate in the following intervals:
+                - 0.07 <= ```epsilon``` <= 0.6
+                - 7 <= ```minPoints``` <= 20
+            - Results:
+                - ```minPoints``` = 7, ```epsilon``` = 0.07: 87 clusters (noise + 0 ~ 85)
+                    ![image](./weka_results/DBSCAN/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_007/distribution.png)
+                    ![image](./weka_results/DBSCAN/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_007/3D.png)
+                - ```minPoints``` = 20, ```epsilon``` = 0.6: 17 clusters (noise + 0 ~ 15)
+                    ![image](./weka_results/DBSCAN/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_6/distribution.png)
+                    ![image](./weka_results/DBSCAN/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_6/3D.png)
+        2. [EM](https://weka.sourceforge.io/doc.dev/weka/clusterers/EM.html)
+            - Based on the result of DBSCAN, I only try these 2 combinations:
+                1. ```numClusters``` = 7
+                2. ```numClusters``` = 20
+            - Other hyperparameters settings:
+                - ```maxIterations```: 500
+                - ```minLogLikelihoodImprovementCV```: 1.0E-6
+                - ```minLogLikelihoodImprovementIterating```: 1.0E-6
+                - ```minStdDev```: 1.0E-6
+                - ```numExecutionSlots```: 1
+                - ```numFolds```: 10
+                - ```numKMeansRuns```: 10
+                - ```seed```: 10
+            - Results:
+                - ```numClusters``` = 7: 7 clusters (0 ~ 6)
+                    ![image](./weka_results/EM/readsb-hist_filtered_by_Taiwan_manual_edges/clusters_7/distribution.png)
+                    ![image](./weka_results/EM/readsb-hist_filtered_by_Taiwan_manual_edges/clusters_7/3D.png)
+                - ```numClusters``` = 20: 20 clusters (0 ~ 19)
+                    ![image](./weka_results/EM/readsb-hist_filtered_by_Taiwan_manual_edges/clusters_20/distribution.png)
+                    ![image](./weka_results/EM/readsb-hist_filtered_by_Taiwan_manual_edges/clusters_20/3D.png)
+        3. [XMeans](https://weka.sourceforge.io/doc.stable/weka/clusterers/XMeans.html)
+            - Preprocessing:
+                - Use [weka.filters.unsupervised.attribute.NominalToBinary](https://weka.sourceforge.io/doc.dev/weka/filters/unsupervised/attribute/NominalToBinary.html) to one-hot encode the attribute ```t```
+            - Based on the previous results, I only try the 1 combination:
+                - ```minNumClusters``` = 7, ```maxNumClusters``` = 20
+            - Other hyperparameters:
+                - ```seed```: 10
+                - ```binValue```: 1.0
+                - ```cutOffFactors```: 0.5
+                - ```maxIterations```: 500
+                - ```maxKMeans```: 1000
+                - ```maxKMeansForChildren```: 1000
+            - Results:
+                - ```minNumClusters``` = 7, ```maxNumClusters``` = 20: 20 clusters (0 ~ 19)
+                    ![image](./weka_results/XMeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/distribution.png)
+                    ![image](./weka_results/XMeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/3D.png)
+    - Convert and visualize the outputs:
+        ```
+        python eval_end_draw_weka_results.py
+        ```
+- Python
+    - Run:
+        ```
+        python cluster.py
+        ```
+        1. [K-Means](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html)
+            - I try the 3 combination ranges of ```min_clusters``` and ```max_clusters```:
+                1. ```min_clusters``` = 2, ```max_clusters``` = 40
+                2. ```min_clusters``` = 2, ```max_clusters``` = 125
+                3. ```min_clusters``` = 7, ```max_clusters``` = 20
+            - The hyperparameters settings:
+                ```random_state``` = 0, ```n_init``` = 10
+            - I run each ```k``` for ```k``` in [```min_clusters```, ```max_clusters```]
+            - And use 2 methods to evaluate and store the clustering by best score of each methods:
+                1. Elbow method - SSE (Sum of the Squared Errors), store the clustering with lowest SSE
+                2. Silhouette analysis - Silhouette Score, store the clustering with the highest Silhouette Score
+            - Results:
+                1. ```min_clusters``` = 2, ```max_clusters``` = 40
+                    - Evaluation
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_40/evaluation.png)
+                    - SSE: 40 clusters (noise + 0 ~ 38)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_40/SSE/distribution.png)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_40/SSE/3D.png)
+                    - Silhouette Score: 28 clusters (0 ~ 27)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_40/Silhouette_Score/distribution.png)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_40/Silhouette_Score/3D.png)
+                2. ```min_clusters``` = 2, ```max_clusters``` = 125
+                    - Evaluation
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_125/evaluation.png)
+                    - SSE: 125 clusters (0 ~ 124)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_125/SSE/distribution.png)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_125/SSE/3D.png)
+                    - Silhouette Score: 121 clusters (0 ~ 120)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_125/Silhouette_Score/distribution.png)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_2_max_125/Silhouette_Score/3D.png)
+                3. ```min_clusters``` = 7, ```max_clusters``` = 20
+                    - Evaluation
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/evaluation.png)
+                    - SSE: 20 clusters (0 ~ 19)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/SSE/distribution.png)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/SSE/3D.png)
+                    - Silhouette Score: 20 clusters (0 ~ 19)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/Silhouette_Score/distribution.png)
+                        ![image](./python_results/kmeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/Silhouette_Score/3D.png)
+        2. [HDBSCAN](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.HDBSCAN.html) and [OPTICS](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.OPTICS.html)
+            - Each method runs the following processes
+                1. Run by the hypermeters that got from the Fine-tuned best score:
+                    - Test each combinations of the following:
+                        - ```min_points``` = ```10, 20, 30, 40, 50, 60, 70, 80, 90, 100```
+                        - ```epsilon``` = ```0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0```
+                    - The definition of the "best score":
+                        - First order: the minimum number of noises
+                        - Second order: the maximum ```min_points``` (if has the same number of noises)
+                        - Third order: the minimum ```epsilon``` (if has the same ```min_points```)
+                2. Test the specific combinations based on the results of Weka:
+                    1. ```min_points``` = 7, ```epsilon``` = 0.07
+                    2. ```min_points``` = 20, ```epsilon``` = 0.6
+            - Results of fine-tuned records:
+                - HDBSCAN
+                    - Fine-tuned records:
+                        ![image](./python_results/hdbscan/finetune_records/readsb-hist_filtered_by_Taiwan_manual_edges/heatmap_clustering.png)
+                        ![image](./python_results/hdbscan/finetune_records/readsb-hist_filtered_by_Taiwan_manual_edges/heatmap_noise.png)
+                    - ```min_points``` = 10, ```epsilon``` = 1.4: 36 clusters (noise + 0 ~ 34)
+                        ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_10_epsilon_1_4/distribution.png)
+                        ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_10_epsilon_1_4/3D.png)
+                - OPTICS
+                    - Fine-tuned records:
+                        ![image](./python_results/optics/finetune_records/readsb-hist_filtered_by_Taiwan_manual_edges/heatmap_clustering.png)
+                        ![image](./python_results/optics/finetune_records/readsb-hist_filtered_by_Taiwan_manual_edges/heatmap_noise.png)
+                    - ```min_points``` = 50, ```epsilon``` = 1.1: 35 clusters (noise + 0 ~ 33)
+                        ![image](./python_results/optics/readsb-hist_filtered_by_Taiwan_manual_edges/min_50_epsilon_1_1/distribution.png)
+                        ![image](./python_results/optics/readsb-hist_filtered_by_Taiwan_manual_edges/min_50_epsilon_1_1/3D.png)
+            - Results of tested specific combinations:
+                - HDBSCAN
+                    - ```min_points``` = 7, ```epsilon``` = 0.07: 139 clusters (noise + 0 ~ 137)
+                        ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_07/distribution.png)
+                        ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_07/3D.png)
+                    - ```min_points``` = 20, ```epsilon``` = 0.6: 42 clusters (noise + 0 ~ 40)
+                        ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_6/distribution.png)
+                        ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_6/3D.png)
+    - Demo: interact with the ````clustered.html```` clustered data file
+        - Demo file: [HDBSCAN with min_points = 7, epsilon = 0.07](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_07/clustered.html)
+            Image 1: the 3D visualization of Taiwan main island.
+            ![image](./pics/demo_p1.png)
+            Image 2: the current data point belongs to noise (cluster number = -1).
+            ![image](./pics/demo_p2.png)
+            Image 3: observed that the highest density is at northern airspace of Taiwan.
+            ![image](./pics/demo_p3.png)
+#### Analyzing
+- TODO
 ## Stage 3: Discord bot - Interactive system
 - To be continued
 -  Used scripts and folders: ```./bot.py```
