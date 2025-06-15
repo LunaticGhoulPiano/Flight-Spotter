@@ -9,9 +9,12 @@ We split this project into the three (or four) stages:
 3. Interactive system: react with user's commands.
 
 ## Current progress
-- [x] Set a specific filtering range: Taiwan manual edges, at ```./data./filter_regions./Taiwan_manual_edges.json``` (manually create)
-- [x] Get aircraft type data and readsb-hist data, store to  ```./data./aicraft``` and ```./data./historical_adsbex_sample``` (auto-created)
-- [x] Filter by ```./data./fliter_regions./Taiwan_manual_edges.json``` and store to ```./data./preprocessed./readsb-hist_merged.csv``` (no filter region file was choose) and ```./data./preprocessed./readsb-hist_filtered_by_{name of region filter file with no ".json"}.csv``` (with filter region file)
+- [x] Preprocessed readsb-hist data and made my own dataset "readsb-hist_2025-04-01-000000-120000" and uploaded to [huggingface](https://huggingface.co/datasets/LunaticGhoulPiano/readsb-hist_2025-04-01-000000-120000).
+- [x] Use ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv``` to expriment the clustering algorithms by using Weka and self-written scripts.
+- [x] Visualized the results of clustered data.
+
+## TODO
+- [ ] Apply the traditional geography methods: KDE (Kernel Density Estimation) and Getis-ord G* (Hotspot Analysis); and social network analysis methods: In Degree, Betweenness Centrality, and Pagerank.
 
 ## Flow
 - See ```./flow.drawio``` :
@@ -39,6 +42,7 @@ Flight-Spotter
 ├──preprocessor.py
 ├──get_data.py
 ├──filter_and_encode.py
+├──analyzer.py
 ├──eval_end_draw_weka_results.py
 ├──cluster.py
 ├──draw_animation_by_time.py
@@ -51,11 +55,14 @@ Flight-Spotter
 ├──pics
 │  ├──flow.png
 │  ├──JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg
-│  ├──Taiwan_SDIZ.jpg
+│  ├──Taiwan_ADIZ.jpg
 │  ├──Taiwan_manual_edges.jpg
-│  ├──degree2radian.png
-│  ├──feet2meter.png
-│  └──ecef.png
+│  ├──degree2radian.jpg
+│  ├──feet2meter.jpg
+│  ├──ecef_conversion.jpg
+│  ├──demo_p1.png
+│  ├──demo_p2.png
+│  └──demo_p3.png
 ├──data
 │  ├──aircraft (auto-generated)
 │  │  └──basic-ac-db.json
@@ -430,10 +437,22 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
     - ```3D.png```: the 3D (```lat```, ```lon```, ```alt_geom```) visualized graph that colored by cluster number.
     - ```distribution.csv```: the distribution of the number of each cluster.
     - ```distribution.png```: the bar chart of ```distribution.csv```.
+#### Analyzing
+- Run:
+    ```
+    python analyzer.py
+    ```
+- Methods:
+    - TODO
 #### Clustering
 - Weka
     - Run:
-        - Download [Weka](https://www.weka.io/), set the hyperparameters in the following and run
+        - Download [Weka](https://www.weka.io/), set the hyperparameters as the following and run
+        - Convert and visualize the outputs:
+            ```
+            python eval_end_draw_weka_results.py
+            ```
+    - Methods:
         1. [DBSCAN](https://weka.sourceforge.io/doc.stable/weka/clusterers/DBSCAN.html)
             - After fine-tuned manually, I choose 2 combinations of ```minPoints``` and ```epsilon```:
                 1. ```minPoints``` = 7, ```epsilon``` = 0.07
@@ -485,15 +504,12 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
                 - ```minNumClusters``` = 7, ```maxNumClusters``` = 20: 20 clusters (0 ~ 19)
                     ![image](./weka_results/XMeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/distribution.png)
                     ![image](./weka_results/XMeans/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_max_20/3D.png)
-    - Convert and visualize the outputs:
-        ```
-        python eval_end_draw_weka_results.py
-        ```
 - Python
     - Run:
         ```
         python cluster.py
         ```
+    - Methods:
         1. [K-Means](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html)
             - I try the 3 combination ranges of ```min_clusters``` and ```max_clusters```:
                 1. ```min_clusters``` = 2, ```max_clusters``` = 40
@@ -569,16 +585,21 @@ Cluster the aircrafts by position (GPS coordinates and geometric altitude) by di
                     - ```min_points``` = 20, ```epsilon``` = 0.6: 42 clusters (noise + 0 ~ 40)
                         ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_6/distribution.png)
                         ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_6/3D.png)
-    - Demo: interact with the ````clustered.html```` clustered data file
-        - Demo file: [HDBSCAN with min_points = 7, epsilon = 0.07](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_07/clustered.html)
-            Image 1: the 3D visualization of Taiwan main island.
-            ![image](./pics/demo_p1.png)
-            Image 2: the current data point belongs to noise (cluster number = -1).
-            ![image](./pics/demo_p2.png)
-            Image 3: observed that the highest density is at northern airspace of Taiwan.
-            ![image](./pics/demo_p3.png)
-#### Analyzing
-- TODO
+                - OPTICS
+                    - ```min_points``` = 7, ```epsilon``` = 0.07: 155 clusters (noise + 0 ~ 153)
+                        ![image](./python_results/optics/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_07/distribution.png)
+                        ![image](./python_results/optics/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_07/3D.png)
+                    - ```min_points``` = 20, ```epsilon``` = 0.6: 76 clusters (noise + 0 ~ 74)
+                        ![image](./python_results/optics/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_6/distribution.png)
+                        ![image](./python_results/optics/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_6/3D.png)
+- Demo: interact with the ````clustered.html```` clustered data file
+    - Demo file: [HDBSCAN with min_points = 7, epsilon = 0.07](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/min_7_epsilon_0_07/clustered.html)
+        Image 1: the 3D visualization of Taiwan main island.
+        ![image](./pics/demo_p1.png)
+        Image 2: the current data point belongs to noise (cluster number = -1).
+        ![image](./pics/demo_p2.png)
+        Image 3: observed that the highest density is at northern airspace of Taiwan.
+        ![image](./pics/demo_p3.png)
 ## Stage 3: Discord bot - Interactive system
 - To be continued
 -  Used scripts and folders: ```./bot.py```

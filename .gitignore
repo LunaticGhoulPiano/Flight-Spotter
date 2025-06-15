@@ -2,7 +2,6 @@ __pycache__
 .vscode
 .env
 
-old_weka_results
 
 data/*
 !data/filter_regions
