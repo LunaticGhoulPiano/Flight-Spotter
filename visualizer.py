@@ -4,7 +4,7 @@ import pandas as pd
 import pydeck as pdk
 import random
 
-def draw_3D(filtered_df, clustering, num_of_clusters, mode, name, path):
+def draw_3D(filtered_df, clustering, num_of_clusters, mode, path):
         # draw 3D
         fig = plt.figure(figsize = (10, 8))
         ax = fig.add_subplot(111, projection = "3d")
@@ -16,9 +16,9 @@ def draw_3D(filtered_df, clustering, num_of_clusters, mode, name, path):
         ax.set_title(f"Clustering of {mode}: {num_of_clusters} Clusters")
         fig.colorbar(scatter, label = "Cluster")
         plt.tight_layout()
-        plt.savefig(f"{path}./3D_{name}.png")
+        plt.savefig(f"{path}./3D.png")
 
-def draw_distribution(distribution, filename, save_path):
+def draw_distribution(distribution, save_path):
     distribution["cluster"] = distribution["cluster"].apply(lambda x: "noise" if x == -1 else str(x))
     plt.figure(figsize = (8, 6))
     plt.bar(distribution["cluster"], distribution["count"], color = "skyblue", edgecolor = "black")
@@ -27,11 +27,10 @@ def draw_distribution(distribution, filename, save_path):
     plt.title(f"Cluster Distribution")
     plt.xticks(distribution["cluster"])
     plt.tight_layout()
-    plt.savefig(f"{save_path}./{filename}.png")
+    plt.savefig(f"{save_path}./distribution.png")
 
-def draw_map(folder_path: str, filename: str):
+def draw_map(df, folder_path: str):
     # load data
-    df = pd.read_csv(f"{folder_path}./{filename}", header = 0)
     df["timestamp"] = pd.to_datetime(df[["year", "month", "day", "hour", "minute", "second"]])
     df["timestamp_str"] = df["timestamp"].dt.strftime("%Y-%m-%d %H:%M:%S")
     df["ts_unix"] = (df["timestamp"] - pd.Timestamp("1970-01-01")) // pd.Timedelta("1s")
@@ -116,5 +115,5 @@ def draw_map(folder_path: str, filename: str):
     )
 
     # output
-    r.to_html(f"{folder_path}./{filename[:-4]}.html", notebook_display = False)
-    print(f"{folder_path}./{filename[:-4]}.html generated.")
+    r.to_html(f"{folder_path}./clustered.html", notebook_display = False)
+    print(f"{folder_path}./clustered.html generated.")
