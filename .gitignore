@@ -3,7 +3,6 @@ __pycache__
 .env
 
 python_results
-weka_results
 old_weka_results
 
 data/*
