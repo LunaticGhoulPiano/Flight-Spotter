@@ -2,7 +2,6 @@ __pycache__
 .vscode
 .env
 
-python_results/kmeans
 old_weka_results
 
 data/*
