@@ -2,6 +2,8 @@ __pycache__
 .vscode
 .env
 
+with_type_python_results
+with_type_weka_results
 
 data/*
 !data/filter_regions
