@@ -2,9 +2,6 @@ __pycache__
 .vscode
 .env
 
-with_type_python_results
-with_type_weka_results
-
 python_results/**/*.html
 weka_results/**/*.html
 
@@ -12,7 +9,6 @@ weka_results/**/*.html
 
 data/*
 !data/filter_regions
-//!data/preprocessed
 
 model.py
 logs
