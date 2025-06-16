@@ -5,7 +5,9 @@ __pycache__
 with_type_python_results
 with_type_weka_results
 
-python_results
+python_results/*
+!python_results/kmeans
+
 weka_results
 
 **.pptx
