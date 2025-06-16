@@ -8,7 +8,7 @@ pandas
 numpy
 discord.py
 geohash2
-sklearn
+scikit-learn
 seaborn
 scipy
 pydeck

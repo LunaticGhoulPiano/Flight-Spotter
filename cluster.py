@@ -10,7 +10,7 @@ from sklearn.cluster import KMeans, HDBSCAN, OPTICS
 from sklearn.metrics import silhouette_score
 
 # K-Means
-def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max_cluster: int):
+def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max_cluster: int, data_num: int):
     if max_cluster < min_cluster:
         print(f"Error: max_cluster {max_cluster} < min_cluster {min_cluster}")
         return
@@ -78,7 +78,7 @@ def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max
 
         visualizer.draw_distribution(distribution, sub_path)
         visualizer.draw_3D(filtered_df, clusterings, clustering_num, f"{eval_mode} {eval_method.replace('_', ' ')}", sub_path)
-        visualizer.draw_map(clustered_df, sub_path)
+        visualizer.draw_map(clustered_df, sub_path, data_num)
     run_sub(lowest_sse_clusterings, sses, lowest_sse_cluster_num, "SSE", "highest")
     run_sub(highest_silhouette_score_clusterings, silhouette_scores, highest_silhouette_score_cluster_num, "Silhouette_Score", "lowest")
 
@@ -105,9 +105,10 @@ def run_KMeans(original_df, filtered_df, x, filename: str, min_cluster: int, max
     plt.title("K-Means: Elbow Method and Silhouette Analysis")
     plt.grid(True)
     plt.savefig(f"{path}./evaluation.png")
+    plt.close()
 
-# HDBSCAAN or OPTICS
-def run_HDBSCANorOPTICS(original_df, filtered_df, x, filename: str, method: str, min_points: int, epsilon: float):
+# HDBSCAN or OPTICS
+def run_HDBSCANorOPTICS(original_df, filtered_df, x, filename: str, method: str, min_points: int, epsilon: float, data_num: int):
     if method not in ["hdbscan", "optics"]:
         print("Method must be hdbscan or optics.")
         exit()
@@ -142,27 +143,23 @@ def run_HDBSCANorOPTICS(original_df, filtered_df, x, filename: str, method: str,
 
     visualizer.draw_distribution(distribution, path)
     visualizer.draw_3D(filtered_df, clusterer.labels_, clustering_num, method, path)
-    visualizer.draw_map(original_df, path)
+    visualizer.draw_map(original_df, path, data_num)
 
 # fine-tune HDBSCAN and OPTICS
-def fine_tune(x, filename: str):
+def fine_tune(x, filename: str, min_points_values: list, epsilon_values: list, data_num: int, noise_weight: float = 0.07, min_points_weight: float = 0.05, clusters_weight: float = 0.001):
     # clusterers
     methods = {
         "hdbscan": lambda min_points, epsilon: HDBSCAN(min_cluster_size = min_points, cluster_selection_epsilon = epsilon, metric = "euclidean"),
         "optics": lambda min_points, epsilon: OPTICS(min_samples = min_points, max_eps = epsilon, metric = "euclidean")
     }
     
-    # fine-tune hyperparameters
-    min_points_values = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-    epsilon_values = [round(e, 3) for e in np.arange(0.7, 2.01, 0.1)] # 0.7 ~ 2.0
-    
     # run
     results = {}
     for method_name, clusterer_fn in methods.items():
         print(f"Fine-tuning {method_name.upper()} parameters...")
-        base_path = f"./python_results./{method_name}./finetune_records./{filename[:-4]}"
+        base_path = f"./python_results./{method_name}./{filename[:-4]}./fine_tune_records"
         os.makedirs(base_path, exist_ok = True)
-
+        
         records_df = pd.DataFrame(columns = ["min_points", "epsilon", "clustering_num", "noise_num"])
 
         for min_points in min_points_values:
@@ -179,22 +176,37 @@ def fine_tune(x, filename: str):
                 records_df.loc[len(records_df)] = [min_points, epsilon, clustering_num, noise_num]
 
         # write
-        records_df.to_csv(f"{base_path}./records.csv", index=False)
+        records_df.to_csv(f"{base_path}./records.csv", index = False)
 
-        # order strategy of best hyparameters: min noise_num -> max min_points -> min epsilon
-        min_noise = records_df["noise_num"].min()
-        filtered = records_df[records_df["noise_num"] == min_noise]
-        filtered = filtered.sort_values(by = ["min_points", "epsilon"], ascending = [False, True])
-        best = filtered.iloc[0]
-        ideal_min_points = int(best["min_points"])
-        ideal_epsilon = best["epsilon"]
+        # get ideal hyperparameters
+        def get_ideal_hyperparameters(records_df = records_df):
+            # order strategy of highest-density-hyparameters
+            max_noise_num = int(data_num * noise_weight)
+            max_min_points = int(data_num * min_points_weight)
+            min_cluster_num = int(data_num * clusters_weight)
+            print(f"Max noise_num: {max_noise_num}, Max min_points: {max_min_points}, Min cluster_num: {min_cluster_num}")
+            ideal_df = records_df[
+                (records_df["noise_num"] <= max_noise_num) &
+                (records_df["min_points"] <= max_min_points) &
+                (records_df["clustering_num"] >= min_cluster_num)
+            ]
+            if not ideal_df.empty: # legal noise_nums => order: max min_points -> min epsilon -> min clustering_num
+                print(f"There are {ideal_df.shape[0]} ideal hyperparameters.")
+                ideal_df = ideal_df.sort_values(by = ["min_points", "epsilon", "noise_num"], ascending = [False, True, True])
+                highest_density = ideal_df.iloc[0]
+            else: # all noise_nums > max_noise -> minimum noise_num first => order: min noise_num -> min epsilon -> min clustering_num
+                print("No ideal hyperparameters.")
+                records_df = records_df.sort_values(by = ["noise_num", "min_points", "epsilon"], ascending = [True, False, True])
+                highest_density = records_df.iloc[0]
+            return int(highest_density["min_points"]), highest_density["epsilon"]
+        ideal_min_points, ideal_epsilon = get_ideal_hyperparameters()
 
         # draw heatmap
         ## cluster
         pivot_cluster = records_df.pivot(index = "min_points", columns = "epsilon", values = "clustering_num")
         plt.figure(figsize = (10, 6))
         sns.heatmap(pivot_cluster, annot = True, fmt = ".0f", cmap = "YlGnBu")
-        plt.title(f"Number of clusters (best: min_points = {ideal_min_points}, epsilon = {ideal_epsilon})")
+        plt.title(f"Number of clusters (ideal hyperparameters: min_points = {ideal_min_points}, epsilon = {ideal_epsilon})")
         plt.xlabel("epsilon")
         plt.ylabel("min_points")
         plt.tight_layout()
@@ -204,7 +216,7 @@ def fine_tune(x, filename: str):
         pivot_noise = records_df.pivot(index = "min_points", columns = "epsilon", values = "noise_num")
         plt.figure(figsize = (10, 6))
         sns.heatmap(pivot_noise, annot = True, fmt = ".0f", cmap = "Reds")
-        plt.title(f"Number of noise (best: min_points = {ideal_min_points}, epsilon = {ideal_epsilon})")
+        plt.title(f"Number of noise (ideal hyperparameters: min_points = {ideal_min_points}, epsilon = {ideal_epsilon})")
         plt.xlabel("epsilon")
         plt.ylabel("min_points")
         plt.tight_layout()
@@ -226,30 +238,36 @@ def run(filename: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv"):
 
     # create output folder
     os.makedirs("./python_results", exist_ok = True)
-    
-    # filter and encode
-    filtered_df = df[["t", "gs", "track", "squawk", "nav_heading", "ecef_x", "ecef_y", "ecef_z"]]
-    df_encoded = pd.get_dummies(filtered_df, columns = ["t"]) # one-hot encoding the aircraft type
+
+    # filter
+    filtered_df = df[["gs", "track", "squawk", "nav_heading", "ecef_x", "ecef_y", "ecef_z"]]
+    data_num = filtered_df.shape[0]
+    print(f"Number of data: {data_num}")
 
     # standardization
     scaler = StandardScaler()
-    x = scaler.fit_transform(df_encoded)
+    x = scaler.fit_transform(filtered_df)
 
     # K-Mean
     for min_cluster, max_cluster in [(2, 40), (2, 125), (7, 20)]:
-        run_KMeans(df, filtered_df, x, filename, min_cluster, max_cluster)
+        run_KMeans(df, filtered_df, x, filename, min_cluster, max_cluster, data_num)
 
     # HDBSCAN & OPTICS
     ## fine-tune and run the highest density
-    hdbscan_ideal_min_points, hdbscan_ideal_epsilon, optics_ideal_min_points, optics_ideal_epsilon = fine_tune(x, filename)
-    run_HDBSCANorOPTICS(df, filtered_df, x, filename, "hdbscan", hdbscan_ideal_min_points, hdbscan_ideal_epsilon)
-    run_HDBSCANorOPTICS(df, filtered_df, x, filename, "optics", optics_ideal_min_points, optics_ideal_epsilon)
+    ### fine-tune hyperparameters
+    ft_min_points = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+    ft_epsilon = [round(e, 3) for e in np.arange(0.7, 2.01, 0.1)] # 0.7 ~ 2.0
+    ### run
+    hdbscan_ideal_min_points, hdbscan_ideal_epsilon, optics_ideal_min_points, optics_ideal_epsilon = fine_tune(x, filename, ft_min_points, ft_epsilon, data_num)
+    ideal_hdbscan = (hdbscan_ideal_min_points, hdbscan_ideal_epsilon)
+    ideal_optics = (optics_ideal_min_points, optics_ideal_epsilon)
+    
     ## must-run combinations
-    for min_points, epsilon in zip([7, 20], [0.07, 0.6]):
-        if not (min_points == hdbscan_ideal_min_points and epsilon == hdbscan_ideal_epsilon):
-            run_HDBSCANorOPTICS(df, filtered_df, x, filename, "hdbscan", min_points, epsilon)
-        if not (min_points == optics_ideal_min_points and epsilon == optics_ideal_epsilon):
-            run_HDBSCANorOPTICS(df, filtered_df, x, filename, "optics", min_points, epsilon)
+    for min_points, epsilon in [(7, 0.07), (7, 0.1), (20, 0.07), (20, 0.1), (20, 0.6), ideal_hdbscan, ideal_optics]:
+        print(f"Running HDBSCAN with min_points = {min_points}, epsilon = {epsilon}")
+        run_HDBSCANorOPTICS(df, filtered_df, x, filename, "hdbscan", min_points, epsilon, data_num)
+        print(f"Running OPTICS with min_points = {min_points}, epsilon = {epsilon}")
+        run_HDBSCANorOPTICS(df, filtered_df, x, filename, "optics", min_points, epsilon, data_num)
 
 if __name__ == "__main__":
     run()

@@ -17,6 +17,7 @@ def draw_3D(filtered_df, clustering, num_of_clusters, mode, path):
         fig.colorbar(scatter, label = "Cluster")
         plt.tight_layout()
         plt.savefig(f"{path}./3D.png")
+        plt.close()
 
 def draw_distribution(distribution, save_path):
     distribution["cluster"] = distribution["cluster"].apply(lambda x: "noise" if x == -1 else str(x))
@@ -28,8 +29,12 @@ def draw_distribution(distribution, save_path):
     plt.xticks(distribution["cluster"])
     plt.tight_layout()
     plt.savefig(f"{save_path}./distribution.png")
+    plt.close()
 
-def draw_map(df, folder_path: str):
+def draw_map(df, folder_path: str, data_num: int, threshold: int = 20000):
+    if data_num > threshold:
+        print(f"The current dataset size ({data_num}) is too big (larger than {threshold}), the html map file may not be created successfully. Please use the dataset size that is smaller than {threshold} for better visualization.")
+        return
     # load data
     df["timestamp"] = pd.to_datetime(df[["year", "month", "day", "hour", "minute", "second"]])
     df["timestamp_str"] = df["timestamp"].dt.strftime("%Y-%m-%d %H:%M:%S")
@@ -59,18 +64,6 @@ def draw_map(df, folder_path: str):
         pickable = True,
         auto_highlight = True,
         get_line_color = [255, 255, 255],
-    )
-
-    # draggable time bar
-    timestamp_layer = pdk.Layer(
-        "ScatterplotLayer",
-        df,
-        get_position = "[lon, lat, alt_geom]",
-        get_fill_color = "color",
-        get_radius = 300,
-        pickable = True,
-        auto_highlight = True,
-        parameters = {"time": df["ts_unix"].tolist()},
     )
 
     # map view settings

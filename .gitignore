@@ -5,6 +5,12 @@ __pycache__
 with_type_python_results
 with_type_weka_results
 
+python_results
+weka_results
+
+**.pptx
+**.html
+
 data/*
 !data/filter_regions
 //!data/preprocessed

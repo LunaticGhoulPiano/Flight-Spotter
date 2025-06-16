@@ -21,6 +21,7 @@ def get_clustering(filepath: str):
 def run(original_dataset: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv"):
     path = f"./data./preprocessed./{original_dataset}"
     original_df = pd.read_csv(path)
+    data_num = original_df.shape[0]
     for method in os.listdir("./weka_results"):
         cur_path = f"./weka_results./{method}./{original_dataset[:-4]}"
         for folder in os.listdir(cur_path):
@@ -39,7 +40,7 @@ def run(original_dataset: str = "readsb-hist_filtered_by_Taiwan_manual_edges.csv
 
                     visualizer.draw_distribution(distribution, output_path)
                     visualizer.draw_3D(filtered_df, clusterings, len(np.unique(original_df["cluster"])), method, output_path)
-                    visualizer.draw_map(original_df, output_path)
+                    visualizer.draw_map(original_df, output_path, data_num)
 
 if __name__ == "__main__":
     run()
