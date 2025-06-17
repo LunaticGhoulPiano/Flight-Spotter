@@ -1,6 +1,5 @@
 # Flight-Spotter
 ## Overview
-This is the Midterm & Final project for courses \"高等資料探勘\" (Advanced Data Mining) and \"生成式AI基礎與應用\" (The Fundementals and Applications of Generative-AI), which I took at senior second semester (2025/02/01 ~ 2025/07/31, aka 113-2), at 中原大學 (Chung Yuan Christian University, CYCU), by the professor Hsiu-Min, Chuang (莊秀敏 教授).
 We split this project into the three (or four) stages:
 1. Data preprocessing: fetch and filter with custom conditions from [ADS-B Exchange historical data](https://www.adsbexchange.com/products/historical-data/).
 2. Analyze and Build model:
@@ -12,12 +11,11 @@ We split this project into the three (or four) stages:
 - [x] Preprocessed readsb-hist data and made my own dataset "readsb-hist_2025-04-01-000000-120000" and uploaded to [huggingface](https://huggingface.co/datasets/LunaticGhoulPiano/readsb-hist_2025-04-01-000000-120000).
 - [x] Use ```./data./preprocessed./readsb-hist_filtered_by_Taiwan_manual_edges.csv``` to expriment the clustering algorithms by using Weka and self-written scripts.
 - [x] Visualized the results of clustered data.
+- [x] Analyze the original dataset and the clustered data.
 
-## TODO
-- [ ] Apply the traditional geography methods: KDE (Kernel Density Estimation) and Getis-ord G* (Hotspot Analysis); and social network analysis methods: In Degree, Betweenness Centrality, and Pagerank.
-- [ ] Update flow chart.
-- [ ] Add discord bot to query the cluster with adsb.lol api.
-- [ ] Update Overview.
+## TODOs
+- [ ] Implement discord bot to query the cluster with adsb.lol api.
+- [ ] Implement ```main.py```.
 
 ## Flow
 - See ```./flow.drawio``` :
@@ -28,9 +26,6 @@ We split this project into the three (or four) stages:
 ```
 pip install -r requirements.txt
 ```
-### About ```main.py```
-- Currently ```main.py``` only could run on **Windows** (only knows how to get user's gps location on Windows, also don't have other platform to test).
-- Please enable **Windows GPS** in settings ([official tutorial here](https://support.microsoft.com/en-us/windows/windows-location-service-and-privacy-3a8eee0a-5b0b-dc07-eede-2a5ca1c49088)).
 - Sometimes ```winsdk``` may have building while installing python package.
 
 ## Structure
@@ -40,21 +35,22 @@ Flight-Spotter
 ├──.gitignore
 ├──LICENSE
 ├──README.md
+├──Experiments.md (details of the experiments)
 ├──requirements.txt
 ├──flow.drawio
-├──preprocessor.py
-├──get_data.py
-├──filter_and_encode.py
-├──experiments.py
-├──eval_end_draw_weka_results.py
-├──clusterer.py
-├──analyzer.py
-├──ecef.py
-├──gps.py
-├──visualizer.py
-├──bot.py (currently unused)
-├──adsb_lol.py (currently unused)
+├──preprocessor.py (runs data gathering and preprocessing)
+├──experiments.py (runs clustering and analyzing algorithms and draw results)
 ├──main.py (currently unused)
+├──bot.py (currently unused)
+├──get_data.py (sub-process script)
+├──filter_and_encode.py (sub-process script)
+├──eval_end_draw_weka_results.py (sub-process script)
+├──clusterer.py (sub-process script)
+├──analyzer.py (sub-process script)
+├──gps.py (tool script)
+├──ecef.py (tool script)
+├──visualizer.py (tool script)
+├──adsb_lol.py (tool script)
 ├──pics
 │  ├──flow.png
 │  ├──JADIZ_and_CADIZ_and_KADIZ_in_East_China_Sea.jpg
@@ -77,10 +73,21 @@ Flight-Spotter
 │  │     ├──2025_04_01_000000.json
 │  │     ├──...
 │  │     └──2025_04_01_120000.json
-│  └──preprocessed (auto-generated, based on the user's choose)
-│     ├──readsb-hist_merged.csv
-│     ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
-│     └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│  ├──preprocessed (auto-generated, based on the user's choose)
+│  │  ├──readsb-hist_merged.csv
+│  │  ├──readsb-hist_filtered_by_Taiwan_ADIZ.csv
+│  │  └──readsb-hist_filtered_by_Taiwan_manual_edges.csv
+│  └──直轄市、縣(市)界線1140318
+│     ├──修正清單_11403.xlsx
+│     ├──TW-01-301000100G-000017.xml
+│     ├──COUNTY_MOI_1140318.shp.xml
+│     ├──COUNTY_MOI_1140318.shx
+│     ├──COUNTY_MOI_1140318.CPG
+│     ├──COUNTY_MOI_1140318.dbf
+│     ├──COUNTY_MOI_1140318.prj
+│     ├──COUNTY_MOI_1140318.sbn
+│     ├──COUNTY_MOI_1140318.sbx
+│     └──COUNTY_MOI_1140318.shp
 ├──filter_region_maps (auto-generated, based on the user's choose)
 │  ├──Taiwan_ADIZ.html
 │  └──Taiwam_manual_edges.html
@@ -232,110 +239,128 @@ Flight-Spotter
 │                 ├──distribution.csv
 │                 └──distribution.png
 └──weka_results
-      ├──DBSCAN
-      │  └──readsb-hist_filtered_by_Taiwan_manual_edges
-      │     ├──min_7_epsilon_0_07
-      │     │     ├──3D.png
-      │     │     ├──clustered.csv
-      │     │     ├──clustered.html
-      │     │     ├──distribution.csv
-      │     │     └──distribution.png
-      │     ├──min_7_epsilon_0_1
-      │     │     ├──3D.png
-      │     │     ├──clustered.csv
-      │     │     ├──clustered.html
-      │     │     ├──distribution.csv
-      │     │     └──distribution.png
-      │     ├──min_20_epsilon_0_07
-      │     │     ├──3D.png
-      │     │     ├──clustered.csv
-      │     │     ├──clustered.html
-      │     │     ├──distribution.csv
-      │     │     └──distribution.png
-      │     ├──min_20_epsilon_0_1
-      │     │     ├──3D.png
-      │     │     ├──clustered.csv
-      │     │     ├──clustered.html
-      │     │     ├──distribution.csv
-      │     │     └──distribution.png
-      │     ├──min_20_epsilon_0_6
-      │     │     ├──3D.png
-      │     │     ├──clustered.csv
-      │     │     ├──clustered.html
-      │     │     ├──distribution.csv
-      │     │     └──distribution.png
-      │     ├──min_70_epsilon_1_1
-      │     │     ├──3D.png
-      │     │     ├──clustered.csv
-      │     │     ├──clustered.html
-      │     │     ├──distribution.csv
-      │     │     └──distribution.png
-      │     └──min_90_epsilon_1_0
-      │           ├──3D.png
-      │           ├──clustered.csv
-      │           ├──clustered.html
-      │           ├──distribution.csv
-      │           └──distribution.png
-      ├──EM
-      │  └──readsb-hist_filtered_by_Taiwan_manual_edges
-      │     ├──clusters_7
-      │     │  ├──clustered.arff
-      │     │  ├──3D.png
-      │     │  ├──clustered.csv
-      │     │  ├──clustered.html
-      │     │  ├──distribution.csv
-      │     │  └──distribution.png
-      │     ├──clusters_20
-      │     │  ├──clustered.arff
-      │     │  ├──3D.png
-      │     │  ├──clustered.csv
-      │     │  ├──clustered.html
-      │     │  ├──distribution.csv
-      │     │  └──distribution.png
-      │     ├──clusters_70
-      │     │  ├──clustered.arff
-      │     │  ├──3D.png
-      │     │  ├──clustered.csv
-      │     │  ├──clustered.html
-      │     │  ├──distribution.csv
-      │     │  └──distribution.png
-      │     └──clusters_90
-      │        ├──clustered.arff
-      │        ├──3D.png
-      │        ├──clustered.csv
-      │        ├──clustered.html
-      │        ├──distribution.csv
-      │        └──distribution.png
-      └──XMeans
-         └──readsb-hist_filtered_by_Taiwan_manual_edges
-            ├──min_7_max_20
-            │  ├──clustered.arff
-            │  ├──3D.png
-            │  ├──clustered.csv
-            │  ├──clustered.html
-            │  ├──distribution.csv
-            │  └──distribution.png
-            ├──min_20_max_70
-            │  ├──clustered.arff
-            │  ├──3D.png
-            │  ├──clustered.csv
-            │  ├──clustered.html
-            │  ├──distribution.csv
-            │  └──distribution.png
-            └──min_70_max_90
-               ├──clustered.arff
-               ├──3D.png
-               ├──clustered.csv
-               ├──clustered.html
-               ├──distribution.csv
-               └──distribution.png
+│     ├──DBSCAN
+│     │  └──readsb-hist_filtered_by_Taiwan_manual_edges
+│     │     ├──min_7_epsilon_0_07
+│     │     │     ├──3D.png
+│     │     │     ├──clustered.csv
+│     │     │     ├──clustered.html
+│     │     │     ├──distribution.csv
+│     │     │     └──distribution.png
+│     │     ├──min_7_epsilon_0_1
+│     │     │     ├──3D.png
+│     │     │     ├──clustered.csv
+│     │     │     ├──clustered.html
+│     │     │     ├──distribution.csv
+│     │     │     └──distribution.png
+│     │     ├──min_20_epsilon_0_07
+│     │     │     ├──3D.png
+│     │     │     ├──clustered.csv
+│     │     │     ├──clustered.html
+│     │     │     ├──distribution.csv
+│     │     │     └──distribution.png
+│     │     ├──min_20_epsilon_0_1
+│     │     │     ├──3D.png
+│     │     │     ├──clustered.csv
+│     │     │     ├──clustered.html
+│     │     │     ├──distribution.csv
+│     │     │     └──distribution.png
+│     │     ├──min_20_epsilon_0_6
+│     │     │     ├──3D.png
+│     │     │     ├──clustered.csv
+│     │     │     ├──clustered.html
+│     │     │     ├──distribution.csv
+│     │     │     └──distribution.png
+│     │     ├──min_70_epsilon_1_1
+│     │     │     ├──3D.png
+│     │     │     ├──clustered.csv
+│     │     │     ├──clustered.html
+│     │     │     ├──distribution.csv
+│     │     │     └──distribution.png
+│     │     └──min_90_epsilon_1_0
+│     │           ├──3D.png
+│     │           ├──clustered.csv
+│     │           ├──clustered.html
+│     │           ├──distribution.csv
+│     │           └──distribution.png
+│     ├──EM
+│     │  └──readsb-hist_filtered_by_Taiwan_manual_edges
+│     │     ├──clusters_7
+│     │     │  ├──clustered.arff
+│     │     │  ├──3D.png
+│     │     │  ├──clustered.csv
+│     │     │  ├──clustered.html
+│     │     │  ├──distribution.csv
+│     │     │  └──distribution.png
+│     │     ├──clusters_20
+│     │     │  ├──clustered.arff
+│     │     │  ├──3D.png
+│     │     │  ├──clustered.csv
+│     │     │  ├──clustered.html
+│     │     │  ├──distribution.csv
+│     │     │  └──distribution.png
+│     │     ├──clusters_70
+│     │     │  ├──clustered.arff
+│     │     │  ├──3D.png
+│     │     │  ├──clustered.csv
+│     │     │  ├──clustered.html
+│     │     │  ├──distribution.csv
+│     │     │  └──distribution.png
+│     │     └──clusters_90
+│     │        ├──clustered.arff
+│     │        ├──3D.png
+│     │        ├──clustered.csv
+│     │        ├──clustered.html
+│     │        ├──distribution.csv
+│     │        └──distribution.png
+│     └──XMeans
+│        └──readsb-hist_filtered_by_Taiwan_manual_edges
+│           ├──min_7_max_20
+│           │  ├──clustered.arff
+│           │  ├──3D.png
+│           │  ├──clustered.csv
+│           │  ├──clustered.html
+│           │  ├──distribution.csv
+│           │  └──distribution.png
+│           ├──min_20_max_70
+│           │  ├──clustered.arff
+│           │  ├──3D.png
+│           │  ├──clustered.csv
+│           │  ├──clustered.html
+│           │  ├──distribution.csv
+│           │  └──distribution.png
+│           └──min_70_max_90
+│              ├──clustered.arff
+│              ├──3D.png
+│              ├──clustered.csv
+│              ├──clustered.html
+│              ├──distribution.csv
+│              └──distribution.png
+└──analyzed_results
+      └──readsb-hist_filtered_by_Taiwan_manual_edges
+         ├──grid_by_count.png
+         ├──grid_by_flight_count.png
+         ├──grid_by_flight_legend_off.png
+         ├──grid_by_flight_legend_on.png
+         ├──grid_by_hex_count.png
+         ├──grid_by_hex_legend_off.png
+         ├──grid_by_hex_legend_on.png
+         ├──KDE.png
+         ├──GETIS_ORD_Gstar.png
+         ├──in_degree.png
+         ├──out_degree.png
+         ├──betweenness.png
+         ├──closeness.png
+         ├──pagerank.png
+         ├──community_detection.png
+         └──cluster_distribution_analysis.png
 ```
 
 ## Datasets
-In this project, we decided to use the ADSBEX-provided ```readsb-hist``` data, instead of using ```traces``` or ```hires-traces```. There are two reasons:
-1. It's hard to calculate the sampling rate of ```traces``` and ```hires-traces```, but ```readsb-hist``` has steady sampling rate (60 or 5 seconds, decided by the data time).
-2. It's hard to reduce the dimension of all traces of an aircraft, especially the sampling rate is not steady.
 ### ADS-B Exchange data
+- In this project, we decided to use the ADSBEX-provided ```readsb-hist``` data, instead of using ```traces``` or ```hires-traces```. There are two reasons:
+    1. It's hard to calculate the sampling rate of ```traces``` and ```hires-traces```, but ```readsb-hist``` has steady sampling rate (60 or 5 seconds, decided by the data time).
+    2. It's hard to reduce the dimension of all traces of an aircraft, especially the sampling rate is not steady.
 - [ADS-B Exchange free historical data](https://www.adsbexchange.com/products/historical-data/)
 - [readsb official documentation](https://github.com/wiedehopf/readsb/blob/dev/README-json.md)
 - Data used in this project
@@ -347,7 +372,7 @@ In this project, we decided to use the ADSBEX-provided ```readsb-hist``` data, i
         - ```readsb-hist_merged.csv```: 6089010 rows, 857 MB
         - ```readsb-hist_filtered_by_Taiwan_manual_edges.csv```: 9148 rows, 1.27 MB
 ### Region Filter files
-- The \"region filter files\" are all manually generated json files, described in the following format:
+- The \"region filter files\" are all **manually generated** json files, described in the following format:
 ```
 [
     {
@@ -423,6 +448,12 @@ We made two region filter files:
         - [鹿邊咖啡Deer cafe](https://maps.app.goo.gl/2PkKrUGdGA6wHFEBA) (25°17'51.7"N 121°34'24.2"E)
     - And here is the plotted polygon:
     ![image](https://github.com/LunaticGhoulPiano/Flight-Spotter/blob/master/pics/Taiwan_manual_edges.jpg?raw=true)
+### Map files
+- Due to the filtered region, I use the [official Taiwan map in TWD97](https://data.gov.tw/dataset/7442) that released in 2025/03/18, which is the folder ```./data./直轄市、縣(市)界線1140318```.
+- Must use **SHP** format.
+![image](./pics/TWD97.png)
+- In your case, You should create a folder under ```./data```, which should contains a ```.shp``` map file. In my case, it is ```./data./直轄市、縣(市)界線1140318./COUNTY_MOI_1140318.shp```.
+- Also, set the ```.shp``` map file path and EPSG code in ```experiments.py```.
 
 ## Stage 1: Data preprocessing
 ### Run
@@ -521,7 +552,8 @@ python preprocessor.py
 1. Cluster the aircrafts by position (GPS coordinates and geometric altitude) by different algorithms.
 2. Analyze the original data density and network, summarize the clustered data of each methods.
 ### Course requirements
-- Must choose one data mining tool to use: [Weka](https://www.weka.io/) / [Orange](https://orangedatamining.com/download/) / [KNIME](https://www.knime.com/).
+- I use this project as a midterm & final project for courses \"高等資料探勘\" (Advanced Data Mining) and \"生成式AI基礎與應用\" (The Fundementals and Applications of Generative-AI), which I took at senior second semester (2025/02/01 ~ 2025/07/31, aka 113-2), at 中原大學 (Chung Yuan Christian University, CYCU), by the professor Hsiu-Min, Chuang (莊秀敏 教授).
+- And the course required that I must choose one data mining tool to use: [Weka](https://www.weka.io/) / [Orange](https://orangedatamining.com/download/) / [KNIME](https://www.knime.com/), and I decided to use Weka. So there is a folder ```./weka_results```.
 ### Experiments
 - Run:
     ```
@@ -543,7 +575,9 @@ python preprocessor.py
     ![image](./pics/demo_p2.png)
     Image 3: observed that the highest density is at northern airspace of Taiwan.
     ![image](./pics/demo_p3.png)
-## Stage 3: Discord bot - Interactive system
+
+## TODOs
+### Stage 3: Discord bot - Interactive system
 - To be continued
 -  Used scripts and folders: ```./bot.py```
 - If you want to build you own bot:
@@ -551,11 +585,10 @@ python preprocessor.py
     2. Create an ```.env``` file and store at the root folder, set ```DISCORD_BOT_TOKEN='<YOUR_DISCORD_BOT_TOKEN>'``` into it
 - Still learning from [this tutorial](https://github.com/smallshawn95/Python-Discord-Bot-Course)
 
-## adsb.lol api testing
-### Before running
+### adsb.lol api testing
+#### Before running
 -  Used scripts: ```./adsb_lol_api.py```, ```./gps.py```, ```./main.py```
 - Documentations please read [this official webpage](https://api.adsb.lol/docs)
-### Run
-```
-python main.py
-```
+### About ```main.py```
+- Currently ```main.py``` only could run on **Windows** (only knows how to get user's gps location on Windows, also don't have other platform to test).
+- Please enable **Windows GPS** in settings ([official tutorial here](https://support.microsoft.com/en-us/windows/windows-location-service-and-privacy-3a8eee0a-5b0b-dc07-eede-2a5ca1c49088)).

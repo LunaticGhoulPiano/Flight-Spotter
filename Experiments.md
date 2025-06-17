@@ -289,7 +289,7 @@ python analyzer.py
     - Higher values mean the node is a **critical bridge** in the network
     - Hight betweenness: **flow bottlenecks**, **heavy overflight traffic**, **strategic for routing or defense**
     ![image](./analyzed_results/readsb-hist_filtered_by_Taiwan_manual_edges/betweenness.png)
-3. [Closeness](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.closeness_centrality.html):
+3. [Closeness Centrality](https://networkx.org/documentation/stable/reference/algorithms/generated/networkx.algorithms.centrality.closeness_centrality.html):
     - Measures how **close a node is to all other nodes** in the network
     - Defined as the **inverse of the total shortest path distance** to all others
     - Higher values mean **faster accessibility** from that node to anywhere else
