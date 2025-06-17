@@ -242,42 +242,49 @@ Flight-Spotter
 │     ├──DBSCAN
 │     │  └──readsb-hist_filtered_by_Taiwan_manual_edges
 │     │     ├──min_7_epsilon_0_07
+│     │     |     ├──clustered.arff
 │     │     │     ├──3D.png
 │     │     │     ├──clustered.csv
 │     │     │     ├──clustered.html
 │     │     │     ├──distribution.csv
 │     │     │     └──distribution.png
 │     │     ├──min_7_epsilon_0_1
+│     │     |     ├──clustered.arff
 │     │     │     ├──3D.png
 │     │     │     ├──clustered.csv
 │     │     │     ├──clustered.html
 │     │     │     ├──distribution.csv
 │     │     │     └──distribution.png
 │     │     ├──min_20_epsilon_0_07
+│     │     |     ├──clustered.arff
 │     │     │     ├──3D.png
 │     │     │     ├──clustered.csv
 │     │     │     ├──clustered.html
 │     │     │     ├──distribution.csv
 │     │     │     └──distribution.png
 │     │     ├──min_20_epsilon_0_1
+│     │     |     ├──clustered.arff
 │     │     │     ├──3D.png
 │     │     │     ├──clustered.csv
 │     │     │     ├──clustered.html
 │     │     │     ├──distribution.csv
 │     │     │     └──distribution.png
 │     │     ├──min_20_epsilon_0_6
+│     │     |     ├──clustered.arff
 │     │     │     ├──3D.png
 │     │     │     ├──clustered.csv
 │     │     │     ├──clustered.html
 │     │     │     ├──distribution.csv
 │     │     │     └──distribution.png
 │     │     ├──min_70_epsilon_1_1
+│     │     |     ├──clustered.arff
 │     │     │     ├──3D.png
 │     │     │     ├──clustered.csv
 │     │     │     ├──clustered.html
 │     │     │     ├──distribution.csv
 │     │     │     └──distribution.png
 │     │     └──min_90_epsilon_1_0
+│     │           ├──clustered.arff
 │     │           ├──3D.png
 │     │           ├──clustered.csv
 │     │           ├──clustered.html
