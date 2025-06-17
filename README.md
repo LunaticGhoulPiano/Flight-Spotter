@@ -45,10 +45,10 @@ Flight-Spotter
 ├──preprocessor.py
 ├──get_data.py
 ├──filter_and_encode.py
-├──analyzer.py
+├──experiments.py
 ├──eval_end_draw_weka_results.py
-├──cluster.py
-├──draw_animation_by_time.py
+├──clusterer.py
+├──analyzer.py
 ├──ecef.py
 ├──gps.py
 ├──visualizer.py
@@ -523,6 +523,15 @@ python preprocessor.py
 ### Course requirements
 - Must choose one data mining tool to use: [Weka](https://www.weka.io/) / [Orange](https://orangedatamining.com/download/) / [KNIME](https://www.knime.com/).
 ### Experiments
+- Run:
+    ```
+    python experiments.py
+    ```
+- **Warnings**:
+    - Must have ```./weka_results``` folder, or comment the following execution to avoid errors.
+        ```python
+        eval_and_draw_weka_results.run(data_name)
+        ```
 - See [Experiments.md](./Experiments.md).
 ### Demo of the clustered html webpage
 - Interact with the ````clustered.html```` clustered data file

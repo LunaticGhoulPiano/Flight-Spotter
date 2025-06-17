@@ -302,6 +302,8 @@ def analyze_the_clustered_data(df, path: str, filename: str):
     folder_name = filename[:-4]
     distributions = {}
     for tool in ["weka", "python"]:
+        if tool == "weka" and not os.path.exists("./weka_results"):
+            continue
         for method in os.listdir(f"./{tool}_results"):
             for experiment in os.listdir(f"./{tool}_results./{method}./{folder_name}"):
                 if experiment == "fine_tune_records":
