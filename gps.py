@@ -26,7 +26,7 @@ def DD_to_DMS(dd: float, is_lat: bool = True) -> str: # transform DD (Decimal De
     return f"{degrees}°{minutes:02d}'{seconds:05.2f}\"{direction}"
 
 # gps region
-def make_boundary(region: str) -> Polygon:
+def make_boundary(region: str, save_map: bool = True) -> Polygon:
     with open(f"./data./filter_regions./{region}", "r", encoding = "utf-8") as f:
         boundary_DMS = json.load(f)
     # transform into DD
@@ -47,8 +47,10 @@ def make_boundary(region: str) -> Polygon:
     folium.PolyLine([(coord[1], coord[0]) for coord in boundary_DD], color = "green").add_to(map)
     for coord in boundary_DD:
         folium.Marker(location = [coord[1], coord[0]], icon = folium.Icon(color = "green", icon_color = "green", prefix = "fa", icon = "male")).add_to(map)
-    os.makedirs("./filtered_region_maps", exist_ok = True)
-    map.save(f"./filtered_region_maps./{region[:-5]}.html")
+    
+    if save_map:
+        os.makedirs("./filtered_region_maps", exist_ok = True)
+        map.save(f"./filtered_region_maps./{region[:-5]}.html")
 
     return Polygon(boundary_DD)
 

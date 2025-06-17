@@ -12,3 +12,7 @@ scikit-learn
 seaborn
 scipy
 pydeck
+geopandas
+libpysal
+esda
+networkx

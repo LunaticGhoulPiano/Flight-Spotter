@@ -9,6 +9,7 @@ weka_results/**/*.html
 
 data/*
 !data/filter_regions
+!data/直轄市、縣(市)界線1140318
 
 model.py
 logs
