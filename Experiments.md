@@ -96,10 +96,10 @@ python cluster.py
             - ```min_points``` = ```10, 20, 30, 40, 50, 60, 70, 80, 90, 100```
             - ```epsilon``` = ```0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2.0```
         3. Fine-tuned records:
-            - Fine-tuned records:
+            - HDBSCAN:
                 ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/fine_tune_records/heatmap_clustering.png)
                 ![image](./python_results/hdbscan/readsb-hist_filtered_by_Taiwan_manual_edges/fine_tune_records/heatmap_noise.png)
-            - OPTICS
+            - OPTICS:
                 ![image](./python_results/optics/readsb-hist_filtered_by_Taiwan_manual_edges/fine_tune_records/heatmap_clustering.png)
                 ![image](./python_results/optics/readsb-hist_filtered_by_Taiwan_manual_edges/fine_tune_records/heatmap_noise.png)
     - After get the ideal hyperparameters of HDBSCAN and OPTICS, run the following combinations of each method:
