@@ -6,6 +6,7 @@ python_results/**/*.html
 weka_results/**/*.html
 
 **.pptx
+**.pdf
 
 data/*
 !data/filter_regions
