@@ -3,7 +3,9 @@ __pycache__
 .env
 
 python_results/**/*.html
-weka_results/**/*.html
+
+weka_results/DBSCAN/readsb-hist_filtered_by_Taiwan_manual_edges/**/*.html
+weka_results/EM/readsb-hist_filtered_by_Taiwan_manual_edges/**/*.html
 
 **.pptx
 **.pdf
