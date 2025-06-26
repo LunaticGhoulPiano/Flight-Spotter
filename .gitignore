@@ -4,10 +4,6 @@ __pycache__
 
 python_results/**/*.html
 
-weka_results/DBSCAN/readsb-hist_filtered_by_Taiwan_manual_edges/min_20_epsilon_0_07/*.html
-weka_results/DBSCAN/readsb-hist_filtered_by_Taiwan_manual_edges/min_70_epsilon_1_1/*.html
-weka_results/DBSCAN/readsb-hist_filtered_by_Taiwan_manual_edges/min_90_epsilon_1_0/*.html
-
 **.pptx
 **.pdf
 
